@@ -14,12 +14,19 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
-        getSupportActionBar().hide(); //hide the title bar
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN); //show the activity in full screen
+        //will hide the title
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        //hide the title bar
+        getSupportActionBar().hide();
+
+        //show the activity in full screen
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_splash);
+
+        //change activity background color
+        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
         // add a timer that will trigger next activity
         new Handler().postDelayed(new Runnable() {
@@ -28,6 +35,6 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 finish();
             }
-        }, 3000);
+        }, 3000); //means 3 seconds
     }
 }
