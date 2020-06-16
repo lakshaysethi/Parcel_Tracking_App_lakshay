@@ -1,6 +1,6 @@
 ## Date: 15/06/2020
 
-**Time Taken**: 2 hour
+**Time Taken**: 2 hours
 
 **Done**: Splash screen
 
@@ -71,12 +71,56 @@
 
 ## Date: 16/06/2020
 
-**Time Taken**: 2 hour
+**Time Taken**: 2 hours
 
-**Done**: Splash screen
+**Done**: Clour theme design, Login UI
 
 ---
 
 ### Useful Links
 
+[Material Design Color Tool](https://material.io/resources/color/#!/?view.left=0&view.right=0&primary.color=ffc75f&secondary.color=E57373)
+
+[Material Theming](https://material.io/design/material-theming/overview.html)
+
+[ColorSpace](https://mycolor.space/?hex=%23FFC75F&sub=1)
+
+## Date: 17/06/2020
+
+**Time Taken**: 3 hours
+
+**Done**: Signup UI
+
+---
+
+### Useful Links
+
+[TabLayout Tutorial With Example In Android Studio](https://abhiandroid.com/materialdesign/tablayout-example-android-studio.html#Example_2_of_TabLayout_Using_ViewPager)
+
+[Create swipe views with tabs using ViewPager](https://developer.android.com/guide/navigation/navigation-swipe-view#java)
+
+### Create TabLayout Setps
+
+1. In `activity.xml`
+
+    ```java
+    <androidx.viewpager.widget.ViewPager
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/pager"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+    
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:background="@color/colorPrimaryLight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    
+    </androidx.viewpager.widget.ViewPager>
+    ```
+    
+2. In `activity.java` setup pager
+
+3. Create fragment
 
