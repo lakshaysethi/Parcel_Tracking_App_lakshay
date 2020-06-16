@@ -53,9 +53,10 @@
     }
     ```
 
-5. Hide Title Bar and Full Screen, add the code to `onCreate` function
+5. Hide Title Bar and Full Screen, add the code to `onCreate` function (`requestFeature()` must be called before adding content)
     
     ```java
+    //add before ContentView(...)
     //will hide the title
     requestWindowFeature(Window.FEATURE_NO_TITLE);
     //hide the title bar
@@ -77,3 +78,5 @@
 ---
 
 ### Useful Links
+
+

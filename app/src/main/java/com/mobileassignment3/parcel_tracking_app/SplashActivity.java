@@ -13,13 +13,14 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //will hide the title
+        // requestFeature() must be called before adding content
+        // will hide the title
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //hide the title bar
+        // hide the title bar
         getSupportActionBar().hide();
-        //show the activity in full screen
+        // show the activity in full screen
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //change activity background color
+        // change activity background color
         getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
         setContentView(R.layout.activity_splash);

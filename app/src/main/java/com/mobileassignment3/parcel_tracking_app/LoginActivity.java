@@ -17,6 +17,7 @@ public class LoginActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //hide the title bar
         getSupportActionBar().hide();
+
         setContentView(R.layout.activity_login);
 
         TextView tvLoginSignup = findViewById(R.id.tvLoginSignup);
