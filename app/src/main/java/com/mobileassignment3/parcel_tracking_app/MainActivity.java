@@ -5,8 +5,11 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -49,6 +52,25 @@ public class MainActivity extends AppCompatActivity {
         };
         adapterAssignOrder = new OrderAdapter(myDataset);
         rvAssignOrder.setAdapter(adapterAssignOrder);
+    }
+
+    // implemented the menu item
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+    // implemented the menu item
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
+        case R.id.notification:
+            Intent myIntent = new Intent(MainActivity.this, NotificationActivity.class);
+            startActivity(myIntent);
+            return(true);
+
+    }
+        return(super.onOptionsItemSelected(item));
     }
 }
 

@@ -5,8 +5,11 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -50,6 +53,25 @@ public class ReceiverMainActivity extends AppCompatActivity {
         };
         adapterMyParcel = new ParcelAdapter(myDataset);
         rvMyParcel.setAdapter(adapterMyParcel);
+    }
+
+    // implemented the menu item
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+    // implemented the menu item
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
+        case R.id.notification:
+            Intent myIntent = new Intent(ReceiverMainActivity.this, NotificationActivity.class);
+            startActivity(myIntent);
+            return(true);
+
+    }
+        return(super.onOptionsItemSelected(item));
     }
 }
 
@@ -111,4 +133,8 @@ class ParcelAdapter extends RecyclerView.Adapter<ParcelAdapter.MyViewHolder> {
     public int getItemCount() {
         return mDataset.length;
     }
+
+
+
+
 }
