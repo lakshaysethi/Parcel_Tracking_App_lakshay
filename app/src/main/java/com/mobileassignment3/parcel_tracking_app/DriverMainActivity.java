@@ -20,6 +20,10 @@ public class DriverMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_main);
 
+        // Change the actionbar title and icon
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setTitle("Driver name");
 
         rvMyTask = findViewById(R.id.rvMyTask);

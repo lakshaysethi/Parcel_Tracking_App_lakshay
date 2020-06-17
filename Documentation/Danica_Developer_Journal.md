@@ -87,7 +87,7 @@
 
 ## Date: 17/06/2020
 
-**Time Taken**: 3 hours
+**Time Taken**: 2 hours
 
 **Done**: Signup UI
 
@@ -124,7 +124,7 @@
 
 3. Create fragment
 
-## Date: 18/06/2020
+## Date: 17/06/2020
 
 **Time Taken**: 1 hours
 
@@ -142,4 +142,67 @@
 
 2. Add `profile button` in action bar
 
+## Date: 17/06/2020
 
+**Time Taken**: 4 hours
+
+**Done**: Create Recyclerview and Cardview
+
+---
+
+### Useful Links
+
+[Create a List with RecyclerView](https://developer.android.com/guide/topics/ui/layout/recyclerview)
+
+[Android RecyclerView, Android CardView Example Tutorial](https://www.journaldev.com/10024/android-recyclerview-android-cardview-example-tutorial)
+
+[Create a Card-Based Layout](https://developer.android.com/guide/topics/ui/layout/cardview)
+
+### Step
+
+1. Open the build.gradle file for app module  
+
+2. Add the support library to the dependencies section
+    
+    ```java
+    dependencies {
+        ...
+        implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    }
+    ```
+
+3. Add RecyclerView to layout
+
+    ```xml
+    <?xml version="1.0" encoding="utf-8"?>
+    <!-- A RecyclerView with some commonly used attributes -->
+     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/my_recycler_view"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    ```
+4. Add CardView to a new layout (design the card content structure)
+
+    ```xml
+    <?xml version="1.0" encoding="utf-8"?>
+    <androidx.cardview.widget.CardView
+    ...>
+    
+        <LinearLayout
+        ...>
+    
+            <TextView
+                ...>
+    
+            <TextView
+                ...>
+    
+        </LinearLayout>
+    
+    </androidx.cardview.widget.CardView>
+    ```
+
+5. Go to activity.java, obtain a handle to the object, connect it to a layout manager, and attach an adapter for the data to be displayed.
+
+6. Add a list adapter in activity.java

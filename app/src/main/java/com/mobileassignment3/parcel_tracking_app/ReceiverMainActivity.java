@@ -20,6 +20,10 @@ public class ReceiverMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receiver_main);
 
+        // Change the actionbar title and icon
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setTitle("Receiver name");
 
         rvMyParcel = findViewById(R.id.rvMyParcel);

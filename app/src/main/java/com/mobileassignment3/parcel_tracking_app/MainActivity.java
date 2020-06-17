@@ -19,7 +19,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Change the actionbar title and icon
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setTitle("Administrator");
+
         rvAssignOrder = findViewById(R.id.rvAssignOrder);
 
         // use this setting to improve performance if you know that changes
