@@ -44,7 +44,7 @@ public class DriverMainActivity extends AppCompatActivity {
                 new MyTask("Parcel 8", "Countdown delivery"),
                 new MyTask("Parcel 9", "Dahua supermarket tuan gou"),
         };
-        adapterMyTask = new MyAdapter(myDataset);
+        adapterMyTask = new TaskAdapter(myDataset);
         rvMyTask.setAdapter(adapterMyTask);
     }
 }
@@ -59,7 +59,7 @@ class MyTask {
     }
 }
 
-class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
     private MyTask[] mDataset;
 
     // Provide a reference to the views for each data item
@@ -80,13 +80,13 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(MyTask[] myDataset) {
+    public TaskAdapter(MyTask[] myDataset) {
         mDataset = myDataset;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public TaskAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         CardView v = (CardView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cards_my_task, parent, false);
