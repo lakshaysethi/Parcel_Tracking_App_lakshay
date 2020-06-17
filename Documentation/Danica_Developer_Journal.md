@@ -124,3 +124,22 @@
 
 3. Create fragment
 
+## Date: 18/06/2020
+
+**Time Taken**: 1 hours
+
+**Done**: Administrator main UI, Driver main UI, Receiver main UI
+
+---
+
+### Useful Links
+
+[How to set title for action bar in android?](https://www.tutorialspoint.com/how-to-set-title-for-action-bar-in-android)
+
+### Can Be Improved
+
+1. Add `notification button` in action bar
+
+2. Add `profile button` in action bar
+
+
