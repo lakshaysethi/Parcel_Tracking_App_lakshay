@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class ReceiverMainActivity extends AppCompatActivity {
-    private RecyclerView rvMyParcels;
-    private RecyclerView.Adapter adapterMyParcels;
-    private RecyclerView.LayoutManager layoutManagerMyParcels;
+    private RecyclerView rvMyParcel;
+    private RecyclerView.Adapter adapterMyParcel;
+    private RecyclerView.LayoutManager layoutManagerMyParcel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,45 +22,45 @@ public class ReceiverMainActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Receiver name");
 
-        rvMyParcels = findViewById(R.id.rvMyParcels);
+        rvMyParcel = findViewById(R.id.rvMyParcel);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
-        rvMyParcels.setHasFixedSize(true);
+        rvMyParcel.setHasFixedSize(true);
 
         // use a linear layout manager
-        layoutManagerMyParcels = new LinearLayoutManager(this);
-        rvMyParcels.setLayoutManager(layoutManagerMyParcels);
+        layoutManagerMyParcel = new LinearLayoutManager(this);
+        rvMyParcel.setLayoutManager(layoutManagerMyParcel);
 
         // specify an adapter
-        MyParcels[] myDataset = new MyParcels[] {
-                new MyParcels("Parcel 1", "Beef inside"),
-                new MyParcels("Parcel 2", "Countdown delivery"),
-                new MyParcels("Parcel 3", "Dahua supermarket tuan gou"),
-                new MyParcels("Parcel 4", "Beef inside"),
-                new MyParcels("Parcel 5", "Countdown delivery"),
-                new MyParcels("Parcel 6", "Dahua supermarket tuan gou"),
-                new MyParcels("Parcel 7", "Beef inside"),
-                new MyParcels("Parcel 8", "Countdown delivery"),
-                new MyParcels("Parcel 9", "Dahua supermarket tuan gou"),
+        MyParcel[] myDataset = new MyParcel[] {
+                new MyParcel("Parcel 1", "Beef inside"),
+                new MyParcel("Parcel 2", "Countdown delivery"),
+                new MyParcel("Parcel 3", "Dahua supermarket tuan gou"),
+                new MyParcel("Parcel 4", "Beef inside"),
+                new MyParcel("Parcel 5", "Countdown delivery"),
+                new MyParcel("Parcel 6", "Dahua supermarket tuan gou"),
+                new MyParcel("Parcel 7", "Beef inside"),
+                new MyParcel("Parcel 8", "Countdown delivery"),
+                new MyParcel("Parcel 9", "Dahua supermarket tuan gou"),
         };
-        adapterMyParcels = new ParcelAdapter(myDataset);
-        rvMyParcels.setAdapter(adapterMyParcels);
+        adapterMyParcel = new ParcelAdapter(myDataset);
+        rvMyParcel.setAdapter(adapterMyParcel);
     }
 }
 
-class MyParcels {
+class MyParcel {
     public final String title;
     public final String detail;
 
-    MyParcels(String title, String detail) {
+    MyParcel(String title, String detail) {
         this.title = title;
         this.detail = detail;
     }
 }
 
 class ParcelAdapter extends RecyclerView.Adapter<ParcelAdapter.MyViewHolder> {
-    private MyParcels[] mDataset;
+    private MyParcel[] mDataset;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -80,7 +80,7 @@ class ParcelAdapter extends RecyclerView.Adapter<ParcelAdapter.MyViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ParcelAdapter(MyParcels[] myDataset) {
+    public ParcelAdapter(MyParcel[] myDataset) {
         mDataset = myDataset;
     }
 
