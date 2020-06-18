@@ -211,8 +211,110 @@
 
 **Time Taken**: 4 hours
 
-**Done**: Create 
+**Done**: Create Notification UI and My Account UI
 
 ---
 
-### Useful Links
+### 1. Change the action bar title and logo icon
+
+In the `onCreate()` function:
+
+```java
+  // Change the actionbar title and icon
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setTitle("Administrator");
+```
+
+> <https://stackoverflow.com/questions/14483393/how-do-i-change-the-android-actionbar-title-and-icon>
+
+### 2. Create action bar menu
+
+> <https://www.journaldev.com/9357/android-actionbar-example-tutorial>
+
+1. Create menu XML resource file in res/menu folder
+    
+    ```java
+    <menu xmlns:android="https://schemas.android.com/apk/res/android"
+        xmlns:app="https://schemas.android.com/apk/res-auto"
+        xmlns:tools="https://schemas.android.com/tools" tools:context=".MainActivity">
+        
+        <item
+            android:id="@+id/add" android:icon="@android:drawable/ic_menu_add" app:showAsAction="always"   android:title="@string/add"/>
+        <item
+            android:id="@+id/reset" android:icon="@android:drawable/ic_menu_revert" app:showAsAction="always|withText" android:title="@string/reset"/>
+        <item
+            android:id="@+id/about" android:icon="@android:drawable/ic_dialog_info" app:showAsAction="never" android:title="@string/about">
+        </item>
+        <item
+            android:id="@+id/exit"  app:showAsAction="never" android:title="@string/exit">
+        </item>
+    </menu>
+    ```
+
+2. In MainActivity.java, in the MainActivity Class:
+
+    ```java
+    public class MainActivity extends AppCompatActivity {
+    
+        ...
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            ...
+        }
+    
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
+            // Inflate the menu; this adds items to the action bar if it is present.
+            getMenuInflater().inflate(R.menu.menu_main, menu);
+            return true;
+        }
+    
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
+            case R.id.add:
+                count=(TextView)findViewById(R.id.textView);
+                count.setText("Add is clicked");
+                return(true);
+            case R.id.reset:
+                count=(TextView)findViewById(R.id.textView);
+                count.setText("Nothing is selected");
+                return(true);
+            case R.id.about:
+                Toast.makeText(this, R.string.about_toast, Toast.LENGTH_LONG).show();
+                return(true);
+            case R.id.exit:
+                finish();
+                return(true);
+    
+        }
+            return(super.onOptionsItemSelected(item));
+        }
+    }
+    ```
+
+### 3. Set OnClick Listener on Action Bar Title
+
+> <https://stackoverflow.com/questions/24838155/set-onclick-listener-on-action-bar-title-in-android>
+
+1. Find the action bar title id
+
+    Click on `Tools >>>> Layout Inspector`, in the open window, select the activity which has the action bar, in the open window can see every item of that activity with details, like `id`
+
+2. In the MainActivity, in the `OnCreate()` function:
+
+    ```java
+    // Click the action bar title to open the profile activity
+    findViewById(R.id.action_bar).setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent myIntent = new Intent(MainActivity.this, ProfileActivity.class);
+            startActivity(myIntent);
+        }
+    });
+    ```
+
+### 4. Use the build in Icon
+
+Click on `File >>>> New >>>> Vector Asset`, can select the icon and it will be added into the `res/drawable`
