@@ -206,3 +206,13 @@
 5. Go to activity.java, obtain a handle to the object, connect it to a layout manager, and attach an adapter for the data to be displayed.
 
 6. Add a list adapter in activity.java
+
+## Date: 18/06/2020
+
+**Time Taken**: 4 hours
+
+**Done**: Create 
+
+---
+
+### Useful Links
