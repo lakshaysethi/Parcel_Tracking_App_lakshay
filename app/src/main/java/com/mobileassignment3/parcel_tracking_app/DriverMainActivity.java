@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -28,6 +29,15 @@ public class DriverMainActivity extends AppCompatActivity {
         getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setTitle("Driver name");
+
+        // Click the action bar title to open the profile activity
+        findViewById(R.id.action_bar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(DriverMainActivity.this, ProfileActivity.class);
+                startActivity(myIntent);
+            }
+        });
 
         rvMyTask = findViewById(R.id.rvMyTask);
 

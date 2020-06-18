@@ -10,8 +10,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 public class ReceiverMainActivity extends AppCompatActivity {
     private RecyclerView rvMyParcel;
@@ -22,8 +24,6 @@ public class ReceiverMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
         setContentView(R.layout.activity_receiver_main);
 
         // Change the actionbar title and icon
@@ -31,6 +31,16 @@ public class ReceiverMainActivity extends AppCompatActivity {
         getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setTitle("Receiver name");
+
+        // Click the action bar title to open the profile activity
+        findViewById(R.id.action_bar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(ReceiverMainActivity.this, ProfileActivity.class);
+                startActivity(myIntent);
+            }
+        });
+
 
         rvMyParcel = findViewById(R.id.rvMyParcel);
 
