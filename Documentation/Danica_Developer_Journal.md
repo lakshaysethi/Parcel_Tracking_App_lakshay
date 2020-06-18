@@ -300,7 +300,7 @@ In the `onCreate()` function:
 
 1. Find the action bar title id
 
-    Click on `Tools >>>> Layout Inspector`, in the open window, select the activity which has the action bar, in the open window can see every item of that activity with details, like `id`
+    Open the activity in emulator, Click on `Tools >>>> Layout Inspector`, in the open window, select the activity which has the action bar, in the open window can see every item of that activity with details, like `id`
 
 2. In the MainActivity, in the `OnCreate()` function:
 
