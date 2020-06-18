@@ -302,9 +302,9 @@ In the `onCreate()` function:
 
     Open the activity in emulator, Click on `Tools >>>> Layout Inspector`, in the open window, select the activity which has the action bar, in the open window can see every item of that activity with details, like `id`
     
-    ![image info](./Danica_screenshot/Screen Shot 2020-06-19 at 12.21.27 AM.png)
+    ![image info](./Danica_screenshot/1.png)
     
-    ![image info](./Danica_screenshot/Screen Shot 2020-06-19 at 12.41.15 AM.png)
+    ![image info](./Danica_screenshot/2.png)
     
 
 2. In the MainActivity, in the `OnCreate()` function:
@@ -324,6 +324,6 @@ In the `onCreate()` function:
 
 Click on `File >>>> New >>>> Vector Asset`, can select the icon and it will be added into the `res/drawable`
 
-![image info](./Danica_screenshot/Screen Shot 2020-06-19 at 12.34.46 AM.png)
+![image info](./Danica_screenshot/3.png)
 
-![image info](./Danica_screenshot/Screen Shot 2020-06-19 at 12.39.17 AM.png)
+![image info](./Danica_screenshot/4.png)
