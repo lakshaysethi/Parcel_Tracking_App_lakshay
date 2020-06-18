@@ -21,7 +21,7 @@ public class SplashActivity extends AppCompatActivity {
         // show the activity in full screen
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         // change activity background color
-        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+//        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
         setContentView(R.layout.activity_splash);
 
