@@ -21,6 +21,9 @@ public class ReceiverMainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
         setContentView(R.layout.activity_receiver_main);
 
         // Change the actionbar title and icon
