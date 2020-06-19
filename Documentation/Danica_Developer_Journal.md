@@ -327,3 +327,18 @@ Click on `File >>>> New >>>> Vector Asset`, can select the icon and it will be a
 ![image info](./Danica_screenshot/3.png)
 
 ![image info](./Danica_screenshot/4.png)
+
+## Date: 19/06/2020
+
+**Time Taken**: 1 hours
+
+**Done**: Logo design
+
+---
+
+### Useful Links
+
+[FreeLogoDesign](https://www.freelogodesign.org/)
+
+
+
