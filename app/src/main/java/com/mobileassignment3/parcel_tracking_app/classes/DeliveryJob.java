@@ -6,6 +6,8 @@ import com.mobileassignment3.parcel_tracking_app.classes.user.Driver;
 import java.util.Date;
 import java.util.List;
 
+
+
 public class DeliveryJob {
 
     String status;
@@ -14,6 +16,13 @@ public class DeliveryJob {
     Driver assignedDriver;
     Customer receiver;
     Date targetDeliveryTime;
+
+
+    public DeliveryJob(String status, String trackingNumber) {
+        this.status = status;
+        this.trackingNumber = trackingNumber;
+
+    }
 
 
     public DeliveryJob(String status, String trackingNumber, List<Parcel> listOfParcels, Driver assignedDriver, Customer receiver, Date targetDeliveryTime) {
