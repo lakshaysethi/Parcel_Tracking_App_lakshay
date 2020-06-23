@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.mobileassignment3.parcel_tracking_app.classes.Parcel;
+
 public class DriverMainActivity extends AppCompatActivity {
     private RecyclerView rvMyTask;
     private RecyclerView.Adapter adapterMyTask;
@@ -56,16 +58,16 @@ public class DriverMainActivity extends AppCompatActivity {
         //TODO get the assigned delivery job from firestore
 
         // specify an adapter
-        MyTask[] myDataset = new MyTask[]{
-                new MyTask("Parcel 1", "Beef inside"),
-                new MyTask("Parcel 2", "Countdown delivery"),
-                new MyTask("Parcel 3", "Dahua supermarket tuan gou"),
-                new MyTask("Parcel 4", "Beef inside"),
-                new MyTask("Parcel 5", "Countdown delivery"),
-                new MyTask("Parcel 6", "Dahua supermarket tuan gou"),
-                new MyTask("Parcel 7", "Beef inside"),
-                new MyTask("Parcel 8", "Countdown delivery"),
-                new MyTask("Parcel 9", "Dahua supermarket tuan gou"),
+        Parcel[] myDataset = new Parcel[]{
+                new Parcel("Parcel 1", "Beef inside"),
+                new Parcel("Parcel 2", "Countdown delivery"),
+                new Parcel("Parcel 3", "Dahua supermarket tuan gou"),
+                new Parcel("Parcel 4", "Beef inside"),
+                new Parcel("Parcel 5", "Countdown delivery"),
+                new Parcel("Parcel 6", "Dahua supermarket tuan gou"),
+                new Parcel("Parcel 7", "Beef inside"),
+                new Parcel("Parcel 8", "Countdown delivery"),
+                new Parcel("Parcel 9", "Dahua supermarket tuan gou"),
         };
         adapterMyTask = new TaskAdapter(this, myDataset);
         rvMyTask.setAdapter(adapterMyTask);
@@ -93,18 +95,10 @@ public class DriverMainActivity extends AppCompatActivity {
     }
 }
 
-class MyTask {
-    public final String title;
-    public final String detail;
 
-    MyTask(String title, String detail) {
-        this.title = title;
-        this.detail = detail;
-    }
-}
 
 class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
-    private MyTask[] mDataset;
+    private Parcel[] mDataset;
     private Context mContext;
 
     // Provide a reference to the views for each data item
@@ -125,7 +119,7 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public TaskAdapter(Context context, MyTask[] myDataset) {
+    public TaskAdapter(Context context, Parcel[] myDataset) {
         mContext = context;
         mDataset = myDataset;
     }
@@ -145,8 +139,8 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.textViewTitle.setText(mDataset[position].title);
-        holder.textViewDetail.setText(mDataset[position].detail);
+        holder.textViewTitle.setText(mDataset[position].getDescription());
+        holder.textViewDetail.setText(mDataset[position].getType());
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
