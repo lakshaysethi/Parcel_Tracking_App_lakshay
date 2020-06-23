@@ -56,7 +56,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginUser(String username, String password) {
-            if (username.equals("admin") && password.equals("admin")){
+
+
+
+
+
+
+        if (username.equals("admin") && password.equals("admin")){
 
                 Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
     //             Intent myIntent = new Intent(LoginActivity.this, DriverMainActivity.class);

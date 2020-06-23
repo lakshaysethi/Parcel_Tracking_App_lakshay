@@ -1,5 +1,7 @@
 package com.mobileassignment3.parcel_tracking_app;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,6 +15,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.mobileassignment3.parcel_tracking_app.classes.DeliveryJob;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView rvAssignOrder;
@@ -48,20 +58,12 @@ public class MainActivity extends AppCompatActivity {
         rvAssignOrder.setLayoutManager(layoutManagerAssignOrder);
 
         // specify an adapter
-        Order[] myDataset = new Order[] {
-                new Order("Order 1", "Beef inside"),
-                new Order("Order 2", "Countdown delivery"),
-                new Order("Order 3", "Dahua supermarket tuan gou"),
-                new Order("Order 4", "Beef inside"),
-                new Order("Order 5", "Countdown delivery"),
-                new Order("Order 6", "Dahua supermarket tuan gou"),
-                new Order("Order 7", "Beef inside"),
-                new Order("Order 8", "Countdown delivery"),
-                new Order("Order 9", "Dahua supermarket tuan gou"),
-        };
+        List<DeliveryJob> myDataset = getListOfPendingDeliveryJobs();
         adapterAssignOrder = new OrderAdapter(myDataset);
         rvAssignOrder.setAdapter(adapterAssignOrder);
     }
+
+
 
     // implemented the menu item
     @Override
@@ -81,20 +83,27 @@ public class MainActivity extends AppCompatActivity {
     }
         return(super.onOptionsItemSelected(item));
     }
-}
 
-class Order {
-    public final String title;
-    public final String detail;
+    private List<DeliveryJob> getListOfPendingDeliveryJobs() {
 
-    Order(String title, String detail) {
-        this.title = title;
-        this.detail = detail;
+         return randomDeliveryjobs();
+
+
     }
+
+    private List<DeliveryJob> randomDeliveryjobs() {
+        List<DeliveryJob> deliveryJobArray = new ArrayList<DeliveryJob>() ;
+        for (int i=0;i<8;i++){
+            deliveryJobArray.add(  new DeliveryJob("NEW ORDER","00"+i) );
+        }
+        return deliveryJobArray;
+    };
+
 }
+
 
 class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
-    private Order[] mDataset;
+    private DeliveryJob[] deliveryJobArray;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -114,8 +123,8 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public OrderAdapter(Order[] myDataset) {
-        mDataset = myDataset;
+    public OrderAdapter(List<DeliveryJob> myDataset) {
+        deliveryJobArray = myDataset;
     }
 
     // Create new views (invoked by the layout manager)
@@ -133,13 +142,13 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.textViewTitle.setText(mDataset[position].title);
-        holder.textViewDetail.setText(mDataset[position].detail);
+        holder.textViewTitle.setText(deliveryJobArray[position].getTrackingNumber());
+        holder.textViewDetail.setText(deliveryJobArray[position].getStatus());
     }
 
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return deliveryJobArray.length;
     }
 }
 

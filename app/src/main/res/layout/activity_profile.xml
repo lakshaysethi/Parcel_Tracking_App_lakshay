@@ -109,6 +109,7 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="16dp"
                 android:src="@drawable/ic_exit_to_app_black_24dp" />
+
             <TextView
                 android:id="@+id/tvMyAccountExit"
                 android:layout_width="match_parent"
@@ -119,8 +120,24 @@
 
         </LinearLayout>
 
-
-
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginBottom="64dp"
+            android:background="@drawable/button_primary"
+            android:enabled="true"
+            android:text="@string/logout"
+            android:textColor="@color/colorTextDark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etLoginPassword"
+            app:layout_constraintVertical_bias="0.2" />
 
 
     </LinearLayout>
