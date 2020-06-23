@@ -1,6 +1,5 @@
 package com.mobileassignment3.parcel_tracking_app;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,20 +7,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.mobileassignment3.parcel_tracking_app.classes.DeliveryJob;
 import com.mobileassignment3.parcel_tracking_app.classes.Parcel;
 import java.util.ArrayList;
 
@@ -38,7 +31,8 @@ public class ReceiverMainActivity extends AppCompatActivity {
         setActionBarStuff();
        
         setRecyclerViewStuff();
-        new FirebaseController().logFirestoreData();
+        new FirebaseController().writeMasterDeliveryJobsToFirestore();
+        new FirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
     }
 
     // implemented the menu item
@@ -86,24 +80,19 @@ public class ReceiverMainActivity extends AppCompatActivity {
         rvParcel.setLayoutManager(layoutManagerParcel);
 
         // specify an adapter
-        ArrayList<Parcel> ParcelArrayListDataset = new ArrayList<Parcel>();
-        updateParcelArrayList(ParcelArrayListDataset);
-        RecyclerView.Adapter adapterParcel = new ParcelAdapter(ParcelArrayListDataset);
+        ArrayList<DeliveryJob> deliveryJobsAssociatedWithAuthenticatedUser = new ArrayList<DeliveryJob>(); //FirebaseController.getdeliveryJobsAssociatedWithAuthenticatedUser();
+
+        RecyclerView.Adapter adapterParcel = new RecieverDeliveryJobAdapter(deliveryJobsAssociatedWithAuthenticatedUser);
         rvParcel.setAdapter(adapterParcel);
         
     }
 
-    private void updateParcelArrayList(ArrayList<Parcel> ParcelArrayListDataset) {
-        for(int i=0;i<10;i++) {
-            ParcelArrayListDataset.add(new Parcel("Parcel"+i+": Gifts from Lakshay"));
-        }
-    }
 
 
 }
 
-class ParcelAdapter extends RecyclerView.Adapter<ParcelAdapter.MyViewHolder> {
-    private ArrayList<Parcel> mDataset;
+class RecieverDeliveryJobAdapter extends RecyclerView.Adapter<RecieverDeliveryJobAdapter.MyViewHolder> {
+    private ArrayList<DeliveryJob> mDataset;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -123,13 +112,13 @@ class ParcelAdapter extends RecyclerView.Adapter<ParcelAdapter.MyViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ParcelAdapter(ArrayList<Parcel> myDataset) {
+    public RecieverDeliveryJobAdapter(ArrayList<DeliveryJob> myDataset) {
         mDataset = myDataset;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public ParcelAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecieverDeliveryJobAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         CardView v = (CardView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cards_my_parcel, parent, false);
@@ -142,8 +131,9 @@ class ParcelAdapter extends RecyclerView.Adapter<ParcelAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.textViewTitle.setText(mDataset.get(position).getDescription());
-        holder.textViewDetail.setText( mDataset.get(position).getType());
+        Parcel firstparcel = mDataset.get(position).getListOfParcels().get(0);
+        holder.textViewTitle.setText(firstparcel.getDescription());
+        holder.textViewDetail.setText( firstparcel.getType());
     }
 
     @Override
