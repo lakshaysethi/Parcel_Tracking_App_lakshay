@@ -26,8 +26,15 @@ public class Parcel {
     public Parcel() {
     }
 
-    public int getType() {
-        return type;
+    public String getType() {
+        if (type == BOX){
+            return "BOX";
+        }else if (type == LETTER){
+            return "LETTER";
+        }else {
+            return "OTHER size";
+        }
+
     }
 
     public void setType(int type) {
