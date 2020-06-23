@@ -8,8 +8,12 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
+
+    TextView usernameEditText;
+    TextView passwordEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,14 +36,36 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+       usernameEditText = findViewById(R.id.etLoginUsername);
+
+
+        passwordEditText = findViewById(R.id.etLoginPassword);
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//              Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
-             Intent myIntent = new Intent(LoginActivity.this, DriverMainActivity.class);
-//                Intent myIntent = new Intent(LoginActivity.this, ReceiverMainActivity.class);
-                startActivity(myIntent);
+                String username = usernameEditText.getText().toString();
+                String password = passwordEditText.getText().toString();
+
+                loginUser(username,password);
+
             }
         });
+
+
     }
+
+    private void loginUser(String username, String password) {
+            if (username.equals("admin") && password.equals("admin")){
+
+                Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
+    //             Intent myIntent = new Intent(LoginActivity.this, DriverMainActivity.class);
+    //                Intent myIntent = new Intent(LoginActivity.this, ReceiverMainActivity.class);
+                startActivity(myIntent);
+            }else{
+                Toast.makeText(this, "COULD NOT LOGIN got this :un: "+username+"pwd: "+ password, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
 }
