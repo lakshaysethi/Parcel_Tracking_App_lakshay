@@ -11,5 +11,6 @@
     <string name="email">Email</string>
 
     <string name="confirm_password">Confirm Password</string>
+    <string name="title_activity_receiver_maps">Map</string>
 
 </resources>
