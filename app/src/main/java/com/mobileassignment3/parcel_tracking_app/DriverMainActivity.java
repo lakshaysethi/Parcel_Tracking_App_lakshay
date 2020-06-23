@@ -1,10 +1,13 @@
 package com.mobileassignment3.parcel_tracking_app;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,6 +31,7 @@ public class DriverMainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
+        //TODO get the driver's user name
         getSupportActionBar().setTitle("Driver name");
 
         // Click the action bar title to open the profile activity
@@ -49,11 +53,13 @@ public class DriverMainActivity extends AppCompatActivity {
         layoutManagerMyTask = new LinearLayoutManager(this);
         rvMyTask.setLayoutManager(layoutManagerMyTask);
 
+        //TODO get the assigned delivery job from firestore
+
         // specify an adapter
-        MyTask[] myDataset = new MyTask[] {
-                new MyTask("Parcel One", "Beef inside"),
-                new MyTask("Parcel Two", "Countdown delivery"),
-                new MyTask("Parcel Three", "Dahua supermarket tuan gou"),
+        MyTask[] myDataset = new MyTask[]{
+                new MyTask("Parcel 1", "Beef inside"),
+                new MyTask("Parcel 2", "Countdown delivery"),
+                new MyTask("Parcel 3", "Dahua supermarket tuan gou"),
                 new MyTask("Parcel 4", "Beef inside"),
                 new MyTask("Parcel 5", "Countdown delivery"),
                 new MyTask("Parcel 6", "Dahua supermarket tuan gou"),
@@ -61,7 +67,7 @@ public class DriverMainActivity extends AppCompatActivity {
                 new MyTask("Parcel 8", "Countdown delivery"),
                 new MyTask("Parcel 9", "Dahua supermarket tuan gou"),
         };
-        adapterMyTask = new TaskAdapter(myDataset);
+        adapterMyTask = new TaskAdapter(this, myDataset);
         rvMyTask.setAdapter(adapterMyTask);
     }
 
@@ -72,16 +78,18 @@ public class DriverMainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
     // implemented the menu item
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
-        case R.id.notification:
-            Intent myIntent = new Intent(DriverMainActivity.this, NotificationActivity.class);
-            startActivity(myIntent);
-            return(true);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.notification:
+                Intent myIntent = new Intent(DriverMainActivity.this, NotificationActivity.class);
+                startActivity(myIntent);
+                return (true);
 
-    }
-        return(super.onOptionsItemSelected(item));
+        }
+        return (super.onOptionsItemSelected(item));
     }
 }
 
@@ -97,6 +105,7 @@ class MyTask {
 
 class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
     private MyTask[] mDataset;
+    private Context mContext;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -116,7 +125,8 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public TaskAdapter(MyTask[] myDataset) {
+    public TaskAdapter(Context context, MyTask[] myDataset) {
+        mContext = context;
         mDataset = myDataset;
     }
 
@@ -137,10 +147,43 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.textViewTitle.setText(mDataset[position].title);
         holder.textViewDetail.setText(mDataset[position].detail);
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onCreateDialog();
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return mDataset.length;
     }
+
+    public void onCreateDialog() {
+
+        //TODO get the estimate time
+        String estimateTime = "10 mins";
+        String driverSendMessage = "Your parcel will be deliveried in "+ estimateTime;
+
+        // Use the Builder class for convenient dialog construction
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setMessage(driverSendMessage)
+                .setPositiveButton("send", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // TODO send message
+
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //Closer the alert dialog
+                    }
+                });
+        // Create the AlertDialog object and return it
+        builder.create().show();
+
+    }
 }
+
