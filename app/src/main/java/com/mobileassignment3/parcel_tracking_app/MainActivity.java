@@ -93,13 +93,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private List<DeliveryJob> randomDeliveryjobs() {
-        List<DeliveryJob> deliveryJobArray = new ArrayList<DeliveryJob>() ;
-        for (int i=0;i<8;i++){
-            deliveryJobArray.add(  new DeliveryJob("NEW ORDER","00"+i) );
+    private void updateDeliveryJobArrayList(ArrayList<DeliveryJob> deliveryJobArrayListDataset) {
+
+        for(int i=0;i<10;i++) {
+            DeliveryJob newDj =  new DeliveryJob();
+            Parcel newPsl =  new Parcel("Gift from Lakshay"+i);
+            newDj.addParcel(newPsl);
+            deliveryJobArrayListDataset.add(newDj);
         }
-        return deliveryJobArray;
-    };
+    }
+
+
 
 }
 
