@@ -18,9 +18,6 @@ import android.widget.Toolbar;
 import com.mobileassignment3.parcel_tracking_app.classes.Parcel;
 import java.util.ArrayList;
 public class ReceiverMainActivity extends AppCompatActivity {
-    private RecyclerView rvParcel;
-    private RecyclerView.Adapter adapterParcel;
-    private RecyclerView.LayoutManager layoutManagerParcel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,19 +41,19 @@ public class ReceiverMainActivity extends AppCompatActivity {
         });
 
 
-        rvParcel = findViewById(R.id.rvMyParcel);
+        RecyclerView rvParcel = findViewById(R.id.rvMyParcel);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         rvParcel.setHasFixedSize(true);
 
         // use a linear layout manager
-        layoutManagerParcel = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager layoutManagerParcel = new LinearLayoutManager(this);
         rvParcel.setLayoutManager(layoutManagerParcel);
 
         // specify an adapter
         ArrayList<Parcel> myDataset = new ArrayList<Parcel>();
-        adapterParcel = new ParcelAdapter(myDataset);
+        RecyclerView.Adapter adapterParcel = new ParcelAdapter(myDataset);
         rvParcel.setAdapter(adapterParcel);
     }
 
