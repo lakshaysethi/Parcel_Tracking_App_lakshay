@@ -34,9 +34,7 @@ public class ReceiverMainActivity extends AppCompatActivity {
         setActionBarStuff();
        
         setRecyclerViewStuff();
-        new FirebaseController().writeMasterDeliveryJobsToFirestore();
-        new FirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
-    }
+     }
 
     // implemented the menu item
     @Override
