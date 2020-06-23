@@ -17,6 +17,7 @@ import android.widget.Toolbar;
 
 import com.mobileassignment3.parcel_tracking_app.classes.Parcel;
 import java.util.ArrayList;
+
 public class ReceiverMainActivity extends AppCompatActivity {
 
     @Override
@@ -26,35 +27,11 @@ public class ReceiverMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_receiver_main);
 
         // Change the actionbar title and icon
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setTitle("Receiver name");
-
         // Click the action bar title to open the profile activity
-        findViewById(R.id.action_bar).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(ReceiverMainActivity.this, ProfileActivity.class);
-                startActivity(myIntent);
-            }
-        });
-
-
-        RecyclerView rvParcel = findViewById(R.id.rvMyParcel);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        rvParcel.setHasFixedSize(true);
-
-        // use a linear layout manager
-        RecyclerView.LayoutManager layoutManagerParcel = new LinearLayoutManager(this);
-        rvParcel.setLayoutManager(layoutManagerParcel);
-
-        // specify an adapter
-        ArrayList<Parcel> myDataset = new ArrayList<Parcel>();
-        RecyclerView.Adapter adapterParcel = new ParcelAdapter(myDataset);
-        rvParcel.setAdapter(adapterParcel);
+        setActionBarStuff();
+       
+        setRecyclerViewStuff();
+       
     }
 
     // implemented the menu item
@@ -66,15 +43,50 @@ public class ReceiverMainActivity extends AppCompatActivity {
     }
     // implemented the menu item
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
-        case R.id.notification:
-            Intent myIntent = new Intent(ReceiverMainActivity.this, NotificationActivity.class);
-            startActivity(myIntent);
-            return(true);
+    public boolean onOptionsItemSelected(MenuItem item) { 
+        switch(item.getItemId()) {
+            case R.id.notification:
+                Intent myIntent = new Intent(ReceiverMainActivity.this, NotificationActivity.class);
+                startActivity(myIntent);
+                return(true);
 
-    }
+        }
         return(super.onOptionsItemSelected(item));
     }
+
+    void setActionBarStuff(){           
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setTitle("Receiver name");
+    
+        findViewById(R.id.action_bar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(ReceiverMainActivity.this, ProfileActivity.class);
+                startActivity(myIntent);
+            }
+        });
+    }
+    void setRecyclerViewStuff(){
+        
+        RecyclerView rvParcel = findViewById(R.id.rvMyParcel);
+        rvParcel.setHasFixedSize(true);
+
+        
+        // use a linear layout manager
+        RecyclerView.LayoutManager layoutManagerParcel = new LinearLayoutManager(this);
+        rvParcel.setLayoutManager(layoutManagerParcel);
+
+        // specify an adapter
+        ArrayList<Parcel> myDataset = new ArrayList<Parcel>();
+        RecyclerView.Adapter adapterParcel = new ParcelAdapter(myDataset);
+        rvParcel.setAdapter(adapterParcel);
+        
+    }
+
+
+
 }
 
 class ParcelAdapter extends RecyclerView.Adapter<ParcelAdapter.MyViewHolder> {
