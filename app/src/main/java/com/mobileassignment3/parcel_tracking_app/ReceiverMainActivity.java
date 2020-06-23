@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import com.mobileassignment3.parcel_tracking_app.classes.Parcel;
 public class ReceiverMainActivity extends AppCompatActivity {
     private RecyclerView rvMyParcel;
     private RecyclerView.Adapter adapterMyParcel;
@@ -85,16 +86,6 @@ public class ReceiverMainActivity extends AppCompatActivity {
 
     }
         return(super.onOptionsItemSelected(item));
-    }
-}
-
-class MyParcel {
-    public final String title;
-    public final String detail;
-
-    MyParcel(String title, String detail) {
-        this.title = title;
-        this.detail = detail;
     }
 }
 
