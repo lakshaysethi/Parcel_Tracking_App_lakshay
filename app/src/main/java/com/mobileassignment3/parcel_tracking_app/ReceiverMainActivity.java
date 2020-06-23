@@ -1,10 +1,13 @@
 package com.mobileassignment3.parcel_tracking_app;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -30,6 +33,7 @@ public class ReceiverMainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
+        //TODO get the receiver's username
         getSupportActionBar().setTitle("Receiver name");
 
         // Click the action bar title to open the profile activity
@@ -52,6 +56,8 @@ public class ReceiverMainActivity extends AppCompatActivity {
         layoutManagerMyParcel = new LinearLayoutManager(this);
         rvMyParcel.setLayoutManager(layoutManagerMyParcel);
 
+        //TODO get the delivery from firestore
+
         // specify an adapter
         MyParcel[] myDataset = new MyParcel[] {
                 new MyParcel("Parcel 1", "Beef inside"),
@@ -64,7 +70,7 @@ public class ReceiverMainActivity extends AppCompatActivity {
                 new MyParcel("Parcel 8", "Countdown delivery"),
                 new MyParcel("Parcel 9", "Dahua supermarket tuan gou"),
         };
-        adapterMyParcel = new ParcelAdapter(myDataset);
+        adapterMyParcel = new ParcelAdapter(this, myDataset);
         rvMyParcel.setAdapter(adapterMyParcel);
     }
 
@@ -99,6 +105,7 @@ class MyParcel {
 }
 
 class ParcelAdapter extends RecyclerView.Adapter<ParcelAdapter.MyViewHolder> {
+    private Context mContext;
     private MyParcel[] mDataset;
 
     // Provide a reference to the views for each data item
@@ -119,7 +126,8 @@ class ParcelAdapter extends RecyclerView.Adapter<ParcelAdapter.MyViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ParcelAdapter(MyParcel[] myDataset) {
+    public ParcelAdapter(Context context, MyParcel[] myDataset) {
+        mContext = context;
         mDataset = myDataset;
     }
 
@@ -140,13 +148,23 @@ class ParcelAdapter extends RecyclerView.Adapter<ParcelAdapter.MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.textViewTitle.setText(mDataset[position].title);
         holder.textViewDetail.setText(mDataset[position].detail);
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //TODO get the destination address of the clicked delivery card
+                String address = "154 Carrington Road, Mount Albert";
+                Intent myIntent = new Intent(mContext, ReceiverMapsActivity.class);
+                myIntent.putExtra(ReceiverMapsActivity.KEY_ADDRESS, address);
+                mContext.startActivity(myIntent);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return mDataset.length;
     }
-
 
 
 

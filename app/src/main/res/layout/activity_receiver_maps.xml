@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
-    android:layout_width="match_parent"
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
-    tools:context=".ReceiverMapsActivity" />
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorPrimary"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="546dp"
+        android:layout_weight="1"
+        tools:context=".MapsActivity" />
+
+    <TextView
+        android:id="@+id/tvReceiverMessage"
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="8dp"
+        android:text="Your parcel will be deliveried in 29 mins. "
+        android:textColor="@color/colorTextDark"
+        android:textSize="16sp"
+        android:visibility="visible">
+
+    </TextView>
+
+</LinearLayout>
