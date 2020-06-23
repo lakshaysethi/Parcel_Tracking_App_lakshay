@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toolbar;
 
 import com.mobileassignment3.parcel_tracking_app.classes.Parcel;
+import java.util.ArrayList;
 public class ReceiverMainActivity extends AppCompatActivity {
     private RecyclerView rvMyParcel;
     private RecyclerView.Adapter adapterMyParcel;
@@ -54,19 +55,7 @@ public class ReceiverMainActivity extends AppCompatActivity {
         rvMyParcel.setLayoutManager(layoutManagerMyParcel);
 
         // specify an adapter
-        MyParcel[] myDataset = new MyParcel[] {
-                new MyParcel("Parcel 1", "Beef inside"),
-                new MyParcel("Parcel 2", "Countdown delivery"),
-                new MyParcel("Parcel 3", "Dahua supermarket tuan gou"),
-                new MyParcel("Parcel 4", "Beef inside"),
-                new MyParcel("Parcel 5", "Countdown delivery"),
-                new MyParcel("Parcel 6", "Dahua supermarket tuan gou"),
-                new MyParcel("Parcel 7", "Beef inside"),
-                new MyParcel("Parcel 8", "Countdown delivery"),
-                new MyParcel("Parcel 9", "Dahua supermarket tuan gou"),
-        };
-        adapterMyParcel = new ParcelAdapter(myDataset);
-        rvMyParcel.setAdapter(adapterMyParcel);
+        ArrayList<Parcel> myDataset = new ArrayList<Parcel>();
     }
 
     // implemented the menu item
@@ -90,7 +79,7 @@ public class ReceiverMainActivity extends AppCompatActivity {
 }
 
 class ParcelAdapter extends RecyclerView.Adapter<ParcelAdapter.MyViewHolder> {
-    private MyParcel[] mDataset;
+    private ArrayList<Parcel> mDataset;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -110,7 +99,7 @@ class ParcelAdapter extends RecyclerView.Adapter<ParcelAdapter.MyViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ParcelAdapter(MyParcel[] myDataset) {
+    public ParcelAdapter(ArrayList<Parcel> myDataset) {
         mDataset = myDataset;
     }
 
@@ -129,13 +118,13 @@ class ParcelAdapter extends RecyclerView.Adapter<ParcelAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.textViewTitle.setText(mDataset[position].title);
-        holder.textViewDetail.setText(mDataset[position].detail);
+        holder.textViewTitle.setText(mDataset.get(position).getDescription());
+        holder.textViewDetail.setText(mDataset.get(position).getType());
     }
 
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return mDataset.size();
     }
 
 
