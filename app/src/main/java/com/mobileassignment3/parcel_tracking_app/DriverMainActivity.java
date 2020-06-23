@@ -57,19 +57,10 @@ public class DriverMainActivity extends AppCompatActivity {
 
         //TODO get the assigned delivery job from firestore
 
+        Parcel[] parcelDataset = new Parcel[];
         // specify an adapter
-        Parcel[] myDataset = new Parcel[]{
-                new Parcel("Parcel 1", "Beef inside"),
-                new Parcel("Parcel 2", "Countdown delivery"),
-                new Parcel("Parcel 3", "Dahua supermarket tuan gou"),
-                new Parcel("Parcel 4", "Beef inside"),
-                new Parcel("Parcel 5", "Countdown delivery"),
-                new Parcel("Parcel 6", "Dahua supermarket tuan gou"),
-                new Parcel("Parcel 7", "Beef inside"),
-                new Parcel("Parcel 8", "Countdown delivery"),
-                new Parcel("Parcel 9", "Dahua supermarket tuan gou"),
-        };
-        adapterMyTask = new TaskAdapter(this, myDataset);
+
+        adapterMyTask = new TaskAdapter(this, parcelDataset);
         rvMyTask.setAdapter(adapterMyTask);
     }
 

@@ -4,12 +4,21 @@ public class Parcel {
     final int DELIVERED = 1;
     final int NOT_DELIVERED = 0;
 
-    String type;// can be letter or  box small or big or other
+    final int BOX = 1001;
+    final int LETTER = 1002;
+    final int OTHER =1003;
+
+    int type;// can be letter or  box small or big or other
     int status;
     String description;// sender's description of contents or notes
 
-    public Parcel(String type, String description) {
+    public Parcel(int type, String description) {
         this.type = type;
+        this.description = description;
+        this.status = NOT_DELIVERED;
+    }
+    public Parcel( String description) {
+        this.type = BOX;
         this.description = description;
         this.status = NOT_DELIVERED;
     }
@@ -17,11 +26,11 @@ public class Parcel {
     public Parcel() {
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 
