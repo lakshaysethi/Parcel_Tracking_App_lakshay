@@ -18,9 +18,8 @@ import com.mobileassignment3.parcel_tracking_app.classes.DeliveryJob;
 import com.mobileassignment3.parcel_tracking_app.classes.Parcel;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class AdminMainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
         setActionBarStuff();
 
         setRecyclerViewStuff();
+        new FirebaseController().writeMasterDeliveryJobsToFirestore();
+        new FirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
 
 
 
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
         case R.id.notification:
-            Intent myIntent = new Intent(MainActivity.this, NotificationActivity.class);
+            Intent myIntent = new Intent(AdminMainActivity.this, NotificationActivity.class);
             startActivity(myIntent);
             return(true);
 
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.action_bar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(MainActivity.this, ProfileActivity.class);
+                Intent myIntent = new Intent(AdminMainActivity.this, ProfileActivity.class);
                 startActivity(myIntent);
             }
         });
