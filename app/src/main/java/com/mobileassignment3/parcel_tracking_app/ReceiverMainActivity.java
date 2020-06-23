@@ -16,12 +16,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toolbar;
+
+import com.mobileassignment3.parcel_tracking_app.classes.DeliveryJob;
+import com.mobileassignment3.parcel_tracking_app.classes.Parcel;
+import java.util.ArrayList;
 
 public class ReceiverMainActivity extends AppCompatActivity {
-    private RecyclerView rvMyParcel;
-    private RecyclerView.Adapter adapterMyParcel;
-    private RecyclerView.LayoutManager layoutManagerMyParcel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,48 +30,12 @@ public class ReceiverMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_receiver_main);
 
         // Change the actionbar title and icon
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
-        //TODO get the receiver's username
-        getSupportActionBar().setTitle("Receiver name");
-
         // Click the action bar title to open the profile activity
-        findViewById(R.id.action_bar).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(ReceiverMainActivity.this, ProfileActivity.class);
-                startActivity(myIntent);
-            }
-        });
-
-
-        rvMyParcel = findViewById(R.id.rvMyParcel);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        rvMyParcel.setHasFixedSize(true);
-
-        // use a linear layout manager
-        layoutManagerMyParcel = new LinearLayoutManager(this);
-        rvMyParcel.setLayoutManager(layoutManagerMyParcel);
-
-        //TODO get the delivery from firestore
-
-        // specify an adapter
-        MyParcel[] myDataset = new MyParcel[] {
-                new MyParcel("Parcel 1", "Beef inside"),
-                new MyParcel("Parcel 2", "Countdown delivery"),
-                new MyParcel("Parcel 3", "Dahua supermarket tuan gou"),
-                new MyParcel("Parcel 4", "Beef inside"),
-                new MyParcel("Parcel 5", "Countdown delivery"),
-                new MyParcel("Parcel 6", "Dahua supermarket tuan gou"),
-                new MyParcel("Parcel 7", "Beef inside"),
-                new MyParcel("Parcel 8", "Countdown delivery"),
-                new MyParcel("Parcel 9", "Dahua supermarket tuan gou"),
-        };
-        adapterMyParcel = new ParcelAdapter(this, myDataset);
-        rvMyParcel.setAdapter(adapterMyParcel);
+        setActionBarStuff();
+       
+        setRecyclerViewStuff();
+        new FirebaseController().writeMasterDeliveryJobsToFirestore();
+        new FirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
     }
 
     // implemented the menu item
@@ -83,30 +47,63 @@ public class ReceiverMainActivity extends AppCompatActivity {
     }
     // implemented the menu item
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
-        case R.id.notification:
-            Intent myIntent = new Intent(ReceiverMainActivity.this, NotificationActivity.class);
-            startActivity(myIntent);
-            return(true);
+    public boolean onOptionsItemSelected(MenuItem item) { 
+        switch(item.getItemId()) {
+            case R.id.notification:
+                Intent myIntent = new Intent(ReceiverMainActivity.this, NotificationActivity.class);
+                startActivity(myIntent);
+                return(true);
 
-    }
+        }
         return(super.onOptionsItemSelected(item));
     }
-}
 
-class MyParcel {
-    public final String title;
-    public final String detail;
-
-    MyParcel(String title, String detail) {
-        this.title = title;
-        this.detail = detail;
+    void setActionBarStuff(){           
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        //TODO get the receiver's username
+        getSupportActionBar().setTitle("Receiver name");
+    
+        findViewById(R.id.action_bar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(ReceiverMainActivity.this, ProfileActivity.class);
+                startActivity(myIntent);
+            }
+        });
     }
+    void setRecyclerViewStuff(){
+        
+        RecyclerView rvParcel = findViewById(R.id.rvMyParcel);
+        rvParcel.setHasFixedSize(true);
+
+        
+        // use a linear layout manager
+        RecyclerView.LayoutManager layoutManagerParcel = new LinearLayoutManager(this);
+        rvParcel.setLayoutManager(layoutManagerParcel);
+
+        //TODO get the delivery from firestore
+
+        // specify an adapter
+
+        ArrayList<DeliveryJob> deliveryJobsAssociatedWithAuthenticatedUser = new ArrayList<DeliveryJob>(); //FirebaseController.getdeliveryJobsAssociatedWithAuthenticatedUser();
+
+
+        RecyclerView.Adapter adapterParcel = new RecieverDeliveryJobAdapter(deliveryJobsAssociatedWithAuthenticatedUser);
+        rvParcel.setAdapter(adapterParcel);
+        
+    }
+
+
+
 }
 
-class ParcelAdapter extends RecyclerView.Adapter<ParcelAdapter.MyViewHolder> {
+
+class RecieverDeliveryJobAdapter extends RecyclerView.Adapter<RecieverDeliveryJobAdapter.MyViewHolder> {
+    private ArrayList<DeliveryJob> mDataset;
     private Context mContext;
-    private MyParcel[] mDataset;
+
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -126,14 +123,16 @@ class ParcelAdapter extends RecyclerView.Adapter<ParcelAdapter.MyViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ParcelAdapter(Context context, MyParcel[] myDataset) {
-        mContext = context;
+
+    public RecieverDeliveryJobAdapter(Context context,ArrayList<DeliveryJob> myDataset) {
+    mContext = context;
+
         mDataset = myDataset;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public ParcelAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecieverDeliveryJobAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         CardView v = (CardView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cards_my_parcel, parent, false);
@@ -146,9 +145,11 @@ class ParcelAdapter extends RecyclerView.Adapter<ParcelAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.textViewTitle.setText(mDataset[position].title);
-        holder.textViewDetail.setText(mDataset[position].detail);
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
+
+        Parcel firstparcel = mDataset.get(position).getListOfParcels().get(0);
+        holder.textViewTitle.setText(firstparcel.getDescription());
+        holder.textViewDetail.setText( firstparcel.getType());
+       holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -159,11 +160,12 @@ class ParcelAdapter extends RecyclerView.Adapter<ParcelAdapter.MyViewHolder> {
                 mContext.startActivity(myIntent);
             }
         });
+
     }
 
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return mDataset.size();
     }
 
 

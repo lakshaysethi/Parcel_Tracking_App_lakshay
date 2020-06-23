@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "139916798399",
+    "firebase_url": "https://parcel-delivery-tracking-app.firebaseio.com",
+    "project_id": "parcel-delivery-tracking-app",
+    "storage_bucket": "parcel-delivery-tracking-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:139916798399:android:6371680dc3bf5f5deb990a",
+        "android_client_info": {
+          "package_name": "com.mobileassignment3.parcel_tracking_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "139916798399-p3tgns117u68hdbtf6sk2telqh5c603p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDi4eaFxsz1rpQJyNGtv-kvlQLKndAx0bo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "139916798399-p3tgns117u68hdbtf6sk2telqh5c603p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
