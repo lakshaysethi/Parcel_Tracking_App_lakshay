@@ -149,6 +149,8 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
         return mDataset.size();
     }
 
+
+    //Alert Dialog
     public void onCreateDialog() {
 
         //TODO get the estimate time

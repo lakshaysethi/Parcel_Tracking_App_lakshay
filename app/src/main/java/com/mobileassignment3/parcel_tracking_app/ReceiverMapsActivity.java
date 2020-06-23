@@ -2,6 +2,7 @@ package com.mobileassignment3.parcel_tracking_app;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -14,6 +15,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class ReceiverMapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    public static final String KEY_ADDRESS = "address";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +25,9 @@ public class ReceiverMapsActivity extends FragmentActivity implements OnMapReady
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        Intent intent = getIntent();
+        intent.getStringExtra(KEY_ADDRESS);
+
     }
 
 
@@ -35,6 +40,8 @@ public class ReceiverMapsActivity extends FragmentActivity implements OnMapReady
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+
+    //TODO draw the route
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
