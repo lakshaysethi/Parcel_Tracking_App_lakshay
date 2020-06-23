@@ -1,7 +1,5 @@
 package com.mobileassignment3.parcel_tracking_app;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,50 +15,25 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mobileassignment3.parcel_tracking_app.classes.DeliveryJob;
+import com.mobileassignment3.parcel_tracking_app.classes.Parcel;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 public class MainActivity extends AppCompatActivity {
-    private RecyclerView rvAssignOrder;
-    private RecyclerView.Adapter adapterAssignOrder;
-    private RecyclerView.LayoutManager layoutManagerAssignOrder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Change the actionbar title and icon
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setTitle("Administrator");
 
-        // Click the action bar title to open the profile activity
-        findViewById(R.id.action_bar).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(MainActivity.this, ProfileActivity.class);
-                startActivity(myIntent);
-            }
-        });
+        setActionBarStuff();
 
-        rvAssignOrder = findViewById(R.id.rvAssignOrder);
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        rvAssignOrder.setHasFixedSize(true);
+        setRecyclerViewStuff();
 
-        // use a linear layout manager
-        layoutManagerAssignOrder = new LinearLayoutManager(this);
-        rvAssignOrder.setLayoutManager(layoutManagerAssignOrder);
 
-        // specify an adapter
-        List<DeliveryJob> myDataset = getListOfPendingDeliveryJobs();
-        adapterAssignOrder = new OrderAdapter(myDataset);
-        rvAssignOrder.setAdapter(adapterAssignOrder);
+
     }
 
 
@@ -83,11 +56,40 @@ public class MainActivity extends AppCompatActivity {
     }
         return(super.onOptionsItemSelected(item));
     }
+    void setActionBarStuff(){
+        // Change the actionbar title and icon
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setTitle("Administrator");
 
-    private List<DeliveryJob> getListOfPendingDeliveryJobs() {
+        // Click the action bar title to open the profile activity
+        findViewById(R.id.action_bar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(myIntent);
+            }
+        });
 
-         return randomDeliveryjobs();
+    }
+    void setRecyclerViewStuff(){
 
+
+        RecyclerView rvAssignOrder = findViewById(R.id.rvAssignOrder);
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        rvAssignOrder.setHasFixedSize(true);
+
+        // use a linear layout manager
+        RecyclerView.LayoutManager layoutManagerAssignOrder = new LinearLayoutManager(this);
+        rvAssignOrder.setLayoutManager(layoutManagerAssignOrder);
+
+        // specify an adapter
+        ArrayList<DeliveryJob> deliveryJobArrayListDataset = new ArrayList<DeliveryJob>();
+        updateDeliveryJobArrayList(deliveryJobArrayListDataset);
+        RecyclerView.Adapter adapterAssignOrder = new OrderAdapter(deliveryJobArrayListDataset);
+        rvAssignOrder.setAdapter(adapterAssignOrder);
 
     }
 
