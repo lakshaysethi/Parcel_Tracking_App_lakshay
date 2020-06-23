@@ -130,7 +130,7 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public OrderAdapter(List<DeliveryJob> myDataset) {
-        deliveryJobArray = myDataset;
+        deliveryJobArray = myDataset.toArray(new DeliveryJob[0]);
     }
 
     // Create new views (invoked by the layout manager)
