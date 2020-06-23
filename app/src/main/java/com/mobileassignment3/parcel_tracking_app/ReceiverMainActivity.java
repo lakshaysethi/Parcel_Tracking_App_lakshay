@@ -79,12 +79,18 @@ public class ReceiverMainActivity extends AppCompatActivity {
         rvParcel.setLayoutManager(layoutManagerParcel);
 
         // specify an adapter
-        ArrayList<Parcel> myDataset = new ArrayList<Parcel>();
-        RecyclerView.Adapter adapterParcel = new ParcelAdapter(myDataset);
+        ArrayList<Parcel> ParcelArrayListDataset = new ArrayList<Parcel>();
+        updateParcelArrayList(ParcelArrayListDataset);
+        RecyclerView.Adapter adapterParcel = new ParcelAdapter(ParcelArrayListDataset);
         rvParcel.setAdapter(adapterParcel);
         
     }
 
+    private void updateParcelArrayList(ArrayList<Parcel> ParcelArrayListDataset) {
+        for(int i=0;i<10;i++) {
+            ParcelArrayListDataset.add(new Parcel("Parcel"+i+": Gifts from Lakshay"));
+        }
+    }
 
 
 }
@@ -130,7 +136,7 @@ class ParcelAdapter extends RecyclerView.Adapter<ParcelAdapter.MyViewHolder> {
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.textViewTitle.setText(mDataset.get(position).getDescription());
-        holder.textViewDetail.setText(mDataset.get(position).getType());
+        holder.textViewDetail.setText( mDataset.get(position).getType());
     }
 
     @Override
