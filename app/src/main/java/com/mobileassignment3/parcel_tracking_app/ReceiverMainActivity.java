@@ -18,9 +18,9 @@ import android.widget.Toolbar;
 import com.mobileassignment3.parcel_tracking_app.classes.Parcel;
 import java.util.ArrayList;
 public class ReceiverMainActivity extends AppCompatActivity {
-    private RecyclerView rvMyParcel;
-    private RecyclerView.Adapter adapterMyParcel;
-    private RecyclerView.LayoutManager layoutManagerMyParcel;
+    private RecyclerView rvParcel;
+    private RecyclerView.Adapter adapterParcel;
+    private RecyclerView.LayoutManager layoutManagerParcel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,18 +44,20 @@ public class ReceiverMainActivity extends AppCompatActivity {
         });
 
 
-        rvMyParcel = findViewById(R.id.rvMyParcel);
+        rvParcel = findViewById(R.id.rvMyParcel);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
-        rvMyParcel.setHasFixedSize(true);
+        rvParcel.setHasFixedSize(true);
 
         // use a linear layout manager
-        layoutManagerMyParcel = new LinearLayoutManager(this);
-        rvMyParcel.setLayoutManager(layoutManagerMyParcel);
+        layoutManagerParcel = new LinearLayoutManager(this);
+        rvParcel.setLayoutManager(layoutManagerParcel);
 
         // specify an adapter
         ArrayList<Parcel> myDataset = new ArrayList<Parcel>();
+        adapterParcel = new ParcelAdapter(myDataset);
+        rvParcel.setAdapter(adapterParcel);
     }
 
     // implemented the menu item
