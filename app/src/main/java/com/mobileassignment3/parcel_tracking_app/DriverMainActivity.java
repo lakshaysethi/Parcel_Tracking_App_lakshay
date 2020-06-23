@@ -19,6 +19,8 @@ import android.widget.TextView;
 
 import com.mobileassignment3.parcel_tracking_app.classes.Parcel;
 
+import java.util.ArrayList;
+
 public class DriverMainActivity extends AppCompatActivity {
     private RecyclerView rvMyTask;
     private RecyclerView.Adapter adapterMyTask;
@@ -56,8 +58,9 @@ public class DriverMainActivity extends AppCompatActivity {
         rvMyTask.setLayoutManager(layoutManagerMyTask);
 
         //TODO get the assigned delivery job from firestore
+        ArrayList<Parcel> parcelDataset = new ArrayList<Parcel>();
+        // Parcel[] parcelDataset = new Parcel[];
 
-        Parcel[] parcelDataset = new Parcel[];
         // specify an adapter
 
         adapterMyTask = new TaskAdapter(this, parcelDataset);
@@ -89,7 +92,7 @@ public class DriverMainActivity extends AppCompatActivity {
 
 
 class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
-    private Parcel[] mDataset;
+    private ArrayList<Parcel> mDataset;
     private Context mContext;
 
     // Provide a reference to the views for each data item
@@ -110,7 +113,7 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public TaskAdapter(Context context, Parcel[] myDataset) {
+    public TaskAdapter(Context context, ArrayList<Parcel> myDataset) {
         mContext = context;
         mDataset = myDataset;
     }
@@ -130,8 +133,8 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.textViewTitle.setText(mDataset[position].getDescription());
-        holder.textViewDetail.setText(mDataset[position].getType());
+        holder.textViewTitle.setText(mDataset.get(position).getDescription());
+        holder.textViewDetail.setText(mDataset.get(position).getType());
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,7 +146,7 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
 
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return mDataset.size();
     }
 
     public void onCreateDialog() {
