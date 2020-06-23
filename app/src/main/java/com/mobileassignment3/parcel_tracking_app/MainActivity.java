@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
-    private DeliveryJob[] deliveryJobArray;
+    private ArrayList<DeliveryJob> deliveryJobArray;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -129,8 +129,8 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public OrderAdapter(List<DeliveryJob> myDataset) {
-        deliveryJobArray = myDataset.toArray(new DeliveryJob[0]);
+    public OrderAdapter(ArrayList<DeliveryJob> myDataset) {
+        deliveryJobArray = myDataset;
     }
 
     // Create new views (invoked by the layout manager)
@@ -148,13 +148,13 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.textViewTitle.setText(deliveryJobArray[position].getTrackingNumber());
-        holder.textViewDetail.setText(deliveryJobArray[position].getStatus());
+        holder.textViewTitle.setText(deliveryJobArray.get(position).getTrackingNumber());
+        holder.textViewDetail.setText(deliveryJobArray.get(position).getStatus());
     }
 
     @Override
     public int getItemCount() {
-        return deliveryJobArray.length;
+        return deliveryJobArray.size();
     }
 }
 

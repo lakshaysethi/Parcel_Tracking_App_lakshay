@@ -90,7 +90,7 @@ public class ReceiverMainActivity extends AppCompatActivity {
         ArrayList<DeliveryJob> deliveryJobsAssociatedWithAuthenticatedUser = new ArrayList<DeliveryJob>(); //FirebaseController.getdeliveryJobsAssociatedWithAuthenticatedUser();
 
 
-        RecyclerView.Adapter adapterParcel = new RecieverDeliveryJobAdapter(deliveryJobsAssociatedWithAuthenticatedUser);
+        RecyclerView.Adapter adapterParcel = new RecieverDeliveryJobAdapter(this,deliveryJobsAssociatedWithAuthenticatedUser);
         rvParcel.setAdapter(adapterParcel);
         
     }

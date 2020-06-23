@@ -47,8 +47,14 @@ public class DeliveryJob {
 
 
 
-    public int getStatus() {
-        return status;
+    public String getStatus() {
+        if (status == DELIVERED){
+            return "DELIVERED";
+        }else if (status == NOT_DELIVERED){
+            return "Not Delivered";
+        }else {
+            return String.valueOf(status);
+        }
     }
 
     public void setStatus(int status) {
