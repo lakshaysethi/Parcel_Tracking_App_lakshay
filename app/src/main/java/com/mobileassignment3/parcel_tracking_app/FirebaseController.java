@@ -8,26 +8,27 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.mobileassignment3.parcel_tracking_app.classes.DeliveryJob;
-import com.mobileassignment3.parcel_tracking_app.classes.Parcel;
+import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
+import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static android.content.ContentValues.TAG;
-
 public class FirebaseController {
-
+    private FirebaseAuth mAuth;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+// Initialize Firebase Auth
 
 
     public FirebaseController() {
-
+        mAuth = FirebaseAuth.getInstance();
     }
 
     void writeMasterDeliveryJobsToFirestore(){
@@ -87,9 +88,13 @@ public class FirebaseController {
         return djAl;
     }
 
-    void logFirestoreData() {
+    //void logFirestoreData() {}
 
 
+
+
+    public FirebaseUser getCurrentUser() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        return currentUser;
     }
-
 }

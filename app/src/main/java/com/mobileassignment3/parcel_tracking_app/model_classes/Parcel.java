@@ -1,4 +1,4 @@
-package com.mobileassignment3.parcel_tracking_app.classes;
+package com.mobileassignment3.parcel_tracking_app.model_classes;
 
 public class Parcel {
     final int DELIVERED = 1;

@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.view.Window;
 
 import com.google.android.material.tabs.TabLayout;
+import com.mobileassignment3.parcel_tracking_app.activities.auth_activities.DriverFragment;
+import com.mobileassignment3.parcel_tracking_app.activities.auth_activities.ReceiverFragment;
 
 public class SignupActivity extends AppCompatActivity {
 

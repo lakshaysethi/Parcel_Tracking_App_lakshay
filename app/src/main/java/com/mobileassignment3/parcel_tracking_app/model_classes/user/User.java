@@ -1,4 +1,4 @@
-package com.mobileassignment3.parcel_tracking_app.classes.user;
+package com.mobileassignment3.parcel_tracking_app.model_classes.user;
 
 import android.provider.ContactsContract;
 
@@ -45,9 +45,7 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
+
 
     public void setPassword(String password) {
         this.password = password;
