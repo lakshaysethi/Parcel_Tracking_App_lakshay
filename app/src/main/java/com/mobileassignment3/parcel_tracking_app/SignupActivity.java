@@ -34,11 +34,11 @@ public class SignupActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
     }
 }
-
+//TODO fix depreciated code pls :)
 class MyPagerAdapter extends FragmentStatePagerAdapter {
 
     public MyPagerAdapter(@NonNull FragmentManager fm) {
-        super(fm);
+        super(fm);// TODO here
     }
 
     @Override
