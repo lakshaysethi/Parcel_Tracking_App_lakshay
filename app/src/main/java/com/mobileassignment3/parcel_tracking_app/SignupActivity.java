@@ -53,11 +53,19 @@ public class SignupActivity extends AppCompatActivity {
                 //we dont really need 2 fragments cos there arent many differences - the reciever needs to give his address man
 
                 if (!etSignupDriverPassword1.equals("") && !etSignupEmail.equals("")) {
+                    try{
 
-                    String email = etSignupEmail.getText().toString();
-                    String password = etSignupDriverPassword1.getText().toString();
-                    new FirebaseController().createNewUser(email,password);
-                    
+                        String email = etSignupEmail.getText().toString();
+                        String password = etSignupDriverPassword1.getText().toString();
+                        new FirebaseController().createNewUser(email,password);
+
+                    }catch (Exception e) {
+                        String email = "testemail@gmail.com";
+                        String password = "veryhjg";
+                        new FirebaseController().createNewUser(email,password);
+
+                    }
+
                 }
 
             }
