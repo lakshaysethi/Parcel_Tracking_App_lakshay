@@ -21,12 +21,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static android.content.ContentValues.TAG;
-
 public class FirebaseController {
-
     private FirebaseAuth mAuth;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+// Initialize Firebase Auth
 
 
     public FirebaseController() {
@@ -90,10 +88,10 @@ public class FirebaseController {
         return djAl;
     }
 
-    void logFirestoreData() {
+    //void logFirestoreData() {}
 
 
-    }
+
 
     public FirebaseUser getCurrentUser() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
