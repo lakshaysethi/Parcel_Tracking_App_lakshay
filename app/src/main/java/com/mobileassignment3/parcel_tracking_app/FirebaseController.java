@@ -187,7 +187,7 @@ public class FirebaseController {
         activity.startActivity(myIntent);
     }
 
-    private void logoutCurrentUser() {
+    public void logoutCurrentUser() {
         FirebaseAuth.getInstance().signOut();
     }
 }
