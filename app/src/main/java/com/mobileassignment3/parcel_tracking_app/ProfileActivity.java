@@ -50,12 +50,13 @@ public class ProfileActivity extends AppCompatActivity {
                 try{
                     new FirebaseController().logoutCurrentUser();
                     Toast.makeText(ProfileActivity.this, "Logged Out Successfully", Toast.LENGTH_SHORT).show();
-
+                    gotoLoginScreen();
 
                 }catch (Exception e){
                     Toast.makeText(ProfileActivity.this, "Error LoggingOut"+e.toString(), Toast.LENGTH_SHORT).show();
                 }
-                gotoLoginScreen();
+
+
             }
         });
 
@@ -66,6 +67,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         Intent gotoLoginScreen = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(gotoLoginScreen);
+        finishAffinity();
     }
 
     // implemented the menu item
