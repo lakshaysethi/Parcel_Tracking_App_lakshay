@@ -114,7 +114,7 @@ public class FirebaseController {
     }
 
 
-    public FirebaseUser createNewUser(String email,String password) {
+    public FirebaseUser createNewUser(final Activity activity,String email,String password) {
         FirebaseUser user = getCurrentUser();
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
@@ -124,11 +124,17 @@ public class FirebaseController {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            Toast.makeText(activity, "SUCCESS! you can log in now", Toast.LENGTH_LONG).show();
+
+                            Intent gotoLoginScreen = new Intent(activity, LoginActivity.class);
+                            activity.startActivity(gotoLoginScreen);
 
                         } else {
                             // If sign in fails, display a message to the user.
                            Log.d("ERROR","firebase error can not make new user");
-
+                           if(task.getException().toString().contains("already"))
+                               Toast.makeText(activity, "That Email is already in use please try another email", Toast.LENGTH_LONG).show();
+                           else Toast.makeText(activity, "Could not sign you up :  "+task.getException(), Toast.LENGTH_LONG).show();
                         }
 
                     }
