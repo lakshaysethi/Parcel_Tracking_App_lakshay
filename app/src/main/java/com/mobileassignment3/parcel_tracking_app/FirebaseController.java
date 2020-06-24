@@ -12,8 +12,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.mobileassignment3.parcel_tracking_app.classes.DeliveryJob;
-import com.mobileassignment3.parcel_tracking_app.classes.Parcel;
+import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
+import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
