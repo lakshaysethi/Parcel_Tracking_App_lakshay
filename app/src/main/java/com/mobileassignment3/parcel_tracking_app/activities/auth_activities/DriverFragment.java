@@ -42,14 +42,14 @@ public class DriverFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle saveInstanceState){
-        Button btnSignupDriver = view.findViewById(R.id.btnSignupDriver);
-        btnSignupDriver.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(DriverFragment.this.getContext(), LoginActivity.class);
-                startActivity(myIntent);
-            }
-        });
+//        Button btnSignupDriver = view.findViewById(R.id.btnSignupDriver);
+//        btnSignupDriver.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent myIntent = new Intent(DriverFragment.this.getContext(), LoginActivity.class);
+//                startActivity(myIntent);
+//            }
+//        });
 
     }
 }

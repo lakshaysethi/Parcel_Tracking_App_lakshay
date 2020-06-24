@@ -42,14 +42,14 @@ public class ReceiverFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle saveInstanceState){
-        Button btnSignupReceiver = view.findViewById(R.id.btnSignupReceiver);
-        btnSignupReceiver.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(ReceiverFragment.this.getContext(), LoginActivity.class);
-                startActivity(myIntent);
-            }
-        });
+//        Button btnSignupReceiver = view.findViewById(R.id.btnSignupReceiver);
+//        btnSignupReceiver.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent myIntent = new Intent(ReceiverFragment.this.getContext(), LoginActivity.class);
+//                startActivity(myIntent);
+//            }
+//        });
 
     }
 }
