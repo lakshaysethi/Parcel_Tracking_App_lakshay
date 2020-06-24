@@ -1,4 +1,4 @@
-package com.mobileassignment3.parcel_tracking_app.activities;
+package com.mobileassignment3.parcel_tracking_app.activities.main_activities;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.mobileassignment3.parcel_tracking_app.NotificationActivity;
 import com.mobileassignment3.parcel_tracking_app.ProfileActivity;
 import com.mobileassignment3.parcel_tracking_app.R;
-import com.mobileassignment3.parcel_tracking_app.classes.Parcel;
+import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
 
 import java.util.ArrayList;
 

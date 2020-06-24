@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" tools:context=".AdminMainActivity">
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".activities.main_activities.AdminMainActivity">
 
     <item
         android:id="@+id/backArrow" android:icon="@drawable/ic_arrow_back_black_24dp" app:showAsAction="always"   android:title="backArrow"/>

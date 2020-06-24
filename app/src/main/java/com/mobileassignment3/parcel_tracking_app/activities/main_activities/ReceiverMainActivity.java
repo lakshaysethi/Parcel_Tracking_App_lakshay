@@ -1,4 +1,4 @@
-package com.mobileassignment3.parcel_tracking_app.activities;
+package com.mobileassignment3.parcel_tracking_app.activities.main_activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -19,8 +19,8 @@ import com.mobileassignment3.parcel_tracking_app.NotificationActivity;
 import com.mobileassignment3.parcel_tracking_app.ProfileActivity;
 import com.mobileassignment3.parcel_tracking_app.R;
 import com.mobileassignment3.parcel_tracking_app.ReceiverMapsActivity;
-import com.mobileassignment3.parcel_tracking_app.classes.DeliveryJob;
-import com.mobileassignment3.parcel_tracking_app.classes.Parcel;
+import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
+import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
 import java.util.ArrayList;
 
 public class ReceiverMainActivity extends AppCompatActivity {
