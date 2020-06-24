@@ -138,30 +138,45 @@ public class FirebaseController {
 
     public void loginUser(final Activity activity , String email, String password) {
         logoutCurrentUser();
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            if (user != null)
-                                Toast.makeText(activity.getApplicationContext(),
-                                        "Welcome! "+ user.getDisplayName(), Toast.LENGTH_SHORT).show();
-                            else Toast.makeText(activity.getApplicationContext(),
-                                        "Failed - user is null", Toast.LENGTH_SHORT).show();
-                            updateUIafterLogin(activity,true);
+        if (email !=null&&!email.equals("")){
+            if(password!=null&&!password.equals("")){
 
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(activity.getApplicationContext(), "Failed to Login: "+task.getException() , Toast.LENGTH_SHORT).show();
+                mAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    // Sign in success, update UI with the signed-in user's information
+                                    Log.d(TAG, "signInWithEmail:success");
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    if (user != null)
+                                        Toast.makeText(activity.getApplicationContext(),
+                                                "Welcome! "+ user.getEmail(), Toast.LENGTH_LONG).show();
+                                    else Toast.makeText(activity.getApplicationContext(),
+                                            "Failed - user is null", Toast.LENGTH_LONG).show();
+                                    updateUIafterLogin(activity,true);
+
+                                } else {
+                                    // If sign in fails, display a message to the user.
+                                    Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                    if (task.getException().getClass().toString().contains("Credentials"))
+                                    Toast.makeText(activity.getApplicationContext(), "Failed to Login: Invalid Credentials", Toast.LENGTH_LONG).show();
+                                    else if (task.getException().getClass().toString().contains("TooManyRequest"))
+                                        Toast.makeText(activity.getApplicationContext(),"Too many Requests please wait a few seconds before trying again" , Toast.LENGTH_LONG).show();
+                                    else
+                                        Toast.makeText(activity.getApplicationContext(),task.getException().getClass().toString() , Toast.LENGTH_LONG).show();
 
 
-                        }
-                    }
-                });
+
+                                }
+                            }
+                        });
+            }else{
+                Toast.makeText(activity, "Please enter your PASSWORD", Toast.LENGTH_LONG).show();
+            }
+        }else{
+            Toast.makeText(activity, "Please Enter your EMAIL", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void updateUIafterLogin(Activity activity,boolean success) {
