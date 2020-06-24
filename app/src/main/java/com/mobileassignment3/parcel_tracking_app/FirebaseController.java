@@ -59,25 +59,44 @@ public class FirebaseController {
         masterDeliveryJobs.put("masterList", deliveryJobArrayList);
 
 
-        //TODO The following should not add to firebase, it should update the existing list
-        // Add a new document to the masterDeliveryjobs collection with a generated ID
-        db.collection("masterDeliveryJobs")
-                .add(masterDeliveryJobs)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        //Get the delivery jobs document which contains all delivery items
+        DocumentReference deliveryJobsDocumentRef = db.collection("masterDeliveryJobs").document("deliveryJobsDocument");
+        //Add the newly created delivery jobs to the document
+        deliveryJobsDocumentRef
+                .update("masterList", deliveryJobArrayList)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d("FIREBASE", "DocumentSnapshot added with ID: " + documentReference.getId());
+                    public void onSuccess(Void aVoid) {
+                        Log.d("FIREBASE", "Data successfully added!");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w("FIREBASE error", "Error adding document: ", e);
+                        Log.w("FIREBASE", "Error updating document", e);
                     }
                 });
+
+
+//        //TODO The following should not add to firebase, it should update the existing masterDeliveryJobs collection
+//        // Add a new document to the masterDeliveryjobs collection with a generated ID
+//        db.collection("masterDeliveryJobs")
+//                .add(masterDeliveryJobs)
+//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                    @Override
+//                    public void onSuccess(DocumentReference documentReference) {
+//                        Log.d("FIREBASE", "DocumentSnapshot added with ID: " + documentReference.getId());
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.w("FIREBASE error", "Error adding document: ", e);
+//                    }
+//                });
     }
 
-// TODO make this function only read a single document from the master deliveryjobs collection
+//// TODO make this function only read a single document from the master deliveryjobs collection
     public ArrayList<DeliveryJob> getdeliveryJobsAssociatedWithAuthenticatedUser() {
         FirebaseUser currentuser = getCurrentUser();
         ArrayList<DeliveryJob> djAl = new ArrayList<DeliveryJob>();
