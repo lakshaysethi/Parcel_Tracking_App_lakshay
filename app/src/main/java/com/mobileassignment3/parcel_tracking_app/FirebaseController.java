@@ -1,5 +1,8 @@
 package com.mobileassignment3.parcel_tracking_app;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -16,6 +19,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.mobileassignment3.parcel_tracking_app.activities.auth_activities.LoginActivity;
+import com.mobileassignment3.parcel_tracking_app.activities.main_activities.AdminMainActivity;
+import com.mobileassignment3.parcel_tracking_app.activities.main_activities.DriverMainActivity;
+import com.mobileassignment3.parcel_tracking_app.activities.main_activities.ReceiverMainActivity;
 import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
 import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
@@ -121,13 +128,51 @@ public class FirebaseController {
                         } else {
                             // If sign in fails, display a message to the user.
                            Log.d("ERROR","firebase error can not make new user");
-                           
+
                         }
 
-                        // ...
                     }
                 });
         return user;
     }
 
+    public void loginUser(final Activity activity , String email, String password) {
+        logoutCurrentUser();
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            if (user != null)
+                                Toast.makeText(activity.getApplicationContext(),
+                                        "Welcome! "+ user.getDisplayName(), Toast.LENGTH_SHORT).show();
+                            else Toast.makeText(activity.getApplicationContext(),
+                                        "Failed - user is null", Toast.LENGTH_SHORT).show();
+                            updateUIafterLogin(activity,true);
+
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(activity.getApplicationContext(), "Failed to Login: "+task.getException() , Toast.LENGTH_SHORT).show();
+
+
+                        }
+                    }
+                });
+    }
+
+    private void updateUIafterLogin(Activity activity,boolean success) {
+
+    //  Intent myIntent = new Intent(activity, AdminMainActivity.class);
+        Intent myIntent = new Intent(activity, DriverMainActivity.class);
+    //  Intent myIntent = new Intent(activity, ReceiverMainActivity.class);
+        activity.startActivity(myIntent);
+    }
+
+    private void logoutCurrentUser() {
+        FirebaseAuth.getInstance().signOut();
+    }
 }
