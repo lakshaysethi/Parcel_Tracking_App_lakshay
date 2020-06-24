@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -41,7 +42,24 @@ public class SignupActivity extends AppCompatActivity {
         signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  new FirebaseController().createNewUser();
+                //if driver is selected
+                EditText etSignupDriverUsername =  findViewById(R.id.etSignupDriverUsername);
+                EditText etSignupDriverPassword1 =  findViewById(R.id.etSignupDriverPassword1);
+                EditText etSignupDriverPassword2 =  findViewById(R.id.etSignupDriverPassword2);
+                EditText etSignupEmail =  findViewById(R.id.etSignupDriverEmail);
+
+                //else if reciever is selected
+
+                //we dont really need 2 fragments cos there arent many differences - the reciever needs to give his address man
+
+                if (!etSignupDriverPassword1.equals("") && !etSignupEmail.equals("")) {
+
+                    String email = etSignupEmail.getText().toString();
+                    String password = etSignupDriverPassword1.getText().toString();
+                    new FirebaseController().createNewUser(email,password);
+                    
+                }
+
             }
         });
 
