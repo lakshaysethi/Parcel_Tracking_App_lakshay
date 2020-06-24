@@ -110,7 +110,7 @@ public class FirebaseController {
     public FirebaseUser createNewUser(String email,String password) {
         FirebaseUser user = getCurrentUser();
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener((Executor) this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
@@ -120,7 +120,8 @@ public class FirebaseController {
 
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.d("ERROR","firebase error can not make new user");
+                           Log.d("ERROR","firebase error can not make new user");
+                           
                         }
 
                         // ...
@@ -128,4 +129,5 @@ public class FirebaseController {
                 });
         return user;
     }
+
 }
