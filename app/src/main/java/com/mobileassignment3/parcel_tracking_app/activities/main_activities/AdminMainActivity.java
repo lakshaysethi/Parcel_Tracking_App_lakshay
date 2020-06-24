@@ -34,8 +34,8 @@ public class AdminMainActivity extends AppCompatActivity {
         setActionBarStuff();
 
         setRecyclerViewStuff();
-//        new FirebaseController().writeMasterDeliveryJobsToFirestore();
-//        new FirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
+        new FirebaseController().writeMasterDeliveryJobsToFirestore();
+        new FirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
 
 
 
