@@ -20,6 +20,7 @@ import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.Executor;
 
 import static android.content.ContentValues.TAG;
@@ -35,21 +36,30 @@ public class FirebaseController {
 
     //Firebase setter method
     public void writeMasterDeliveryJobsToFirestore(){
-        ArrayList<DeliveryJob> djAl = new ArrayList<DeliveryJob>();
+        ArrayList<DeliveryJob> deliveryJobArrayList = new ArrayList<DeliveryJob>();
 
-        //Writing 10 delivery jobs to a temp delivery job array list
-        for(int i=0;i<10;i++) {
+        String[] senders = {"Danica", "Lakhsay", "John Casey", "Raza", "Obama", "Paul Bartlett", "Dila"};
+        String[] packages = {"Letter", "Laptop", "Jacket", "Certificate", "Backpack", "Payslip", "Vaccine" };
+
+        //Writing 7 random delivery jobs to a temp delivery job array list
+        for(int i=0;i<7;i++) {
             DeliveryJob nDJ = new DeliveryJob();
-            nDJ.addParcel(new Parcel("Gift From Auntie Cinda :"+i));
-            djAl.add(nDJ);
-        }
+            Random rand1 = new Random();
+            Random rand2 = new Random();
 
+            int n = rand1.nextInt(7);
+            int m = rand2.nextInt(7);
+
+            nDJ.addParcel(new Parcel( packages[n] + " from " + senders[m]));
+            deliveryJobArrayList.add(nDJ);
+        }
 
         Map<String, Object> masterDeliveryJobs = new HashMap<>();
         //Putting the delivery job array list into a hashmap
-        masterDeliveryJobs.put("masterList", djAl);
+        masterDeliveryJobs.put("masterList", deliveryJobArrayList);
 
-        //TODO The following should add to firebase, it should update existing list
+
+        //TODO The following should not add to firebase, it should update the existing list
         // Add a new document to the masterDeliveryjobs collection with a generated ID
         db.collection("masterDeliveryJobs")
                 .add(masterDeliveryJobs)
@@ -94,10 +104,9 @@ public class FirebaseController {
 //TODO change return type to Our Model classes instead of FirebaseUser
     public FirebaseUser getCurrentUser() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        Log.d("FIREBASE: ", "Current firebase user: " + currentUser.toString());
+
         return currentUser;
     }
-
 
     public FirebaseUser createNewUser(String email, String password) {
         FirebaseUser user = getCurrentUser();
