@@ -8,6 +8,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -23,11 +25,12 @@ import static android.content.ContentValues.TAG;
 
 public class FirebaseController {
 
+    private FirebaseAuth mAuth;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
     public FirebaseController() {
-
+        mAuth = FirebaseAuth.getInstance();
     }
 
     void writeMasterDeliveryJobsToFirestore(){
@@ -92,4 +95,8 @@ public class FirebaseController {
 
     }
 
+    public FirebaseUser getCurrentUser() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        return currentUser;
+    }
 }
