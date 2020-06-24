@@ -37,7 +37,7 @@
         <activity android:name=".NotificationActivity" />
          <activity android:name=".activities.main_activities.ReceiverMainActivity" />
         <activity android:name=".activities.main_activities.DriverMainActivity" />
-        <activity android:name=".activities.auth_activities.SignupActivity" />
+        <activity android:name=".SignupActivity" />
          <activity android:name=".activities.auth_activities.LoginActivity" />
          <activity android:name=".SplashActivity">
 <!--        <activity android:name=".ReceiverMainActivity">-->
