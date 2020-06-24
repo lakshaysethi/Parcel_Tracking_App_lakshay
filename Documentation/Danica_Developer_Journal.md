@@ -387,3 +387,29 @@ confirm(receive_the_delivery)
 
 [Android GoogleMap Example to Draw Route Between Two Locations](https://c1ctech.com/android-googlemap-example-to-draw-route-between-two-locations/)
 
+## Date: 24/06/2020
+
+**Time Taken**: 0.5 hour
+
+**Done**: Logout and clear current Activity stack and launch a new Activity
+
+---
+
+### Useful Links
+
+[Clear your current Activity stack and launch a new Activity](https://riptutorial.com/android/example/17590/clear-your-current-activity-stack-and-launch-a-new-activity)
+
+If want to clear current Activity stack and launch a new Activity (for example, logging out of the app and launching a log in Activity), there appears to be two approaches.
+
+1. Target (API >= 16)
+
+Calling `finishAffinity()` from an Activity
+
+2. Target (11 <= API < 16)
+
+```java
+Intent intent = new Intent(this, LoginActivity.class);
+intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
+startActivity(intent);
+finish();
+```
