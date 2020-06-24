@@ -1,4 +1,4 @@
-package com.mobileassignment3.parcel_tracking_app;
+package com.mobileassignment3.parcel_tracking_app.activities.main_activities;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +17,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.mobileassignment3.parcel_tracking_app.NotificationActivity;
+import com.mobileassignment3.parcel_tracking_app.ProfileActivity;
+import com.mobileassignment3.parcel_tracking_app.R;
+import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
+
+import java.util.ArrayList;
+
 public class DriverMainActivity extends AppCompatActivity {
     private RecyclerView rvMyTask;
     private RecyclerView.Adapter adapterMyTask;
@@ -32,7 +39,9 @@ public class DriverMainActivity extends AppCompatActivity {
         getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         //TODO get the driver's user name
-        getSupportActionBar().setTitle("Driver name");
+//        FirebaseUser currentuser = new FirebaseController().getCurrentUser();
+//        String username = currentuser.getUsername();
+//        getSupportActionBar().setTitle(username);
 
         // Click the action bar title to open the profile activity
         findViewById(R.id.action_bar).setOnClickListener(new View.OnClickListener() {
@@ -54,20 +63,12 @@ public class DriverMainActivity extends AppCompatActivity {
         rvMyTask.setLayoutManager(layoutManagerMyTask);
 
         //TODO get the assigned delivery job from firestore
+        ArrayList<Parcel> parcelDataset = new ArrayList<Parcel>();
+        // Parcel[] parcelDataset = new Parcel[];
 
         // specify an adapter
-        MyTask[] myDataset = new MyTask[]{
-                new MyTask("Parcel 1", "Beef inside"),
-                new MyTask("Parcel 2", "Countdown delivery"),
-                new MyTask("Parcel 3", "Dahua supermarket tuan gou"),
-                new MyTask("Parcel 4", "Beef inside"),
-                new MyTask("Parcel 5", "Countdown delivery"),
-                new MyTask("Parcel 6", "Dahua supermarket tuan gou"),
-                new MyTask("Parcel 7", "Beef inside"),
-                new MyTask("Parcel 8", "Countdown delivery"),
-                new MyTask("Parcel 9", "Dahua supermarket tuan gou"),
-        };
-        adapterMyTask = new TaskAdapter(this, myDataset);
+
+        adapterMyTask = new TaskAdapter(this, parcelDataset);
         rvMyTask.setAdapter(adapterMyTask);
     }
 
@@ -93,18 +94,10 @@ public class DriverMainActivity extends AppCompatActivity {
     }
 }
 
-class MyTask {
-    public final String title;
-    public final String detail;
 
-    MyTask(String title, String detail) {
-        this.title = title;
-        this.detail = detail;
-    }
-}
 
 class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
-    private MyTask[] mDataset;
+    private ArrayList<Parcel> mDataset;
     private Context mContext;
 
     // Provide a reference to the views for each data item
@@ -125,7 +118,7 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public TaskAdapter(Context context, MyTask[] myDataset) {
+    public TaskAdapter(Context context, ArrayList<Parcel> myDataset) {
         mContext = context;
         mDataset = myDataset;
     }
@@ -145,8 +138,8 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.textViewTitle.setText(mDataset[position].title);
-        holder.textViewDetail.setText(mDataset[position].detail);
+        holder.textViewTitle.setText(mDataset.get(position).getDescription());
+        holder.textViewDetail.setText(mDataset.get(position).getType());
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,7 +151,7 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
 
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return mDataset.size();
     }
 
 

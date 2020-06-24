@@ -1,4 +1,4 @@
-package com.mobileassignment3.parcel_tracking_app;
+package com.mobileassignment3.parcel_tracking_app.activities.main_activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -14,54 +14,34 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
-    private RecyclerView rvAssignOrder;
-    private RecyclerView.Adapter adapterAssignOrder;
-    private RecyclerView.LayoutManager layoutManagerAssignOrder;
+import com.mobileassignment3.parcel_tracking_app.NotificationActivity;
+import com.mobileassignment3.parcel_tracking_app.ProfileActivity;
+import com.mobileassignment3.parcel_tracking_app.R;
+import com.mobileassignment3.parcel_tracking_app.FirebaseController;
+import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
+import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
+
+import java.util.ArrayList;
+
+public class AdminMainActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Change the actionbar title and icon
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setTitle("Administrator");
 
-        // Click the action bar title to open the profile activity
-        findViewById(R.id.action_bar).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(MainActivity.this, ProfileActivity.class);
-                startActivity(myIntent);
-            }
-        });
+        setActionBarStuff();
 
-        rvAssignOrder = findViewById(R.id.rvAssignOrder);
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        rvAssignOrder.setHasFixedSize(true);
+        setRecyclerViewStuff();
+        new FirebaseController().writeMasterDeliveryJobsToFirestore();
+        new FirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
 
-        // use a linear layout manager
-        layoutManagerAssignOrder = new LinearLayoutManager(this);
-        rvAssignOrder.setLayoutManager(layoutManagerAssignOrder);
 
-        // specify an adapter
-        Order[] myDataset = new Order[] {
-                new Order("Order 1", "Beef inside"),
-                new Order("Order 2", "Countdown delivery"),
-                new Order("Order 3", "Dahua supermarket tuan gou"),
-                new Order("Order 4", "Beef inside"),
-                new Order("Order 5", "Countdown delivery"),
-                new Order("Order 6", "Dahua supermarket tuan gou"),
-                new Order("Order 7", "Beef inside"),
-                new Order("Order 8", "Countdown delivery"),
-                new Order("Order 9", "Dahua supermarket tuan gou"),
-        };
-        adapterAssignOrder = new OrderAdapter(myDataset);
-        rvAssignOrder.setAdapter(adapterAssignOrder);
+
     }
+
+
 
     // implemented the menu item
     @Override
@@ -74,27 +54,67 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
         case R.id.notification:
-            Intent myIntent = new Intent(MainActivity.this, NotificationActivity.class);
+            Intent myIntent = new Intent(AdminMainActivity.this, NotificationActivity.class);
             startActivity(myIntent);
             return(true);
 
     }
         return(super.onOptionsItemSelected(item));
     }
-}
+    void setActionBarStuff(){
+        // Change the actionbar title and icon
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setTitle("Administrator");
 
-class Order {
-    public final String title;
-    public final String detail;
+        // Click the action bar title to open the profile activity
+        findViewById(R.id.action_bar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(AdminMainActivity.this, ProfileActivity.class);
+                startActivity(myIntent);
+            }
+        });
 
-    Order(String title, String detail) {
-        this.title = title;
-        this.detail = detail;
     }
+    void setRecyclerViewStuff(){
+
+
+        RecyclerView rvAssignOrder = findViewById(R.id.rvAssignOrder);
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        rvAssignOrder.setHasFixedSize(true);
+
+        // use a linear layout manager
+        RecyclerView.LayoutManager layoutManagerAssignOrder = new LinearLayoutManager(this);
+        rvAssignOrder.setLayoutManager(layoutManagerAssignOrder);
+
+        // specify an adapter
+        ArrayList<DeliveryJob> deliveryJobArrayListDataset = new ArrayList<DeliveryJob>();
+        updateDeliveryJobArrayList(deliveryJobArrayListDataset);
+        RecyclerView.Adapter adapterAssignOrder = new OrderAdapter(deliveryJobArrayListDataset);
+        rvAssignOrder.setAdapter(adapterAssignOrder);
+
+    }
+
+    private void updateDeliveryJobArrayList(ArrayList<DeliveryJob> deliveryJobArrayListDataset) {
+
+        for(int i=0;i<10;i++) {
+            DeliveryJob newDj =  new DeliveryJob();
+            Parcel newPsl =  new Parcel("Gift from Lakshay"+i);
+            newDj.addParcel(newPsl);
+            deliveryJobArrayListDataset.add(newDj);
+        }
+    }
+
+
+
 }
+
 
 class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
-    private Order[] mDataset;
+    private ArrayList<DeliveryJob> deliveryJobArray;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -114,8 +134,8 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public OrderAdapter(Order[] myDataset) {
-        mDataset = myDataset;
+    public OrderAdapter(ArrayList<DeliveryJob> myDataset) {
+        deliveryJobArray = myDataset;
     }
 
     // Create new views (invoked by the layout manager)
@@ -133,13 +153,13 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.textViewTitle.setText(mDataset[position].title);
-        holder.textViewDetail.setText(mDataset[position].detail);
+        holder.textViewTitle.setText(deliveryJobArray.get(position).getTrackingNumber());
+        holder.textViewDetail.setText(deliveryJobArray.get(position).getStatus());
     }
 
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return deliveryJobArray.size();
     }
 }
 

@@ -1,63 +1,80 @@
-package com.mobileassignment3.parcel_tracking_app.classes;
+package com.mobileassignment3.parcel_tracking_app.model_classes;
 
-import com.mobileassignment3.parcel_tracking_app.classes.user.Customer;
-import com.mobileassignment3.parcel_tracking_app.classes.user.Driver;
+import com.mobileassignment3.parcel_tracking_app.model_classes.user.Customer;
+import com.mobileassignment3.parcel_tracking_app.model_classes.user.Driver;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+
 
 public class DeliveryJob {
+    final int DELIVERED = 1;
+    final int NOT_DELIVERED = 0;
 
-    String status;
-    String trackingNumber;
-    List<Parcel> ListOfParcels;
+    int status;
+    UUID trackingNumber;
+    ArrayList<Parcel> listOfParcels = new ArrayList<Parcel>();
     Driver assignedDriver;
     Customer receiver;
     Date targetDeliveryTime;
 
 
-    public DeliveryJob(String status, String trackingNumber, List<Parcel> listOfParcels, Driver assignedDriver, Customer receiver, Date targetDeliveryTime) {
-        this.status = status;
-        this.trackingNumber = trackingNumber;
-        ListOfParcels = listOfParcels;
+    public DeliveryJob() {
+        this.status = NOT_DELIVERED;
+        this.trackingNumber = UUID.randomUUID();
+
+
+    }
+
+
+    public DeliveryJob(   Driver assignedDriver, Customer receiver, Date targetDeliveryTime) {
+        this.status = NOT_DELIVERED;
+        this.trackingNumber = UUID.randomUUID();;
+
         this.assignedDriver = assignedDriver;
         this.receiver = receiver;
         this.targetDeliveryTime = targetDeliveryTime;
     }
 
-    public DeliveryJob(String trackingNumber, List<Parcel> listOfParcels, Date targetDeliveryTime) {
-        this.trackingNumber = trackingNumber;
-        ListOfParcels = listOfParcels;
+    public DeliveryJob(  Date targetDeliveryTime) {
+        this.trackingNumber = UUID.randomUUID();;
+
         this.targetDeliveryTime = targetDeliveryTime;
-        this.status = "New Order";
+        this.status = NOT_DELIVERED;
     }
 
 
-    public DeliveryJob() {
-    }
 
     public String getStatus() {
-        return status;
+        if (status == DELIVERED){
+            return "DELIVERED";
+        }else if (status == NOT_DELIVERED){
+            return "Not Delivered";
+        }else {
+            return String.valueOf(status);
+        }
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
     public String getTrackingNumber() {
-        return trackingNumber;
+        return String.valueOf(trackingNumber);
     }
 
-    public void setTrackingNumber(String trackingNumber) {
+    public void setTrackingNumber(UUID trackingNumber) {
         this.trackingNumber = trackingNumber;
     }
 
     public List<Parcel> getListOfParcels() {
-        return ListOfParcels;
+        return listOfParcels;
     }
 
-    public void setListOfParcels(List<Parcel> listOfParcels) {
-        ListOfParcels = listOfParcels;
+    public void addParcel(Parcel parcel) {
+        this.listOfParcels.add(parcel);
     }
 
     public Driver getAssignedDriver() {
@@ -89,7 +106,7 @@ public class DeliveryJob {
         return "DeliveryJob{" +
                 "status='" + status + '\'' +
                 ", trackingNumber='" + trackingNumber + '\'' +
-                ", ListOfParcels=" + ListOfParcels +
+                ", ListOfParcels=" + listOfParcels +
                 ", assignedDriver=" + assignedDriver +
                 ", receiver=" + receiver +
                 ", targetDeliveryTime=" + targetDeliveryTime +

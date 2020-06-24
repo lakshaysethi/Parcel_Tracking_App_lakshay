@@ -1,20 +1,19 @@
-package com.mobileassignment3.parcel_tracking_app;
+package com.mobileassignment3.parcel_tracking_app.activities.auth_activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.mobileassignment3.parcel_tracking_app.FirebaseController;
+import com.mobileassignment3.parcel_tracking_app.SignupActivity;
+import com.mobileassignment3.parcel_tracking_app.activities.main_activities.AdminMainActivity;
+import com.mobileassignment3.parcel_tracking_app.R;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -62,17 +61,11 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void loginUser(String username, String password) {
-            if (username.equals("admin") && password.equals("admin")){
+    private void loginUser(String email, String password) {
 
-                Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
-    //             Intent myIntent = new Intent(LoginActivity.this, DriverMainActivity.class);
-    //                Intent myIntent = new Intent(LoginActivity.this, ReceiverMainActivity.class);
-                startActivity(myIntent);
-            }else{
-                Toast.makeText(this, "COULD NOT LOGIN got this :un: "+username+"pwd: "+ password, Toast.LENGTH_SHORT).show();
-            }
-        }
+       new FirebaseController().loginUser(this,email,password);
+
+    }
 
 
 
