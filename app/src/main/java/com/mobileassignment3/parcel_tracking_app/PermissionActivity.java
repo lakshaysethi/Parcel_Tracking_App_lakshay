@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.mobileassignment3.parcel_tracking_app.activities.auth_activities.LoginActivity;
+
 public class PermissionActivity extends AppCompatActivity {
     public static final int ACCESS_FINE_LOCATION_CODE = 100;
     @Override

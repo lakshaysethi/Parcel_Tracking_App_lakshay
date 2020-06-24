@@ -1,4 +1,4 @@
-package com.mobileassignment3.parcel_tracking_app;
+package com.mobileassignment3.parcel_tracking_app.activities.main_activities;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.mobileassignment3.parcel_tracking_app.classes.Parcel;
+import com.mobileassignment3.parcel_tracking_app.NotificationActivity;
+import com.mobileassignment3.parcel_tracking_app.ProfileActivity;
+import com.mobileassignment3.parcel_tracking_app.R;
+import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
 
 import java.util.ArrayList;
 
@@ -36,7 +39,9 @@ public class DriverMainActivity extends AppCompatActivity {
         getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         //TODO get the driver's user name
-        getSupportActionBar().setTitle("Driver name");
+//        FirebaseUser currentuser = new FirebaseController().getCurrentUser();
+//        String username = currentuser.getUsername();
+//        getSupportActionBar().setTitle(username);
 
         // Click the action bar title to open the profile activity
         findViewById(R.id.action_bar).setOnClickListener(new View.OnClickListener() {

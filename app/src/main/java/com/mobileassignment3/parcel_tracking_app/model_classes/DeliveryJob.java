@@ -1,7 +1,7 @@
-package com.mobileassignment3.parcel_tracking_app.classes;
+package com.mobileassignment3.parcel_tracking_app.model_classes;
 
-import com.mobileassignment3.parcel_tracking_app.classes.user.Customer;
-import com.mobileassignment3.parcel_tracking_app.classes.user.Driver;
+import com.mobileassignment3.parcel_tracking_app.model_classes.user.Customer;
+import com.mobileassignment3.parcel_tracking_app.model_classes.user.Driver;
 
 import java.util.ArrayList;
 import java.util.Date;
