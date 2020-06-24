@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -26,10 +24,10 @@ import com.mobileassignment3.parcel_tracking_app.activities.main_activities.Rece
 import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
 import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.Executor;
 
 import static android.content.ContentValues.TAG;
@@ -39,47 +37,55 @@ public class FirebaseController {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     // Initialize Firebase Auth
-
-
     public FirebaseController() {
         mAuth = FirebaseAuth.getInstance();
     }
 
+    //Firebase setter method
     public void writeMasterDeliveryJobsToFirestore(){
-        ArrayList<DeliveryJob> djAl = new ArrayList<DeliveryJob>();
+        ArrayList<DeliveryJob> deliveryJobArrayList = new ArrayList<DeliveryJob>();
 
-        for(int i=0;i<10;i++) {
+        String[] senders = {"Danica", "Lakhsay", "John Casey", "Raza", "Obama", "Paul Bartlett", "Dila"};
+        String[] packages = {"Letter", "Laptop", "Jacket", "Certificate", "Backpack", "Payslip", "Vaccine" };
+
+        //Writing 7 random delivery jobs to a temp delivery job array list
+        for(int i=0;i<7;i++) {
             DeliveryJob nDJ = new DeliveryJob();
-            nDJ.addParcel(new Parcel("Gift From Auntie Cinda :"+1));
+            Random rand1 = new Random();
+            Random rand2 = new Random();
 
-            djAl.add(nDJ);
+            int n = rand1.nextInt(7);
+            int m = rand2.nextInt(7);
+
+            nDJ.addParcel(new Parcel( packages[n] + " from " + senders[m]));
+            deliveryJobArrayList.add(nDJ);
         }
 
         Map<String, Object> masterDeliveryJobs = new HashMap<>();
+        //Putting the delivery job array list into a hashmap
+        masterDeliveryJobs.put("masterList", deliveryJobArrayList);
 
-        masterDeliveryJobs.put("masterList", djAl);
-//TODO fix the following to not add but it should update existing list
-        // Add a new document with a generated ID
-        db.collection("masterDeliveryJobs")
-                .add(masterDeliveryJobs)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+
+        //Get the delivery jobs document which contains all delivery items
+        DocumentReference deliveryJobsDocumentRef = db.collection("masterDeliveryJobs").document("deliveryJobsDocument");
+        //Add the newly created delivery jobs to the masterList
+        deliveryJobsDocumentRef
+                .update("masterList", deliveryJobArrayList)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d("FIREBASE", "DocumentSnapshot added with ID: " + documentReference.getId());
+                    public void onSuccess(Void aVoid) {
+                        Log.d("FIREBASE", "Data successfully added!");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w("FIREBASE error", "Error adding document", e);
+                        Log.w("FIREBASE", "Error updating document", e);
                     }
                 });
-
-
-
-
     }
-// TODO make this function only read a single document from the master deliveryjobs collection
+
+//// TODO make this function only read a single document from the master deliveryjobs collection
     public ArrayList<DeliveryJob> getdeliveryJobsAssociatedWithAuthenticatedUser() {
         FirebaseUser currentuser = getCurrentUser();
         ArrayList<DeliveryJob> djAl = new ArrayList<DeliveryJob>();
@@ -103,9 +109,6 @@ public class FirebaseController {
     }
 
     //void logFirestoreData() {}
-
-
-
 //TODO change return type to Our Model classes instead of FirebaseUser
     public FirebaseUser getCurrentUser() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
