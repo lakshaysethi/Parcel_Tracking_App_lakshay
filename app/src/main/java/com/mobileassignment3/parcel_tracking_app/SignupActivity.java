@@ -7,6 +7,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +16,10 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
+import com.mobileassignment3.parcel_tracking_app.activities.auth_activities.LoginActivity;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -37,7 +41,7 @@ public class SignupActivity extends AppCompatActivity {
         viewPager.setAdapter(pagerAdapter);
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
-
+        final Activity signupActivityThis = this;
         Button signupBtn = findViewById(R.id.btnSignup);
         signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,18 +56,17 @@ public class SignupActivity extends AppCompatActivity {
 
                 //we dont really need 2 fragments cos there arent many differences - the reciever needs to give his address man
 
-                if (!etSignupDriverPassword1.equals("") && !etSignupEmail.equals("")) {
+                if (!etSignupDriverPassword1.getText().toString().equals("")&& !etSignupEmail.getText().toString().equals("")) {
                     try{
 
                         String email = etSignupEmail.getText().toString();
                         String password = etSignupDriverPassword1.getText().toString();
-                        new FirebaseController().createNewUser(email,password);
+                        new FirebaseController().createNewUser(signupActivityThis,email,password);
+
 
                     }catch (Exception e) {
-                        String email = "testemail@gmail.com";
-                        String password = "veryhjg";
-                        new FirebaseController().createNewUser(email,password);
-
+                        Toast.makeText(SignupActivity.this, "Error!!!!!! create new user in FirebaseController", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignupActivity.this, e.toString(), Toast.LENGTH_LONG).show();
                     }
 
                 }
