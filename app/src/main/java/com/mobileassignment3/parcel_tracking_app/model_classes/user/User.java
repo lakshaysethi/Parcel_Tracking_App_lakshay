@@ -2,38 +2,82 @@ package com.mobileassignment3.parcel_tracking_app.model_classes.user;
 
 import android.provider.ContactsContract;
 
+import java.util.ArrayList;
+
 
 public class User {
-    ContactsContract.CommonDataKinds.Email email;
+
+public    final static int DRIVER = 1001;
+    public final static int RECIEVER = 1002;
+    public final static int ADMIN = 1003;
+
+    String email;
     String username;
-    String password;
 
-    public User(ContactsContract.CommonDataKinds.Email email, String password) {
-        this.email = email;
-        this.password = password;
+    ArrayList<Integer> typeArray = new ArrayList<Integer>();
+
+
+    public void setTypeArray(ArrayList<Integer> typeArray) {
+        this.typeArray = typeArray;
     }
 
+    public ArrayList<Integer> getTypeArray() {
+        return typeArray;
+    }
+    public int getPrimaryType() {
+            return this.typeArray.get(0);
+    }
+    public void setType(int type) {
+        if(!this.typeArray.isEmpty()){
+            this.typeArray.set(0, type);
 
-    public User(ContactsContract.CommonDataKinds.Email email, String username, String password) {
+        }else{
+            this.typeArray.add(0,type);
+        }
+    }
+//
+//    public void setSecondaryType(int type) {
+//
+//        if(this.typeArray.get(0)!=null){
+//            this.typeArray.set(0, type);
+//
+//        }else{
+//            this.typeArray.add(0,type);
+//        }
+//    }
+//
+//    public void setThirdType(int type) {
+//
+//        if(this.typeArray.get(0)!=null){
+//            this.typeArray.set(0, type);
+//
+//        }else{
+//            this.typeArray.add(0,type);
+//        }
+//    }
+
+
+
+    public User(String email, String username) {
         this.email = email;
         this.username = username;
-        this.password = password;
+
     }
 
-    public User(String username, String password) {
+    public User(String username) {
         this.username = username;
-        this.password = password;
+
     }
 
     public User() {
     }
 
 
-    public ContactsContract.CommonDataKinds.Email getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(ContactsContract.CommonDataKinds.Email email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -46,10 +90,6 @@ public class User {
     }
 
 
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     @Override
     public String toString() {
