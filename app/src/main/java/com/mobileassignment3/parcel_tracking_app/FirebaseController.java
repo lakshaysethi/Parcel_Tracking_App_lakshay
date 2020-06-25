@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -194,7 +195,7 @@ try{
         parcelAppUser.setType(type);
         parcelAppUser.setEmail(getCurrentUser().getEmail());
         parcelAppUser.setUsername(username);
-        
+
         db.collection("users").document(getCurrentUser().getUid()).set(parcelAppUser);
     }
 
@@ -242,14 +243,39 @@ try{
         }
     }
 
-    private void updateUIafterLogin(Activity activity,boolean loginSuccess) {
+    private void updateUIafterLogin(final Activity activity, boolean loginSuccess) {
+        FirebaseUser cu = getCurrentUser();
 
-    //  Intent myIntent = new Intent(activity, AdminMainActivity.class);
-        Intent myIntent = new Intent(activity, DriverMainActivity.class);
-    //  Intent myIntent = new Intent(activity, ReceiverMainActivity.class);
-        activity.startActivity(myIntent);
+        DocumentReference docRef = db.collection("users").document(cu.getUid());
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                User user = documentSnapshot.toObject(User.class);
+
+                doIntent(user,activity);
+
+            }
+        });
+
+
     }
+    void doIntent(User user ,Activity activity) {
+        Intent myIntent =new Intent(activity, LoginActivity.class);
+        if (user.getPrimaryType()==User.DRIVER){
+             myIntent = new Intent(activity, DriverMainActivity.class);
 
+
+        }else if (user.getPrimaryType()==User.RECIEVER){
+            myIntent = new Intent(activity, ReceiverMainActivity.class);
+        }else {
+             myIntent = new Intent(activity, AdminMainActivity.class);
+        }
+
+        //
+        //
+        activity.startActivity(myIntent);
+
+    }
     public void logoutCurrentUser() {
         FirebaseAuth.getInstance().signOut();
     }

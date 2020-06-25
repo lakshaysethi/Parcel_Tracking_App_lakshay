@@ -14,7 +14,12 @@ public    final static int DRIVER = 1001;
     String email;
     String username;
 
-    ArrayList<Integer> typeArray = new ArrayList<>();
+    ArrayList<Integer> typeArray = new ArrayList<Integer>();
+
+
+    public void setTypeArray(ArrayList<Integer> typeArray) {
+        this.typeArray = typeArray;
+    }
 
     public ArrayList<Integer> getTypeArray() {
         return typeArray;
@@ -23,16 +28,33 @@ public    final static int DRIVER = 1001;
             return this.typeArray.get(0);
     }
     public void setType(int type) {
-        this.typeArray.set(0, type);
-    }
+        if(!this.typeArray.isEmpty()){
+            this.typeArray.set(0, type);
 
-    public void setSecondaryType(int type) {
-        this.typeArray.set(1,type);
+        }else{
+            this.typeArray.add(0,type);
+        }
     }
-
-    public void setThirdType(int type) {
-        this.typeArray.set(3,type);
-    }
+//
+//    public void setSecondaryType(int type) {
+//
+//        if(this.typeArray.get(0)!=null){
+//            this.typeArray.set(0, type);
+//
+//        }else{
+//            this.typeArray.add(0,type);
+//        }
+//    }
+//
+//    public void setThirdType(int type) {
+//
+//        if(this.typeArray.get(0)!=null){
+//            this.typeArray.set(0, type);
+//
+//        }else{
+//            this.typeArray.add(0,type);
+//        }
+//    }
 
 
 
