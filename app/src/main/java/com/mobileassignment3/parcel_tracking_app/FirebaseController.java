@@ -18,6 +18,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -32,6 +33,7 @@ import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -134,6 +136,54 @@ public class FirebaseController {
                 });
     }
 
+    public void assignParcelToDriver(String driverUserName){
+        //07aa7bc7-24c0-49a9-8342-e5f457902178
+        //drivertwo
+
+        //Get the delivery jobs document which contains all delivery items
+        DocumentReference deliveryJobsDocumentRef = db.collection("masterDeliveryJobs").document("deliveryJobsDocument");
+        deliveryJobsDocumentRef
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        DocumentSnapshot results = task.getResult();
+                        Object masterListObject = results.getData();
+                        
+                        String stringed = masterListObject.toString();
+                        Log.d("Firestore", "Data = " + task.getResult());
+//                        List<DeliveryJob> Djal = task.getResult().getDocumentReference().toObject(MasterListDocument.class).masterList;
+                    }
+                });
+//try{
+//            new FirebaseController().db.collection("masterDeliveryJobs")
+//                    .get()
+//                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                            if (task.isSuccessful()) {
+//                                for (QueryDocumentSnapshot document : task.getResult()) {
+//                                    Log.d("FIREBASE", document.getId() + " => " + document.getData());
+//                                    if(document.contains("masterList")){
+//                                        document.get("masterList");
+//                                        List<DeliveryJob> Djal = document.toObject(MasterListDocument.class).masterList;
+//                                        setRecyclerViewStuff( Djal);
+//                                    }
+//                                }
+//                            } else {
+//                                Log.w("Firebase error", "Error getting documents.", task.getException());
+//                            }
+//                        }
+//                    });
+//
+//        }catch (Exception e){
+//            Log.w("Firebase error", "Error getting documents.");
+//
+//        }
+//        CollectionReference masterListFieldRef = db.collection("masterDeliveryJobs").document("deliveryJobsDocument").collection("masterList");
+//        DocumentReference masterListFieldRef = db.collection("masterDeliveryJobs").document("deliveryJobsDocument");
+
+    }
 
     public FirebaseUser getCurrentUser() {
         FirebaseUser currentUser = mAuth.getCurrentUser();

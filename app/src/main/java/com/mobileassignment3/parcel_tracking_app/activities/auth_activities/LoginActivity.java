@@ -88,10 +88,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
     }
 
 
@@ -107,8 +103,6 @@ public class LoginActivity extends AppCompatActivity {
             handleSignInResult(task);
         }
 
-
-        
     }
 
     private void handleSignInResult( Task<GoogleSignInAccount> completedTask) {

@@ -79,7 +79,6 @@ public class AdminMainActivity extends AppCompatActivity implements AssignDialog
 
         //Temp implementation to show dialog for input
         btnAssign = findViewById(R.id.btnAssign);
-
         btnAssign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,12 +92,14 @@ public class AdminMainActivity extends AppCompatActivity implements AssignDialog
     public void assignDialog() {
         AssignDialog dialog = new AssignDialog();
         dialog.show(getSupportFragmentManager(), "Assign dialog");
+
     }
 
     //TODO Make the assigndriver actually assign to the driver
     @Override
     public void assignDriver(String driverUsername) {
         Toast.makeText(AdminMainActivity.this, "Driver is " + driverUsername, Toast.LENGTH_SHORT).show();
+        new FirebaseController().assignParcelToDriver(driverUsername);
     }
 
     // implemented the menu item
