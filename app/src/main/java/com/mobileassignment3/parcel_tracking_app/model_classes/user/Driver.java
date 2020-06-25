@@ -14,13 +14,6 @@ public class Driver extends User {
     Boolean onlineNow;
     Location currentLocation;
 
-    public Driver(ContactsContract.CommonDataKinds.Email email, String password) {
-        super(email, password);
-    }
-
-    public Driver(ContactsContract.CommonDataKinds.Email email, String username, String password) {
-        super(email, username, password);
-    }
 
     public Driver(String username, String password) {
         super(username, password);

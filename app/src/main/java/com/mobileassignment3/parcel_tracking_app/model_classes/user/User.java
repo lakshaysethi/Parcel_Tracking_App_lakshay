@@ -10,7 +10,7 @@ final int RECIEVER = 1002;
 final int ADMIN = 1003;
     String email;
     String username;
-    String password;
+
     int[] typeArray;
 
     public int[] getTypeArray() {
@@ -30,21 +30,18 @@ final int ADMIN = 1003;
     public void setThirdType(int type) {
         this.typeArray[3] = type;
     }
-    public User(ContactsContract.CommonDataKinds.Email email, String password) {
-        this.email = email;
-        this.password = password;
-    }
 
 
-    public User(ContactsContract.CommonDataKinds.Email email, String username, String password) {
+
+    public User(String email, String username) {
         this.email = email;
         this.username = username;
-        this.password = password;
+
     }
 
-    public User(String username, String password) {
+    public User(String username) {
         this.username = username;
-        this.password = password;
+
     }
 
     public User() {
@@ -68,10 +65,6 @@ final int ADMIN = 1003;
     }
 
 
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     @Override
     public String toString() {

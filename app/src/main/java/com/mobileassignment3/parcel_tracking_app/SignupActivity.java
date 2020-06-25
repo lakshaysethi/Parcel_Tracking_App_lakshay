@@ -61,7 +61,9 @@ public class SignupActivity extends AppCompatActivity {
 
                         String email = etSignupEmail.getText().toString();
                         String password = etSignupDriverPassword1.getText().toString();
-                        new FirebaseController().createNewUser(signupActivityThis,email,password);
+                        String username = etSignupDriverUsername.getText().toString();
+                        
+                        new FirebaseController().createNewUser(signupActivityThis,email,password,type,username);
 
 
                     }catch (Exception e) {
