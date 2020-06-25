@@ -31,6 +31,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         Button logOutBtn = findViewById(R.id.btnLogout);
         TextView emailTextView = findViewById(R.id.tvMyAccountEmail);
+        //TODO fix the bug
         FirebaseUser currentuser = new FirebaseController().getCurrentUser();
 
         try{
