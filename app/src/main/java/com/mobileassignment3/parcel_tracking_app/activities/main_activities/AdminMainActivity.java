@@ -41,10 +41,16 @@ public class AdminMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // new FirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
 
         setActionBarStuff();
+        // here I am getting the delivery jobs from the firestore and setting the recyclerview
+        getDeliveryJobsListfromFirestore();
 
-//TODO doing here now
+
+    }
+
+    private void getDeliveryJobsListfromFirestore() {
         try{
             new FirebaseController().db.collection("masterDeliveryJobs")
                     .get()
@@ -72,14 +78,7 @@ public class AdminMainActivity extends AppCompatActivity {
             Log.w("Firebase error", "Error getting documents.");
 
         }
-
-
-
-        //new FirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
-
-
     }
-
 
 
     // implemented the menu item
@@ -100,6 +99,7 @@ public class AdminMainActivity extends AppCompatActivity {
     }
         return(super.onOptionsItemSelected(item));
     }
+
     void setActionBarStuff(){
         // Change the actionbar title and icon
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -154,7 +154,6 @@ public class AdminMainActivity extends AppCompatActivity {
 
 class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
     private List<DeliveryJob> deliveryJobArray;
-
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
