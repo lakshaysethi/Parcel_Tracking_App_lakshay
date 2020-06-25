@@ -12,6 +12,9 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
+
 public class NotificationActivity extends AppCompatActivity {
     private RecyclerView rvNotification;
     private RecyclerView.Adapter adapterNotification;
@@ -25,7 +28,13 @@ public class NotificationActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setTitle("Username");
+
+        new FirebaseController().getUser(new OnSuccessListener<User>() {
+            @Override
+            public void onSuccess(User user) {
+                getSupportActionBar().setTitle(user.getUsername());
+            }
+        });
 
         rvNotification = findViewById(R.id.rvNotification);
         // use this setting to improve performance if you know that changes

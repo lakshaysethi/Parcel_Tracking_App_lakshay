@@ -13,8 +13,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
 import com.mobileassignment3.parcel_tracking_app.activities.auth_activities.LoginActivity;
+import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -27,10 +29,24 @@ public class ProfileActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setTitle("User name");
+
+        new FirebaseController().getUser(new OnSuccessListener<User>() {
+            @Override
+            public void onSuccess(User user) {
+                getSupportActionBar().setTitle(user.getUsername());
+            }
+        });
 
         Button logOutBtn = findViewById(R.id.btnLogout);
         TextView emailTextView = findViewById(R.id.tvMyAccountEmail);
+        final TextView usernameTextView = findViewById(R.id.tvMyAccountUsername);
+
+        new FirebaseController().getUser(new OnSuccessListener<User>() {
+            @Override
+            public void onSuccess(User user) {
+                usernameTextView.setText(user.getUsername());
+            }
+        });
 
         FirebaseUser currentuser = new FirebaseController().getCurrentUser();
 
