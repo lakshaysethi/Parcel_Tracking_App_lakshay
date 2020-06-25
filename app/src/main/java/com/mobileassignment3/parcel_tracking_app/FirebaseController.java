@@ -1,7 +1,6 @@
 package com.mobileassignment3.parcel_tracking_app;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
@@ -14,7 +13,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,17 +34,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.Executor;
 
 import static android.content.ContentValues.TAG;
 
 public class FirebaseController {
     public FirebaseAuth mAuth;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+   public  FirebaseFirestore db = FirebaseFirestore.getInstance();
+    QueryDocumentSnapshot theDocument;
 
     // Initialize Firebase Auth
     public FirebaseController() {
         mAuth = FirebaseAuth.getInstance();
+        makeAdminUser();
     }
 
 
@@ -70,6 +69,7 @@ try{
 
 
     }
+
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
@@ -93,12 +93,16 @@ try{
                 });
     }
 
-    public void writeMasterDeliveryJobsToFirestore(){
-        ArrayList<DeliveryJob> deliveryJobArrayList = new ArrayList<DeliveryJob>();
 
+    public void  makeAdminUser(){
+        createNewUser("admin@parcel.com","12345678",User.ADMIN,"admin");
+    }
+
+    public void writeMasterDeliveryJobsToFirestore(){
+
+        ArrayList<DeliveryJob> deliveryJobArrayList = new ArrayList<DeliveryJob>();
         String[] senders = {"Danica", "Lakhsay", "John Casey", "Raza", "Obama", "Paul Bartlett", "Dila"};
         String[] packages = {"Letter", "Laptop", "Jacket", "Certificate", "Backpack", "Payslip", "Vaccine" };
-
         //Writing 7 random delivery jobs to a temp delivery job array list
         for(int i=0;i<7;i++) {
             DeliveryJob nDJ = new DeliveryJob();
@@ -121,7 +125,7 @@ try{
         DocumentReference deliveryJobsDocumentRef = db.collection("masterDeliveryJobs").document("deliveryJobsDocument");
         //Add the newly created delivery jobs to the masterList
         deliveryJobsDocumentRef
-                .update("masterList", deliveryJobArrayList)
+                .set(masterDeliveryJobs)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -136,31 +140,7 @@ try{
                 });
     }
 
-//// TODO make this function only read a single document from the master deliveryjobs collection
-    public ArrayList<DeliveryJob> getdeliveryJobsAssociatedWithAuthenticatedUser() {
-        FirebaseUser currentuser = getCurrentUser();
-        ArrayList<DeliveryJob> djAl = new ArrayList<DeliveryJob>();
 
-        db.collection("masterDeliveryJobs")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("FIREBASE", document.getId() + " => " + document.getData());
-                            }
-                        } else {
-                            Log.w("Firebase error", "Error getting documents.", task.getException());
-                        }
-                    }
-                });
-
-        return djAl;
-    }
-
-    //void logFirestoreData() {}
-//TODO change return type to Our Model classes instead of FirebaseUser
     public FirebaseUser getCurrentUser() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
@@ -189,6 +169,28 @@ try{
                            if(task.getException().toString().contains("already"))
                                Toast.makeText(activity, "That Email is already in use please try another email", Toast.LENGTH_LONG).show();
                            else Toast.makeText(activity, "Could not sign you up :  "+task.getException(), Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                });
+        return getCurrentUser();
+    }
+
+    public FirebaseUser createNewUser( String email, String password, final int type, final String username) {
+
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "createUserWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            setupUserInDatabase(username,user,type);
+
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.d("ERROR","firebase error can not make new user");
                         }
 
                     }
