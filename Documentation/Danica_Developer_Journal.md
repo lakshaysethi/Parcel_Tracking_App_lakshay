@@ -328,6 +328,38 @@ Click on `File >>>> New >>>> Vector Asset`, can select the icon and it will be a
 
 ![image info](./Danica_screenshot/4.png)
 
+## Date: 18/06/2020
+
+**Time Taken**: 1 hours
+
+**Done**: Discussion Class Diagram
+
+---
+
+1.1 administrator, driver, receiver all have the same attribute as the user: username, email, password
+
+1.2 user has a group/role attribute: administrator/receiver/driver
+
+1.3 delivery attribute(basic, necessary): delivery address, receiver, status, assugned driver, tracking number
+
+1.4 delivery status(the name used is only for explanation, you can change the better name): ready_to_delivery_today, out_for_delivery, on_the_way, delivered
+
+2.1 administrator function: get(delivery.ready_to_delivery_today), assign(delivery.ready_to_delivery_today)
+
+2.2 after the administrator assign the delivery, the delivery status change to 'out_for_delivery'
+
+3.1 driver function: get(delivery.assigned_to_me), sendMessage(delivery_of_the_receiver,receiver, estimated_time)
+
+3.2 after the driver send the delivery message to the receiver, the delivery status change to 'on_the_way'
+
+4.1 receiver function: get(delivery.receiver_is_me),
+receiveMessage(when mine delivery will come to me),
+view(tracking_delivery),
+confirm(receive_the_delivery)
+
+4.2 after the receiver confirm the delivery, the delivery status change to 'delivered'
+
+
 ## Date: 19/06/2020
 
 **Time Taken**: 1 hours
@@ -341,4 +373,43 @@ Click on `File >>>> New >>>> Vector Asset`, can select the icon and it will be a
 [FreeLogoDesign](https://www.freelogodesign.org/)
 
 
+## Date: 23/06/2020
 
+**Time Taken**: 2 hours
+
+**Done**: Google Map Directions API
+
+---
+
+### Useful Links
+
+[Google Maps Platform Web Services Directions API](https://developers.google.com/maps/documentation/directions/start)
+
+[Android GoogleMap Example to Draw Route Between Two Locations](https://c1ctech.com/android-googlemap-example-to-draw-route-between-two-locations/)
+
+## Date: 24/06/2020
+
+**Time Taken**: 0.5 hour
+
+**Done**: Logout and clear current Activity stack and launch a new Activity
+
+---
+
+### Useful Links
+
+[Clear your current Activity stack and launch a new Activity](https://riptutorial.com/android/example/17590/clear-your-current-activity-stack-and-launch-a-new-activity)
+
+If want to clear current Activity stack and launch a new Activity (for example, logging out of the app and launching a log in Activity), there appears to be two approaches.
+
+1. Target (API >= 16)
+
+Calling `finishAffinity()` from an Activity
+
+2. Target (11 <= API < 16)
+
+```java
+Intent intent = new Intent(this, LoginActivity.class);
+intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
+startActivity(intent);
+finish();
+```

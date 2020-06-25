@@ -31,6 +31,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         Button logOutBtn = findViewById(R.id.btnLogout);
         TextView emailTextView = findViewById(R.id.tvMyAccountEmail);
+        //TODO fix the bug
         FirebaseUser currentuser = new FirebaseController().getCurrentUser();
 
         try{
@@ -50,12 +51,13 @@ public class ProfileActivity extends AppCompatActivity {
                 try{
                     new FirebaseController().logoutCurrentUser();
                     Toast.makeText(ProfileActivity.this, "Logged Out Successfully", Toast.LENGTH_SHORT).show();
-
+                    gotoLoginScreen();
 
                 }catch (Exception e){
                     Toast.makeText(ProfileActivity.this, "Error LoggingOut"+e.toString(), Toast.LENGTH_SHORT).show();
                 }
-                gotoLoginScreen();
+
+
             }
         });
 
@@ -66,6 +68,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         Intent gotoLoginScreen = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(gotoLoginScreen);
+        finishAffinity();
     }
 
     // implemented the menu item
