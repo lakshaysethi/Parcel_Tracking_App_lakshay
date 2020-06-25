@@ -50,24 +50,18 @@ public class FirebaseController {
 
 
     public void handleGoogleSignIn(GoogleSignInAccount account,Activity activity) {
-try{
+        try{
+        firebaseAuthWithGoogle(account.getIdToken());
+        FirebaseUser cu = mAuth.getCurrentUser();
+        if(cu!=null){
+            Toast.makeText(activity, "Welcome!"+ cu.getDisplayName(), Toast.LENGTH_SHORT).show();
+        }
+        updateUIafterLogin(activity,true);
 
-    firebaseAuthWithGoogle(account.getIdToken());
-    FirebaseUser cu = mAuth.getCurrentUser();
-
-    if(cu!=null){
-        Toast.makeText(activity, "Welcome!"+ cu.getDisplayName(), Toast.LENGTH_SHORT).show();
-    }
-    updateUIafterLogin(activity,true);
-
-}catch (Exception e){
-    Toast.makeText(activity, account.getDisplayName(), Toast.LENGTH_SHORT).show();
-    Toast.makeText(activity, e.toString(), Toast.LENGTH_LONG).show();
-}
-
-
-
-
+        }catch (Exception e){
+            Toast.makeText(activity, account.getDisplayName(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, e.toString(), Toast.LENGTH_LONG).show();
+        }
     }
 
     private void firebaseAuthWithGoogle(String idToken) {
@@ -143,7 +137,6 @@ try{
 
     public FirebaseUser getCurrentUser() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
-
         return currentUser;
     }
 
@@ -264,27 +257,24 @@ try{
 
             }
         });
-
-
     }
+
     void doIntent(User user ,Activity activity) {
         Intent myIntent =new Intent(activity, LoginActivity.class);
         if (user.getPrimaryType()==User.DRIVER){
              myIntent = new Intent(activity, DriverMainActivity.class);
-
-
         }else if (user.getPrimaryType()==User.RECIEVER){
             myIntent = new Intent(activity, ReceiverMainActivity.class);
         }else {
              myIntent = new Intent(activity, AdminMainActivity.class);
         }
-
         //
         //
         activity.startActivity(myIntent);
-
     }
+
     public void logoutCurrentUser() {
         FirebaseAuth.getInstance().signOut();
     }
+
 }
