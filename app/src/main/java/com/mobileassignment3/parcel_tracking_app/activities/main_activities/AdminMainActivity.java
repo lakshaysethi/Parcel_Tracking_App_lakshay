@@ -192,8 +192,8 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.textViewTitle.setText(deliveryJobArray.get(position).getTrackingNumber());
-        holder.textViewDetail.setText(deliveryJobArray.get(position).getStatus());
+        holder.textViewTitle.setText(deliveryJobArray.get(position).getListOfParcels().get(0).getDescription());
+        holder.textViewDetail.setText(deliveryJobArray.get(position).getStatusString());
     }
 
     @Override
