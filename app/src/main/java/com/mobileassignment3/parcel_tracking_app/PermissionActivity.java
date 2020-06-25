@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.mobileassignment3.parcel_tracking_app.activities.auth_activities.LoginActivity;
 
 public class PermissionActivity extends AppCompatActivity {
@@ -26,9 +27,15 @@ public class PermissionActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION, this.ACCESS_FINE_LOCATION_CODE)) {
-            Intent myIntent = new Intent(PermissionActivity.this, LoginActivity.class);
-            startActivity(myIntent);
-            finish();
+            FirebaseController controller = new FirebaseController();
+            FirebaseUser currentUser = controller.getCurrentUser();
+            if (currentUser == null) { // Not logged in, go to LoginActivity
+                Intent myIntent = new Intent(PermissionActivity.this, LoginActivity.class);
+                startActivity(myIntent);
+                finish();
+            } else { // Login session still valid, go to activity according to user role
+                controller.updateUIafterLogin(this, true);
+            }
         }
 
         setContentView(R.layout.activity_permission);

@@ -142,9 +142,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void loginUser(String email, String password) {
-
        new FirebaseController().loginUser(this,email,password);
-
     }
 
 

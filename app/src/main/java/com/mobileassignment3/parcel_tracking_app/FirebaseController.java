@@ -47,7 +47,7 @@ public class FirebaseController {
     // Initialize Firebase Auth
     public FirebaseController() {
         mAuth = FirebaseAuth.getInstance();
-        makeAdminUser();
+//        makeAdminUser();
     }
 
 
@@ -94,9 +94,9 @@ public class FirebaseController {
     }
 
 
-    public void  makeAdminUser(){
-        createNewUser("admin@parcel.com","12345678",User.ADMIN,"admin");
-    }
+//    private void  makeAdminUser(){
+//        createNewUser("admin@parcel.com","12345678",User.ADMIN,"admin");
+//    }
 
     public void writeMasterDeliveryJobsToFirestore(){
 
@@ -281,7 +281,7 @@ public class FirebaseController {
         }
     }
 
-    private void updateUIafterLogin(final Activity activity, boolean loginSuccess) {
+    public void updateUIafterLogin(final Activity activity, boolean loginSuccess) {
         FirebaseUser cu = getCurrentUser();
 
         DocumentReference docRef = db.collection("users").document(cu.getUid());
@@ -289,25 +289,22 @@ public class FirebaseController {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 User user = documentSnapshot.toObject(User.class);
-
-                doIntent(user,activity);
-
+                doIntent(user, activity);
             }
         });
     }
 
-    void doIntent(User user ,Activity activity) {
-        Intent myIntent =new Intent(activity, LoginActivity.class);
-        if (user.getPrimaryType()==User.DRIVER){
-             myIntent = new Intent(activity, DriverMainActivity.class);
-        }else if (user.getPrimaryType()==User.RECIEVER){
+    private void doIntent(User user, Activity activity) {
+        Intent myIntent = new Intent(activity, LoginActivity.class);
+        if (user.getPrimaryType() == User.DRIVER) {
+            myIntent = new Intent(activity, DriverMainActivity.class);
+        } else if (user.getPrimaryType() == User.RECIEVER) {
             myIntent = new Intent(activity, ReceiverMainActivity.class);
-        }else {
-             myIntent = new Intent(activity, AdminMainActivity.class);
+        } else {
+            myIntent = new Intent(activity, AdminMainActivity.class);
         }
-        //
-        //
         activity.startActivity(myIntent);
+        activity.finishAffinity();
     }
 
     public void logoutCurrentUser() {
