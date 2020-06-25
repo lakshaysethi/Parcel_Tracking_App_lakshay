@@ -1,5 +1,6 @@
 package com.mobileassignment3.parcel_tracking_app.activities.main_activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -16,13 +17,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.mobileassignment3.parcel_tracking_app.FirebaseController;
 import com.mobileassignment3.parcel_tracking_app.NotificationActivity;
 import com.mobileassignment3.parcel_tracking_app.ProfileActivity;
 import com.mobileassignment3.parcel_tracking_app.R;
+import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
 import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
+import com.mobileassignment3.parcel_tracking_app.model_classes.user.Driver;
+import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DriverMainActivity extends AppCompatActivity {
     private RecyclerView rvMyTask;
@@ -63,12 +74,35 @@ public class DriverMainActivity extends AppCompatActivity {
         rvMyTask.setLayoutManager(layoutManagerMyTask);
 
         //TODO get the assigned delivery job from firestore
-        ArrayList<Parcel> parcelDataset = new ArrayList<Parcel>();
-        // Parcel[] parcelDataset = new Parcel[];
 
-        // specify an adapter
+        new FirebaseController().db.collection("users").document(new FirebaseController().getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    DocumentSnapshot doc = task.getResult();
+                    try{
+                     Driver driver = doc.toObject(Driver.class);
+                     List<DeliveryJob> parcelDataset = driver.getDeliveryJobList();
 
-        adapterMyTask = new TaskAdapter(this, parcelDataset);
+                     // specify an adapter
+                    setAdapterStuff(parcelDataset);
+
+
+                    }catch (Exception e){
+                        Toast.makeText(DriverMainActivity.this, "Error"+e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
+
+
+
+    }
+
+    private void setAdapterStuff(List<DeliveryJob> parcelDataset) {
+
+        adapterMyTask = new TaskAdapter(this, (ArrayList<DeliveryJob>)parcelDataset);
         rvMyTask.setAdapter(adapterMyTask);
     }
 
@@ -97,9 +131,9 @@ public class DriverMainActivity extends AppCompatActivity {
 
 
 class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
-    private ArrayList<Parcel> mDataset;
+    private ArrayList<DeliveryJob> mDataset;
     private Context mContext;
-
+    private ArrayList<DeliveryJob> deliveryJobArray;
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -118,9 +152,10 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public TaskAdapter(Context context, ArrayList<Parcel> myDataset) {
+    public TaskAdapter(Context context, ArrayList<DeliveryJob> myDataset) {
         mContext = context;
         mDataset = myDataset;
+        deliveryJobArray = myDataset;
     }
 
     // Create new views (invoked by the layout manager)
@@ -138,8 +173,8 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.textViewTitle.setText(mDataset.get(position).getDescription());
-        holder.textViewDetail.setText(mDataset.get(position).getType());
+        holder.textViewTitle.setText(deliveryJobArray.get(position).getListOfParcels().get(0).getDescription());
+        holder.textViewDetail.setText(deliveryJobArray.get(position).getStatusString());
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,7 +195,7 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
 
         //TODO get the estimate time
         String estimateTime = "10 mins";
-        String driverSendMessage = "Your parcel will be deliveried in "+ estimateTime;
+        String driverSendMessage = "Send Message to Customer:\nYour parcel will be deliveried in "+ estimateTime;
 
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);

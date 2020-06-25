@@ -29,6 +29,8 @@ import com.mobileassignment3.parcel_tracking_app.activities.main_activities.Driv
 import com.mobileassignment3.parcel_tracking_app.activities.main_activities.ReceiverMainActivity;
 import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
 import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
+import com.mobileassignment3.parcel_tracking_app.model_classes.user.Customer;
+import com.mobileassignment3.parcel_tracking_app.model_classes.user.Driver;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,12 +53,16 @@ public class FirebaseController {
 
     public void handleGoogleSignIn(GoogleSignInAccount account,Activity activity) {
         try{
-        firebaseAuthWithGoogle(account.getIdToken());
-        FirebaseUser cu = mAuth.getCurrentUser();
-        if(cu!=null){
-            Toast.makeText(activity, "Welcome!"+ cu.getDisplayName(), Toast.LENGTH_SHORT).show();
-        }
-        updateUIafterLogin(activity,true);
+
+            firebaseAuthWithGoogle(account.getIdToken());
+            FirebaseUser cu = mAuth.getCurrentUser();
+
+            if(cu!=null){
+                Toast.makeText(activity, "Welcome!"+ cu.getDisplayName(), Toast.LENGTH_SHORT).show();
+            }
+            updateUIafterLogin(activity,true);
+
+      
 
         }catch (Exception e){
             Toast.makeText(activity, account.getDisplayName(), Toast.LENGTH_SHORT).show();
@@ -99,14 +105,21 @@ public class FirebaseController {
         String[] packages = {"Letter", "Laptop", "Jacket", "Certificate", "Backpack", "Payslip", "Vaccine" };
         //Writing 7 random delivery jobs to a temp delivery job array list
         for(int i=0;i<7;i++) {
-            DeliveryJob nDJ = new DeliveryJob();
             Random rand1 = new Random();
             Random rand2 = new Random();
-
             int n = rand1.nextInt(7);
             int m = rand2.nextInt(7);
 
+            DeliveryJob nDJ = new DeliveryJob();
             nDJ.addParcel(new Parcel( packages[n] + " from " + senders[m]));
+//            Customer customer = new Customer();
+//            db.collection("users").document("S6GVxjjGlwhiNoxQfAOJ6Q08S4Z2").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//
+//                }
+//            });
+//            nDJ.setReceiver();
             deliveryJobArrayList.add(nDJ);
         }
 
@@ -132,6 +145,30 @@ public class FirebaseController {
                         Log.w("FIREBASE", "Error updating document", e);
                     }
                 });
+
+        writedeliveryJobsToDriver( deliveryJobArrayList);
+    }
+    public void writedeliveryJobsToDriver(   ArrayList<DeliveryJob> deliveryJobArrayList){
+
+        final ArrayList<DeliveryJob> djal = deliveryJobArrayList;
+        db.collection("users").document("vVPfYGhf5nex005yGBnkikIoZrI3").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot doc = task.getResult();
+                    Driver driver = doc.toObject(Driver.class);
+                    driver.setDeliveryJobList(djal);
+                    updateDriver(driver);
+                }else{
+                    Log.d("Error","Firebasecontroller error");
+                }
+            }
+        });
+
+    }
+
+    public void updateDriver(Driver driver) {
+        db.collection("users").document("vVPfYGhf5nex005yGBnkikIoZrI3").set(driver);
     }
 
 
