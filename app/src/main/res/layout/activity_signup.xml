@@ -6,20 +6,21 @@
     android:orientation="vertical"
     tools:context=".SignupActivity">
 
-    <TextView
-        android:id="@+id/tvSignupTitle"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:background="@color/colorPrimaryLight"
-        android:gravity="center"
-        android:text="Create an Account"
-        android:textAlignment="center"
-        android:textSize="30sp" />
+<!--    <TextView-->
+<!--        android:id="@+id/tvSignupTitle"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="120dp"-->
+<!--        android:background="@color/colorPrimaryLight"-->
+<!--        android:gravity="center"-->
+<!--        android:text="Create an Account"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textSize="30sp" />-->
 
     <EditText
         android:id="@+id/etSignupDriverUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
         android:autofillHints=""
@@ -65,6 +66,8 @@
 
     <RadioGroup
         android:id="@+id/signupRadioBtnGroup"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
