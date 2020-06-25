@@ -25,6 +25,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
 import com.mobileassignment3.parcel_tracking_app.AssignDialog;
 import com.mobileassignment3.parcel_tracking_app.MasterListDocument;
 import com.mobileassignment3.parcel_tracking_app.NotificationActivity;
@@ -88,14 +89,16 @@ public class AdminMainActivity extends AppCompatActivity implements AssignDialog
 
     }
 
+
     public void assignDialog() {
         AssignDialog dialog = new AssignDialog();
         dialog.show(getSupportFragmentManager(), "Assign dialog");
     }
 
+    //TODO Make the assigndriver actually assign to the driver
     @Override
     public void assignDriver(String driverUsername) {
-        Toast.makeText(AdminMainActivity.this, "User is" + driverUsername, Toast.LENGTH_SHORT).show();
+        Toast.makeText(AdminMainActivity.this, "Driver is " + driverUsername, Toast.LENGTH_SHORT).show();
     }
 
     // implemented the menu item
