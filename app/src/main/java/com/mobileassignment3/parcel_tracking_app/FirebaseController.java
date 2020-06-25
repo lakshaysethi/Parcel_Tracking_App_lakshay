@@ -8,13 +8,17 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -35,7 +39,7 @@ import java.util.concurrent.Executor;
 import static android.content.ContentValues.TAG;
 
 public class FirebaseController {
-    private FirebaseAuth mAuth;
+    public FirebaseAuth mAuth;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     // Initialize Firebase Auth
@@ -43,6 +47,49 @@ public class FirebaseController {
 
     public FirebaseController() {
         mAuth = FirebaseAuth.getInstance();
+    }
+
+    public void handleGoogleSignIn(GoogleSignInAccount account,Activity activity) {
+try{
+
+    firebaseAuthWithGoogle(account.getIdToken());
+    FirebaseUser cu = mAuth.getCurrentUser();
+
+    if(cu!=null){
+        Toast.makeText(activity, "Welcome!"+ cu.getDisplayName(), Toast.LENGTH_SHORT).show();
+    }
+    updateUIafterLogin(activity,true);
+
+}catch (Exception e){
+    Toast.makeText(activity, account.getDisplayName(), Toast.LENGTH_SHORT).show();
+    Toast.makeText(activity, e.toString(), Toast.LENGTH_LONG).show();
+}
+
+
+
+
+    }
+    private void firebaseAuthWithGoogle(String idToken) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCredential:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            //updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                           // Snackbar.make(mBinding.mainLayout, "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
+                           // updateUI(null);
+                        }
+
+                        // ...
+                    }
+                });
     }
 
     public void writeMasterDeliveryJobsToFirestore(){
@@ -114,8 +161,8 @@ public class FirebaseController {
     }
 
 
-    public FirebaseUser createNewUser(final Activity activity,String email,String password) {
-        FirebaseUser user = getCurrentUser();
+    public FirebaseUser createNewUser(final Activity activity, String email, String password, final int type, final String username) {
+
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
                     @Override
@@ -128,7 +175,7 @@ public class FirebaseController {
 
                             Intent gotoLoginScreen = new Intent(activity, LoginActivity.class);
                             activity.startActivity(gotoLoginScreen);
-
+                           setupUserInDatabase(username,user,type);
                         } else {
                             // If sign in fails, display a message to the user.
                            Log.d("ERROR","firebase error can not make new user");
@@ -139,8 +186,18 @@ public class FirebaseController {
 
                     }
                 });
-        return user;
+        return getCurrentUser();
     }
+
+    private void setupUserInDatabase(String username,FirebaseUser user, int type) {
+        User parcelAppUser = new User();
+        parcelAppUser.setType(type);
+        parcelAppUser.setEmail(getCurrentUser().getEmail());
+        parcelAppUser.setUsername(username);
+
+        db.collection("users").document(getCurrentUser().getUid()).set(parcelAppUser);
+    }
+
 
     public void loginUser(final Activity activity , String email, String password) {
         logoutCurrentUser();
@@ -185,7 +242,7 @@ public class FirebaseController {
         }
     }
 
-    private void updateUIafterLogin(Activity activity,boolean success) {
+    private void updateUIafterLogin(Activity activity,boolean loginSuccess) {
 
     //  Intent myIntent = new Intent(activity, AdminMainActivity.class);
         Intent myIntent = new Intent(activity, DriverMainActivity.class);

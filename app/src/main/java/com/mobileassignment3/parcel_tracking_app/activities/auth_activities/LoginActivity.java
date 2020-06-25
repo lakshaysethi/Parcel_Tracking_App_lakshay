@@ -67,7 +67,9 @@ public class LoginActivity extends AppCompatActivity {
         });
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
         // Build a GoogleSignInClient with the options specified by gso.
@@ -89,6 +91,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -112,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
 
             // Signed in successfully, show authenticated UI.
             Toast.makeText(this, "Successfully  Signed In WITH GOOGLE", Toast.LENGTH_SHORT).show();
-
+            new FirebaseController().handleGoogleSignIn(account,this);
 //            updateUI(account);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
