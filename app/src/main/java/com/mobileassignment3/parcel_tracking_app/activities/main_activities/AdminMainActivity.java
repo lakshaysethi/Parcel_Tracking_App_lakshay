@@ -1,12 +1,15 @@
 package com.mobileassignment3.parcel_tracking_app.activities.main_activities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,9 +18,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -27,6 +30,7 @@ import com.mobileassignment3.parcel_tracking_app.NotificationActivity;
 import com.mobileassignment3.parcel_tracking_app.ProfileActivity;
 import com.mobileassignment3.parcel_tracking_app.R;
 import com.mobileassignment3.parcel_tracking_app.FirebaseController;
+import com.mobileassignment3.parcel_tracking_app.assignDialog;
 import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
 import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
@@ -36,10 +40,13 @@ import java.util.List;
 
 public class AdminMainActivity extends AppCompatActivity {
 
+    Button btnAssign;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         // new FirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
 
@@ -51,12 +58,11 @@ public class AdminMainActivity extends AppCompatActivity {
     }
 
     private void getDeliveryJobsListfromFirestore() {
+
         try{
             new FirebaseController().db.collection("masterDeliveryJobs")
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-
-
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
@@ -78,8 +84,26 @@ public class AdminMainActivity extends AppCompatActivity {
             Log.w("Firebase error", "Error getting documents.");
 
         }
+
+        //new FirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
+
+        //Temp implementation to show dialog for input
+        btnAssign = findViewById(R.id.btnAssign);
+
+        btnAssign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                assignDialog();
+            }
+        });
+
+
     }
 
+    public void assignDialog() {
+        assignDialog dialog = new assignDialog();
+        dialog.show(getSupportFragmentManager(), "Assign dialog");
+    }
 
     // implemented the menu item
     @Override
@@ -88,6 +112,7 @@ public class AdminMainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
     // implemented the menu item
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
@@ -95,7 +120,6 @@ public class AdminMainActivity extends AppCompatActivity {
             Intent myIntent = new Intent(AdminMainActivity.this, NotificationActivity.class);
             startActivity(myIntent);
             return(true);
-
     }
         return(super.onOptionsItemSelected(item));
     }
@@ -147,7 +171,26 @@ public class AdminMainActivity extends AppCompatActivity {
     //     }
     // }
 
-
+    public class assignDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Assign driver")
+                    .setPositiveButton("Assign", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // FIRE ZE MISSILES!
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
+    }
 
 }
 

@@ -62,11 +62,12 @@ public class FirebaseController {
             }
             updateUIafterLogin(activity,true);
 
+      
+
         }catch (Exception e){
             Toast.makeText(activity, account.getDisplayName(), Toast.LENGTH_SHORT).show();
             Toast.makeText(activity, e.toString(), Toast.LENGTH_LONG).show();
         }
-
     }
 
     private void firebaseAuthWithGoogle(String idToken) {
@@ -173,7 +174,6 @@ public class FirebaseController {
 
     public FirebaseUser getCurrentUser() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
-
         return currentUser;
     }
 
@@ -294,27 +294,24 @@ public class FirebaseController {
 
             }
         });
-
-
     }
+
     void doIntent(User user ,Activity activity) {
         Intent myIntent =new Intent(activity, LoginActivity.class);
         if (user.getPrimaryType()==User.DRIVER){
              myIntent = new Intent(activity, DriverMainActivity.class);
-
-
         }else if (user.getPrimaryType()==User.RECIEVER){
             myIntent = new Intent(activity, ReceiverMainActivity.class);
         }else {
              myIntent = new Intent(activity, AdminMainActivity.class);
         }
-
         //
         //
         activity.startActivity(myIntent);
-
     }
+
     public void logoutCurrentUser() {
         FirebaseAuth.getInstance().signOut();
     }
+
 }
