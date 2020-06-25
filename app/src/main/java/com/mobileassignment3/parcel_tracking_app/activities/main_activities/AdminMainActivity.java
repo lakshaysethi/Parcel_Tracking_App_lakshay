@@ -1,10 +1,12 @@
 package com.mobileassignment3.parcel_tracking_app.activities.main_activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,14 +18,21 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.mobileassignment3.parcel_tracking_app.MasterListDocument;
 import com.mobileassignment3.parcel_tracking_app.NotificationActivity;
 import com.mobileassignment3.parcel_tracking_app.ProfileActivity;
 import com.mobileassignment3.parcel_tracking_app.R;
 import com.mobileassignment3.parcel_tracking_app.FirebaseController;
 import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
 import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
+import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AdminMainActivity extends AppCompatActivity {
 
@@ -35,9 +44,38 @@ public class AdminMainActivity extends AppCompatActivity {
 
         setActionBarStuff();
 
-        setRecyclerViewStuff();
-        //new FirebaseController().writeMasterDeliveryJobsToFirestore();
-        new FirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
+//TODO doing here now
+        try{
+            new FirebaseController().db.collection("masterDeliveryJobs")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d("FIREBASE", document.getId() + " => " + document.getData());
+                                    if(document.contains("masterList")){
+                                        document.get("masterList");
+                                        List<DeliveryJob> Djal = document.toObject(MasterListDocument.class).masterList;
+                                        setRecyclerViewStuff( Djal);
+                                    }
+                                }
+                            } else {
+                                Log.w("Firebase error", "Error getting documents.", task.getException());
+                            }
+                        }
+                    });
+
+        }catch (Exception e){
+            Log.w("Firebase error", "Error getting documents.");
+
+        }
+
+
+
+        //new FirebaseController().getdeliveryJobsAssociatedWithAuthenticatedUser();
 
 
     }
@@ -79,7 +117,7 @@ public class AdminMainActivity extends AppCompatActivity {
         });
 
     }
-    void setRecyclerViewStuff(){
+    void setRecyclerViewStuff(List<DeliveryJob> Djal){
 
 
         RecyclerView rvAssignOrder = findViewById(R.id.rvAssignOrder);
@@ -92,22 +130,22 @@ public class AdminMainActivity extends AppCompatActivity {
         rvAssignOrder.setLayoutManager(layoutManagerAssignOrder);
 
         // specify an adapter
-        ArrayList<DeliveryJob> deliveryJobArrayListDataset = new ArrayList<DeliveryJob>();
-        updateDeliveryJobArrayList(deliveryJobArrayListDataset);
-        RecyclerView.Adapter adapterAssignOrder = new OrderAdapter(deliveryJobArrayListDataset);
+
+        //updateDeliveryJobArrayList(deliveryJobArrayListDataset);
+        RecyclerView.Adapter adapterAssignOrder = new OrderAdapter(Djal);
         rvAssignOrder.setAdapter(adapterAssignOrder);
 
     }
 
-    private void updateDeliveryJobArrayList(ArrayList<DeliveryJob> deliveryJobArrayListDataset) {
+    // private void updateDeliveryJobArrayList(List<DeliveryJob> deliveryJobArrayListDataset) {
 
-        for(int i=0;i<10;i++) {
-            DeliveryJob newDj =  new DeliveryJob();
-            Parcel newPsl =  new Parcel("Gift from Lakshay"+i);
-            newDj.addParcel(newPsl);
-            deliveryJobArrayListDataset.add(newDj);
-        }
-    }
+    //     for(int i=0;i<10;i++) {
+    //         DeliveryJob newDj =  new DeliveryJob();
+    //         Parcel newPsl =  new Parcel("Gift from Lakshay"+i);
+    //         newDj.addParcel(newPsl);
+    //         deliveryJobArrayListDataset.add(newDj);
+    //     }
+    // }
 
 
 
@@ -115,7 +153,7 @@ public class AdminMainActivity extends AppCompatActivity {
 
 
 class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
-    private ArrayList<DeliveryJob> deliveryJobArray;
+    private List<DeliveryJob> deliveryJobArray;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -135,7 +173,7 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public OrderAdapter(ArrayList<DeliveryJob> myDataset) {
+    public OrderAdapter(List<DeliveryJob> myDataset) {
         deliveryJobArray = myDataset;
     }
 
@@ -154,8 +192,8 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.textViewTitle.setText(deliveryJobArray.get(position).getTrackingNumber());
-        holder.textViewDetail.setText(deliveryJobArray.get(position).getStatus());
+        holder.textViewTitle.setText(deliveryJobArray.get(position).getListOfParcels().get(0).getDescription());
+        holder.textViewDetail.setText(deliveryJobArray.get(position).getStatusString());
     }
 
     @Override

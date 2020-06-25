@@ -14,7 +14,7 @@ public class DeliveryJob {
     final int NOT_DELIVERED = 0;
 
     int status;
-    UUID trackingNumber;
+    String trackingNumber;
     ArrayList<Parcel> listOfParcels = new ArrayList<Parcel>();
     Driver assignedDriver;
     Customer receiver;
@@ -23,7 +23,7 @@ public class DeliveryJob {
 
     public DeliveryJob() {
         this.status = NOT_DELIVERED;
-        this.trackingNumber = UUID.randomUUID();
+        this.trackingNumber = UUID.randomUUID().toString();
 
 
     }
@@ -31,7 +31,7 @@ public class DeliveryJob {
 
     public DeliveryJob(   Driver assignedDriver, Customer receiver, Date targetDeliveryTime) {
         this.status = NOT_DELIVERED;
-        this.trackingNumber = UUID.randomUUID();;
+        this.trackingNumber = UUID.randomUUID().toString();;
 
         this.assignedDriver = assignedDriver;
         this.receiver = receiver;
@@ -39,15 +39,17 @@ public class DeliveryJob {
     }
 
     public DeliveryJob(  Date targetDeliveryTime) {
-        this.trackingNumber = UUID.randomUUID();;
+        this.trackingNumber = UUID.randomUUID().toString();;
 
         this.targetDeliveryTime = targetDeliveryTime;
         this.status = NOT_DELIVERED;
     }
 
+    public int getStatus() {
+        return status;
+    }
 
-
-    public String getStatus() {
+    public String getStatusString() {
         if (status == DELIVERED){
             return "DELIVERED";
         }else if (status == NOT_DELIVERED){
@@ -65,7 +67,7 @@ public class DeliveryJob {
         return String.valueOf(trackingNumber);
     }
 
-    public void setTrackingNumber(UUID trackingNumber) {
+    public void setTrackingNumber(String trackingNumber) {
         this.trackingNumber = trackingNumber;
     }
 
