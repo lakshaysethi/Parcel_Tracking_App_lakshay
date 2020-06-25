@@ -19,7 +19,6 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.mobileassignment3.parcel_tracking_app.FirebaseController;
 import com.mobileassignment3.parcel_tracking_app.SignupActivity;
-import com.mobileassignment3.parcel_tracking_app.activities.main_activities.AdminMainActivity;
 import com.mobileassignment3.parcel_tracking_app.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -142,7 +141,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void loginUser(String email, String password) {
-       new FirebaseController().loginUser(this,email,password);
+       new FirebaseController().loginUserAndUpdateUI(this,email,password);
     }
 
 
