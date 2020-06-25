@@ -125,8 +125,10 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
     private void signIn() {
+//        finishAffinity();
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+
     }
     @Override
     protected void onStart() {
