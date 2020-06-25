@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
-        new FirebaseController().writeMasterDeliveryJobsToFirestore();
+        //new FirebaseController().writeMasterDeliveryJobsToFirestore();
         //will hide the title
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //hide the title bar
