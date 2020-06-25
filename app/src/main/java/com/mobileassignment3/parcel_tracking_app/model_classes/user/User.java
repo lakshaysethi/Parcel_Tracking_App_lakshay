@@ -2,33 +2,36 @@ package com.mobileassignment3.parcel_tracking_app.model_classes.user;
 
 import android.provider.ContactsContract;
 
+import java.util.ArrayList;
+
 
 public class User {
 
-final int DRIVER = 1001;
-final int RECIEVER = 1002;
-final int ADMIN = 1003;
+public    final static int DRIVER = 1001;
+    public final static int RECIEVER = 1002;
+    public final static int ADMIN = 1003;
+
     String email;
     String username;
 
-    int[] typeArray;
+    ArrayList<Integer> typeArray = new ArrayList<>();
 
-    public int[] getTypeArray() {
+    public ArrayList<Integer> getTypeArray() {
         return typeArray;
     }
     public int getPrimaryType() {
-            return this.typeArray[0];
+            return this.typeArray.get(0);
     }
     public void setType(int type) {
-        this.typeArray[0] = type;
+        this.typeArray.set(0, type);
     }
 
     public void setSecondaryType(int type) {
-        this.typeArray[1] = type;
+        this.typeArray.set(1,type);
     }
 
     public void setThirdType(int type) {
-        this.typeArray[3] = type;
+        this.typeArray.set(3,type);
     }
 
 

@@ -172,10 +172,10 @@ try{
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(activity, "SUCCESS! you can log in now", Toast.LENGTH_LONG).show();
-
+                            setupUserInDatabase(username,user,type);
                             Intent gotoLoginScreen = new Intent(activity, LoginActivity.class);
                             activity.startActivity(gotoLoginScreen);
-                           setupUserInDatabase(username,user,type);
+
                         } else {
                             // If sign in fails, display a message to the user.
                            Log.d("ERROR","firebase error can not make new user");
@@ -194,7 +194,7 @@ try{
         parcelAppUser.setType(type);
         parcelAppUser.setEmail(getCurrentUser().getEmail());
         parcelAppUser.setUsername(username);
-
+        
         db.collection("users").document(getCurrentUser().getUid()).set(parcelAppUser);
     }
 
