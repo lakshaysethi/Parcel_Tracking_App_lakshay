@@ -39,7 +39,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 import static android.content.ContentValues.TAG;
 
@@ -51,7 +50,7 @@ public class FirebaseController {
     // Initialize Firebase Auth
     public FirebaseController() {
         mAuth = FirebaseAuth.getInstance();
-//        makeAdminUser();
+      //makeAdminUser();
     }
 
 
@@ -149,8 +148,9 @@ public class FirebaseController {
                         Log.w("FIREBASE", "Error updating document", e);
                     }
                 });
+        //deliveryJobArrayList;
 
-        writedeliveryJobsToDriver( deliveryJobArrayList);
+        writedeliveryJobsToUser(deliveryJobArrayList,"3XhbnMbM9UT9TvcuC3KvROfR4Q03",User.ADMIN);
     }
 
 //    public void assignParcelToDriver(final String driverUserName){
@@ -221,17 +221,43 @@ public class FirebaseController {
 //
 //        writedeliveryJobsToDriver( deliveryJobArrayList);
 //    }
-    public void writedeliveryJobsToDriver(   ArrayList<DeliveryJob> deliveryJobArrayList){
+    public void writedeliveryJobsToUser(ArrayList<DeliveryJob> deliveryJobArrayList, final String uuid, final int userType){
 
         final ArrayList<DeliveryJob> djal = deliveryJobArrayList;
-        db.collection("users").document("vVPfYGhf5nex005yGBnkikIoZrI3").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        db.collection("users").document(uuid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
                     DocumentSnapshot doc = task.getResult();
-                    Driver driver = doc.toObject(Driver.class);
-                    driver.setDeliveryJobList(djal);
-                    updateDriver(driver);
+
+
+
+                    if (userType == User.DRIVER) {
+//            user = (Driver)user;
+                       Driver parcelappuser =    doc.toObject(Driver.class);
+                        parcelappuser.setDeliveryJobList(djal);
+
+                        updateUser(parcelappuser,uuid);
+                        db.collection("users").document(uuid).set(parcelappuser);
+
+                    } else if (userType == User.RECIEVER) {
+                      Customer  parcelappuser    =  doc.toObject(Customer.class);
+                        parcelappuser.setDeliveryJobList(djal);
+
+                        updateUser(parcelappuser,uuid);
+                        db.collection("users").document(uuid).set(parcelappuser);
+
+                    } else {
+                      Admin  parcelappuser   =  doc.toObject(Admin.class);
+                        parcelappuser.setDeliveryJobList(djal);
+
+                        updateUser(parcelappuser,uuid);
+                        //db.collection("users").document(uuid).set(parcelappuser);
+                    }
+
+
+
+
                 }else{
                     Log.d("Error","Firebasecontroller error");
                 }
@@ -240,8 +266,8 @@ public class FirebaseController {
 
     }
 
-    public void updateDriver(Driver driver) {
-        db.collection("users").document("vVPfYGhf5nex005yGBnkikIoZrI3").set(driver);
+    public void updateUser(Object user, String uuid) {
+        db.collection("users").document(uuid).set(user);
     }
 
     public FirebaseUser getCurrentFirebaseUserObject() {
@@ -300,14 +326,24 @@ public class FirebaseController {
         return getCurrentFirebaseUserObject();
     }
 
-    private void setupUserInDatabase(String username,FirebaseUser user, int type) {
-        User parcelAppUser = new User();
-        parcelAppUser.setType(type);
+    private void setupUserInDatabase(String username,FirebaseUser user, int usertype) {
+        User parcelAppUser;
+        if (usertype == User.DRIVER) {
+//
+             parcelAppUser = new Driver();
+        } else if (usertype == User.RECIEVER) {
+             parcelAppUser = new Customer();
+
+        } else {
+             parcelAppUser = new Admin();
+        }
+        parcelAppUser.setType(usertype);
         parcelAppUser.setEmail(getCurrentFirebaseUserObject().getEmail());
         parcelAppUser.setUsername(username);
 
         db.collection("users").document(getCurrentFirebaseUserObject().getUid()).set(parcelAppUser);
     }
+
 
     public void loginUser(final Activity activity , String email, String password) {
         logoutCurrentUser();
@@ -428,9 +464,9 @@ public class FirebaseController {
 
     private void doIntent(User user, Activity activity) {
         Intent myIntent = new Intent(activity, LoginActivity.class);
-        if (user.getPrimaryType() == User.DRIVER) {
+        if (user.typeArray.get(0) == User.DRIVER) {
             myIntent = new Intent(activity, DriverMainActivity.class);
-        } else if (user.getPrimaryType() == User.RECIEVER) {
+        } else if (user.typeArray.get(0) == User.RECIEVER) {
             myIntent = new Intent(activity, ReceiverMainActivity.class);
         } else {
             myIntent = new Intent(activity, AdminMainActivity.class);
@@ -578,7 +614,7 @@ public class FirebaseController {
 
 
                     User user =userDataDocumentSnapshot.toObject(User.class);
-                    int usertype = user.getPrimaryType();
+                    int usertype = user.typeArray.get(0);
                     if (usertype == User.DRIVER) {
 //            user = (Driver)user;
                         djal[0] =    userDataDocumentSnapshot.toObject(Driver.class).getDeliveryJobList();
