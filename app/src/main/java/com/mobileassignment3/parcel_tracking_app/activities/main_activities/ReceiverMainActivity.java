@@ -1,11 +1,14 @@
 package com.mobileassignment3.parcel_tracking_app.activities.main_activities;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,7 +17,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.mobileassignment3.parcel_tracking_app.FirebaseController;
 import com.mobileassignment3.parcel_tracking_app.NotificationActivity;
@@ -23,9 +28,11 @@ import com.mobileassignment3.parcel_tracking_app.R;
 import com.mobileassignment3.parcel_tracking_app.ReceiverMapsActivity;
 import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
 import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
+import com.mobileassignment3.parcel_tracking_app.model_classes.ParcelMessage;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ReceiverMainActivity extends AppCompatActivity {
 
@@ -40,6 +47,7 @@ public class ReceiverMainActivity extends AppCompatActivity {
         setActionBarStuff();
        
         setRecyclerViewStuff();
+
      }
 
     // implemented the menu item
@@ -71,6 +79,14 @@ public class ReceiverMainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(User user) {
                 getSupportActionBar().setTitle(user.getUsername());
+
+                // Lisnte to parcel notification messages
+                new FirebaseController().listenToMessage(user.getEmail(), new Date().getTime(), new OnSuccessListener<ParcelMessage>() {
+                    @Override
+                    public void onSuccess(ParcelMessage parcelMessage) {
+                        onCreateDialog(parcelMessage);
+                    }
+                });
             }
         });
     
@@ -82,6 +98,20 @@ public class ReceiverMainActivity extends AppCompatActivity {
             }
         });
     }
+
+    //Alert Dialog
+    public void onCreateDialog(ParcelMessage message) {
+        // Use the Builder class for convenient dialog construction
+        AlertDialog.Builder builder = new AlertDialog.Builder(getBaseContext());
+        builder.setTitle(message.title)
+                .setMessage(message.content)
+                .setPositiveButton("Yay!!", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) { }
+                });
+        // Create the AlertDialog object and return it
+        builder.create().show();
+    }
+
     void setRecyclerViewStuff(){
         
         RecyclerView rvParcel = findViewById(R.id.rvMyParcel);

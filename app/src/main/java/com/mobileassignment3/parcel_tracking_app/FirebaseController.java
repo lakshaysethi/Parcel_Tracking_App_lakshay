@@ -3,9 +3,11 @@ package com.mobileassignment3.parcel_tracking_app;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -22,7 +24,10 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobileassignment3.parcel_tracking_app.activities.auth_activities.LoginActivity;
@@ -31,10 +36,12 @@ import com.mobileassignment3.parcel_tracking_app.activities.main_activities.Driv
 import com.mobileassignment3.parcel_tracking_app.activities.main_activities.ReceiverMainActivity;
 import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
 import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
+import com.mobileassignment3.parcel_tracking_app.model_classes.ParcelMessage;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.Customer;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.Driver;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -416,6 +423,7 @@ public class FirebaseController {
         });
     }
 
+
     public void updateUIafterLogin(final Activity activity, boolean loginSuccess) {
         getUser(new OnSuccessListener<User>() {
             @Override
@@ -467,7 +475,7 @@ public class FirebaseController {
 
     private void setDeliveryJobsforAllUsersOnce(final List<Customer> custList) {
         try{
-            new FirebaseController().db.collection("masterDeliveryJobs")
+            db.collection("masterDeliveryJobs")
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
@@ -502,5 +510,61 @@ public class FirebaseController {
             Log.w("Firebase error", "Error getting documents.");
 
         }
+    }
+
+    public void sendMessageToReceiver(final String title, final String message, final String receiverEmail, final OnSuccessListener listener, final OnFailureListener failureListener) {
+        getUser(new OnSuccessListener<User>() {
+            @Override
+            public void onSuccess(User user) {
+                ParcelMessage data = new ParcelMessage(title, message, user.getEmail(), receiverEmail, (new Date()).getTime());
+                db.collection("messages").document(receiverEmail)
+                        .set(data)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "DocumentSnapshot successfully written!");
+                                if (listener != null) {
+                                    listener.onSuccess(aVoid);
+                                }
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error writing document", e);
+                                if (failureListener != null) {
+                                    failureListener.onFailure(e);
+                                }
+                            }
+                        });
+            }
+        });
+
+    }
+
+    public void listenToMessage(String receiverEmail, final long timestamp, final OnSuccessListener<ParcelMessage> listener) {
+        final DocumentReference docRef = db.collection("messages").document(receiverEmail);
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e);
+                    return;
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    Log.d(TAG, "Current data: " + snapshot.getData());
+
+                    if (listener != null) {
+                        ParcelMessage message = snapshot.toObject(ParcelMessage.class);
+                        if (message.timestamp >= timestamp) {
+                            listener.onSuccess(message);
+                        }
+                    }
+                } else {
+                    Log.d(TAG, "Current data: null");
+                }
+            }
+        });
     }
 }
