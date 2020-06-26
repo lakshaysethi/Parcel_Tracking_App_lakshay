@@ -8,22 +8,9 @@ import java.util.List;
 
 public class Admin extends User{
 
-
-    List<DeliveryJob> deliveryJobList;
-
     public Admin() {
     }
 
-    public Admin(String email, String username) {
-        super(email, username);
-    }
 
-    public List<DeliveryJob> getDeliveryJobList() {
-        return deliveryJobList;
-    }
-
-    public void setDeliveryJobList(List<DeliveryJob> deliveryJobList) {
-        this.deliveryJobList = deliveryJobList;
-    }
 
 }
