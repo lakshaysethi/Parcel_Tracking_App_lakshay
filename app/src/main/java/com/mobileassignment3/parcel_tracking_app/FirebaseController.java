@@ -203,9 +203,7 @@ public class FirebaseController {
 
     public Map<String, Object> getAllUsers(){
         final Map<String, Object> finalAllUsers = new HashMap<>();
-
         try {
-//            Map<String, Object> allUsers = new HashMap<>();
             db.collection("users")
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -213,50 +211,12 @@ public class FirebaseController {
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
-//                                    Log.d(TAG, document.getId() + " => " + document.getData());
-                                    //Log.d("key: ", document.getId());
                                     //put the UUId of the user and the user data into the allUsers hashmap
                                     finalAllUsers.put(document.getId(), document.getData());
                                 }
                                 Log.d("Temp", finalAllUsers.toString());
                             } else {
                                 Log.d(TAG, "Error getting documents: ", task.getException());
-                            }
-                        }
-                    });
-
-
-            db.collection("users")
-                    .get()
-//                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                            if (task.isSuccessful()) {
-//                                DocumentSnapshot document = task.getResult();
-//                                Log.d("FIRESTORE", "Cached document data: " + document.getData());
-//                                Log.d("TEST", "hurdur");
-//                            } else {
-//                                Log.w("Firebase error", "Error getting documents.", task.getException());
-//                            }
-//                        }
-//                    });
-
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                          Log.d("Thing", task.getResult().toString());
-                            if (task.isSuccessful()) {
-
-                                Log.d("FIREBASE", allUsersDocument.toString());
-
-//                                for (QueryDocumentSnapshot document : task.getResult()) {
-//                                    //Log.d("FIREBASE", document.getId() + " => " + document.getData());
-//                                    ArrayList<Map<String, Object>> DRAL = new ArrayList<>();
-//                                    DRAL.add(document.getData());
-//                                }
-                                Log.d("TEST", "hurdur");
-                            } else {
-                                Log.w("Firebase error", "Error getting documents.", task.getException());
                             }
                         }
                     });
