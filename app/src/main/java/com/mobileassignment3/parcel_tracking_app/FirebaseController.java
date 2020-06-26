@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -504,10 +505,61 @@ public class FirebaseController {
         }
     }
 /*
-Usage of getCurrentParcelTrackerUser function:
-
-User cu = getCurrentParcelTrackerUser(null,"username as set on signup");
-User cu = getCurrentParcelTrackerUser(null,"usertype Int as String");
+//Usage of getCurrentParcelTrackerUser function:
+//
+//User cu = getCurrentParcelTrackerUser(null,"username as set on signup");
+//User cu = getCurrentParcelTrackerUser(null,"usertype Int as String");
+//
+//* */
+//    public User getCurrentParcelTrackerUser(User user, final  String cuuid){
+//
+//        if (user != null   ){
+//            DocumentReference userData = db.collection("users").document(cuuid);
+//            Task<DocumentSnapshot> udataGetTask = userData.get();
+//
+//            udataGetTask.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                    if (task.isSuccessful()){
+//                        DocumentSnapshot userDataDocumentSnapshot = task.getResult();
+//                        User currentUser = userDataDocumentSnapshot.toObject(User.class);
+//                        getCurrentParcelTrackerUser(currentUser,cuuid);
+//                    }
+//                }
+//            });
+//            return user;
+//
+//        }
+////        try {
+////            TimeUnit.MILLISECONDS.sleep(400);
+////        } catch (InterruptedException e) {
+////            Log.d("SLeep error","Sleep Error");
+////            e.printStackTrace();
+////        }
+//        //TODO test above code later - it cloud work by not hanginig the entire application/ im concerend abot the task above
+//        return getCurrentParcelTrackerUser(user,cuuid);
+//
+//    }
+//
+////TODO #5
+//    public List<DeliveryJob> getdeliveryJobsAssociatedCurrentUser() {
+//        String cuuid = getCurrentFirebaseUserObject().getUid();
+//        User user = getCurrentParcelTrackerUser(null,cuuid);
+//        ArrayList<DeliveryJob> djal = new ArrayList<DeliveryJob>();
+//
+//        int usertype = user.getPrimaryType();
+//        if (usertype == User.DRIVER) {
+////            user = (Driver)user;
+//            return  ((Driver) user).getDeliveryJobList();
+//        } else if (usertype == User.RECIEVER) {
+//           return ( (Customer)user).getDeliveryJobList();
+//
+//        } else {
+//          return  ((Admin)user).getDeliveryJobList();
+//        }
+//
+////TODO convert above copied code to cunction the if switch
+//    }
 
 * */
     public User getCurrentParcelTrackerUser(User user, final  String cuuid){
