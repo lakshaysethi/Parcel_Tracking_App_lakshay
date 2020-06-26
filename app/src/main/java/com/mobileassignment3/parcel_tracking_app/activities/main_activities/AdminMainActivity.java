@@ -58,7 +58,7 @@ public class AdminMainActivity extends AppCompatActivity implements AssignDialog
         // here I am getting the delivery jobs from the firestore and setting the recyclerview
         getDeliveryJobsListfromFirestore();
         Map<String, Object> allUsers = new HashMap<>();
-        allUsers = new FirebaseController().getAllUsers();
+        //allUsers = new FirebaseController().getAllUsers();
 
     }
 
@@ -101,19 +101,16 @@ public class AdminMainActivity extends AppCompatActivity implements AssignDialog
              }
          });
 
-
     }
 
 
     public void assignDialog() {
         AssignDialog dialog = new AssignDialog();
         dialog.show(getSupportFragmentManager(), "Assign dialog");
-
     }
 
 
     //TODO Make the assigndriver actually assign to the driver
-    
     public void assignDriver(String driverUsername) {
          Toast.makeText(AdminMainActivity.this, "Driver is " + driverUsername, Toast.LENGTH_SHORT).show();
          new FirebaseController().assignParcelToDriver(driverUsername);
