@@ -27,6 +27,8 @@ public class LoginActivity extends AppCompatActivity {
     TextView usernameEditText;
     TextView passwordEditText;
     GoogleSignInClient mGoogleSignInClient;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,14 +37,11 @@ public class LoginActivity extends AppCompatActivity {
         usernameEditText = findViewById(R.id.etLoginUsername);
         passwordEditText = findViewById(R.id.etLoginPassword);
 
-
         setContentView(R.layout.activity_login);
         //will hide the title
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //hide the title bar
         getSupportActionBar().hide();
-
-
 
         tvLoginSignup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,11 +65,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-
-
        googleSignin();
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
