@@ -101,7 +101,7 @@ public class FirebaseController {
 //        createNewUser("admin@parcel.com","12345678",User.ADMIN,"admin");
 //    }
 
-    public void writeMasterDeliveryJobsToFirestore(){
+    public List<DeliveryJob> writeMasterDeliveryJobsToFirestore(){
 
         ArrayList<DeliveryJob> deliveryJobArrayList = new ArrayList<DeliveryJob>();
         String[] senders = {"Danica", "Lakhsay", "John Casey", "Raza", "Obama", "Paul Bartlett", "Dila"};
@@ -149,8 +149,9 @@ public class FirebaseController {
                     }
                 });
         //deliveryJobArrayList;
+       // writedeliveryJobsToUser(deliveryJobArrayList,"3XhbnMbM9UT9TvcuC3KvROfR4Q03",User.ADMIN);
+return deliveryJobArrayList;
 
-        writedeliveryJobsToUser(deliveryJobArrayList,"3XhbnMbM9UT9TvcuC3KvROfR4Q03",User.ADMIN);
     }
 
 //    public void assignParcelToDriver(final String driverUserName){
@@ -290,6 +291,10 @@ public class FirebaseController {
                             setupUserInDatabase(username,user,type);
                             Intent gotoLoginScreen = new Intent(activity, LoginActivity.class);
                             activity.startActivity(gotoLoginScreen);
+                           //TODO remove this
+                                writedeliveryJobsToUser((ArrayList<DeliveryJob>)writeMasterDeliveryJobsToFirestore(),getCurrentFirebaseUserObject().getUid(),User.RECIEVER);
+
+
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -600,7 +605,7 @@ public class FirebaseController {
 
 
 
-    public void setArraylistInAdapterOfActivity(RecyclerView rvParcel, ReceiverMainActivity receiverMainActivity) {
+    public void setArraylistInAdapterOfActivity(RecyclerView rvParcel, Activity receiverMainActivity) {
         String cuuid = getCurrentFirebaseUserObject().getUid();
         DocumentReference userData = db.collection("users").document(cuuid);
         Task<DocumentSnapshot> udataGetTask = userData.get();
