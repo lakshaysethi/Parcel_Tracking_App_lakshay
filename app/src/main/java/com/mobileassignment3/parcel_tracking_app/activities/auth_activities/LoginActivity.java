@@ -37,7 +37,6 @@ public class LoginActivity extends AppCompatActivity {
         usernameEditText = findViewById(R.id.etLoginUsername);
         passwordEditText = findViewById(R.id.etLoginPassword);
 
-        setContentView(R.layout.activity_login);
 
         //new FirebaseController().writeMasterDeliveryJobsToFirestore();
         //will hide the title
@@ -45,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         //hide the title bar
         getSupportActionBar().hide();
 
+        setContentView(R.layout.activity_login);
         tvLoginSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
