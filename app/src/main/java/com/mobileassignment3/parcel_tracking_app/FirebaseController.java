@@ -1,7 +1,6 @@
 package com.mobileassignment3.parcel_tracking_app;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
@@ -19,7 +18,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -31,6 +29,7 @@ import com.mobileassignment3.parcel_tracking_app.activities.main_activities.Driv
 import com.mobileassignment3.parcel_tracking_app.activities.main_activities.ReceiverMainActivity;
 import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
 import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
+import com.mobileassignment3.parcel_tracking_app.model_classes.user.Admin;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.Customer;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.Driver;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
