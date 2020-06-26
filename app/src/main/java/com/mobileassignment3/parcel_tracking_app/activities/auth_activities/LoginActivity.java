@@ -19,7 +19,6 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.mobileassignment3.parcel_tracking_app.FirebaseController;
 import com.mobileassignment3.parcel_tracking_app.SignupActivity;
-import com.mobileassignment3.parcel_tracking_app.activities.main_activities.AdminMainActivity;
 import com.mobileassignment3.parcel_tracking_app.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -59,28 +58,7 @@ public class LoginActivity extends AppCompatActivity {
                 String username = usernameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
 
-                loginUser(username,password);
 
-            }
-        });
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.sign_in_button:
-                        signIn();
-                        break;
-                    // ...
-                }
             }
         });
         doOnce();
@@ -126,24 +104,7 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "FAILED TO SIGNIN WITH GOOGLE", Toast.LENGTH_SHORT).show();
         }
     }
-    private void signIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-    @Override
-    protected void onStart() {
-        super.onStart();
 
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-//        updateUI(account);
-    }
-
-
-    private void loginUser(String email, String password) {
-
-       new FirebaseController().loginUser(this,email,password);
-
-    }
 
 
 
