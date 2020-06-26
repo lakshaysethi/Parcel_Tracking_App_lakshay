@@ -32,10 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TextView tvLoginSignup = findViewById(R.id.tvLoginSignup);
-        Button btnLogin = findViewById(R.id.btnLogin);
-        usernameEditText = findViewById(R.id.etLoginUsername);
-        passwordEditText = findViewById(R.id.etLoginPassword);
+
 
 
         //new FirebaseController().writeMasterDeliveryJobsToFirestore();
@@ -45,6 +42,10 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         setContentView(R.layout.activity_login);
+        TextView tvLoginSignup = findViewById(R.id.tvLoginSignup);
+        Button btnLogin = findViewById(R.id.btnLogin);
+        usernameEditText = findViewById(R.id.etLoginUsername);
+        passwordEditText = findViewById(R.id.etLoginPassword);
         tvLoginSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
