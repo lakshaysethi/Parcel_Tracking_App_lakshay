@@ -541,11 +541,22 @@ User cu = getCurrentParcelTrackerUser(null,"usertype Int as String");
 
     }
 
-
-    public ArrayList<DeliveryJob> getdeliveryJobsAssociatedCurrentUser() {
-        User user = getCurrentParcelTrackerUser(null,"");
+//TODO #5
+    public List<DeliveryJob> getdeliveryJobsAssociatedCurrentUser() {
+        String cuuid = getCurrentFirebaseUserObject().getUid();
+        User user = getCurrentParcelTrackerUser(null,cuuid);
         ArrayList<DeliveryJob> djal = new ArrayList<DeliveryJob>();
 
+        int usertype = user.getPrimaryType();
+        if (usertype == User.DRIVER) {
+//            user = (Driver)user;
+            return  ((Driver) user).getDeliveryJobList();
+        } else if (usertype == User.RECIEVER) {
+           return ( (Customer)user).getDeliveryJobList();
+
+        } else {
+          return  ((Admin)user).getDeliveryJobList();
+        }
 
         return djal;
     }
