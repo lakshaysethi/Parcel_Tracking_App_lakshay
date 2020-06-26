@@ -31,6 +31,10 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TextView tvLoginSignup = findViewById(R.id.tvLoginSignup);
+        Button btnLogin = findViewById(R.id.btnLogin);
+        usernameEditText = findViewById(R.id.etLoginUsername);
+        passwordEditText = findViewById(R.id.etLoginPassword);
 
 
         new FirebaseController().writeMasterDeliveryJobsToFirestore();
@@ -51,11 +55,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(myIntent);
             }
         });
-
-       usernameEditText = findViewById(R.id.etLoginUsername);
-
-
-        passwordEditText = findViewById(R.id.etLoginPassword);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
