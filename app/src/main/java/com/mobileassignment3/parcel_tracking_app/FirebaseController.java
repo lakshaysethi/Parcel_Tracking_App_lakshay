@@ -1,6 +1,7 @@
 package com.mobileassignment3.parcel_tracking_app;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
@@ -48,7 +49,7 @@ public class FirebaseController {
     // Initialize Firebase Auth
     public FirebaseController() {
         mAuth = FirebaseAuth.getInstance();
-        makeAdminUser();
+//        makeAdminUser();
     }
 
 
@@ -63,11 +64,12 @@ public class FirebaseController {
             }
             updateUIafterLogin(activity,true);
 
+      
+
         }catch (Exception e){
             Toast.makeText(activity, account.getDisplayName(), Toast.LENGTH_SHORT).show();
             Toast.makeText(activity, e.toString(), Toast.LENGTH_LONG).show();
         }
-
     }
 
     private void firebaseAuthWithGoogle(String idToken) {
@@ -94,9 +96,9 @@ public class FirebaseController {
     }
 
 
-    public void  makeAdminUser(){
-        createNewUser("admin@parcel.com","12345678",User.ADMIN,"admin");
-    }
+//    private void  makeAdminUser(){
+//        createNewUser("admin@parcel.com","12345678",User.ADMIN,"admin");
+//    }
 
     public void writeMasterDeliveryJobsToFirestore(){
 
@@ -174,7 +176,6 @@ public class FirebaseController {
 
     public FirebaseUser getCurrentUser() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
-
         return currentUser;
     }
 
@@ -238,51 +239,56 @@ public class FirebaseController {
         db.collection("users").document(getCurrentUser().getUid()).set(parcelAppUser);
     }
 
-
-    public void loginUser(final Activity activity , String email, String password) {
+    public void loginUser(String email, String password, final OnCompleteListener<AuthResult> callback) {
         logoutCurrentUser();
-        if (email !=null&&!email.equals("")){
-            if(password!=null&&!password.equals("")){
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (callback != null) {
+                            callback.onComplete(task);
+                        }
+                    }
+                });
+    }
 
-                mAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Log.d(TAG, "signInWithEmail:success");
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    if (user != null)
-                                        Toast.makeText(activity.getApplicationContext(),
-                                                "Welcome! "+ user.getEmail(), Toast.LENGTH_LONG).show();
-                                    else Toast.makeText(activity.getApplicationContext(),
-                                            "Failed - user is null", Toast.LENGTH_LONG).show();
-                                    updateUIafterLogin(activity,true);
-
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                    if (task.getException().getClass().toString().contains("Credentials"))
-                                    Toast.makeText(activity.getApplicationContext(), "Failed to Login: Invalid Credentials", Toast.LENGTH_LONG).show();
-                                    else if (task.getException().getClass().toString().contains("TooManyRequest"))
-                                        Toast.makeText(activity.getApplicationContext(),"Too many Requests please wait a few seconds before trying again" , Toast.LENGTH_LONG).show();
-                                    else
-                                        Toast.makeText(activity.getApplicationContext(),task.getException().getClass().toString() , Toast.LENGTH_LONG).show();
-
-
-
-                                }
-                            }
-                        });
-            }else{
+    public void loginUserAndUpdateUI(final Activity activity, String email, String password) {
+        if (email != null && !email.equals("")) {
+            if (password != null && !password.equals("")) {
+                loginUser(email, password, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            if (user != null)
+                                Toast.makeText(activity.getApplicationContext(),
+                                        "Welcome! " + user.getEmail(), Toast.LENGTH_LONG).show();
+                            else Toast.makeText(activity.getApplicationContext(),
+                                    "Failed - user is null", Toast.LENGTH_LONG).show();
+                            updateUIafterLogin(activity, true);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            if (task.getException().getClass().toString().contains("Credentials"))
+                                Toast.makeText(activity.getApplicationContext(), "Failed to Login: Invalid Credentials", Toast.LENGTH_LONG).show();
+                            else if (task.getException().getClass().toString().contains("TooManyRequest"))
+                                Toast.makeText(activity.getApplicationContext(), "Too many Requests please wait a few seconds before trying again", Toast.LENGTH_LONG).show();
+                            else
+                                Toast.makeText(activity.getApplicationContext(), task.getException().getClass().toString(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            } else {
                 Toast.makeText(activity, "Please enter your PASSWORD", Toast.LENGTH_LONG).show();
             }
-        }else{
+        } else {
             Toast.makeText(activity, "Please Enter your EMAIL", Toast.LENGTH_LONG).show();
         }
     }
 
-    private void updateUIafterLogin(final Activity activity, boolean loginSuccess) {
+    public void getUser(final OnSuccessListener<User> callback) {
         FirebaseUser cu = getCurrentUser();
 
         DocumentReference docRef = db.collection("users").document(cu.getUid());
@@ -290,31 +296,35 @@ public class FirebaseController {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 User user = documentSnapshot.toObject(User.class);
-
-                doIntent(user,activity);
-
+                if (callback != null) {
+                    callback.onSuccess(user);
+                }
             }
         });
-
-
     }
-    void doIntent(User user ,Activity activity) {
-        Intent myIntent =new Intent(activity, LoginActivity.class);
-        if (user.getPrimaryType()==User.DRIVER){
-             myIntent = new Intent(activity, DriverMainActivity.class);
 
+    public void updateUIafterLogin(final Activity activity, boolean loginSuccess) {
+        getUser(new OnSuccessListener<User>() {
+            @Override
+            public void onSuccess(User user) {
+                doIntent(user, activity);
+            }
+        });
+    }
 
-        }else if (user.getPrimaryType()==User.RECIEVER){
+    private void doIntent(User user, Activity activity) {
+        Intent myIntent = new Intent(activity, LoginActivity.class);
+        if (user.getPrimaryType() == User.DRIVER) {
+            myIntent = new Intent(activity, DriverMainActivity.class);
+        } else if (user.getPrimaryType() == User.RECIEVER) {
             myIntent = new Intent(activity, ReceiverMainActivity.class);
-        }else {
-             myIntent = new Intent(activity, AdminMainActivity.class);
+        } else {
+            myIntent = new Intent(activity, AdminMainActivity.class);
         }
-
-        //
-        //
         activity.startActivity(myIntent);
-
+        activity.finishAffinity();
     }
+
     public void logoutCurrentUser() {
         FirebaseAuth.getInstance().signOut();
     }

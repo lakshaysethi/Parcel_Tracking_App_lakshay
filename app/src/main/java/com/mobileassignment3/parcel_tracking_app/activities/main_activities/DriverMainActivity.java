@@ -20,7 +20,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobileassignment3.parcel_tracking_app.FirebaseController;
@@ -49,10 +51,12 @@ public class DriverMainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
-        //TODO get the driver's user name
-//        FirebaseUser currentuser = new FirebaseController().getCurrentUser();
-//        String username = currentuser.getUsername();
-//        getSupportActionBar().setTitle(username);
+        new FirebaseController().getUser(new OnSuccessListener<User>() {
+            @Override
+            public void onSuccess(User user) {
+                getSupportActionBar().setTitle(user.getUsername());
+            }
+        });
 
         // Click the action bar title to open the profile activity
         findViewById(R.id.action_bar).setOnClickListener(new View.OnClickListener() {

@@ -23,6 +23,7 @@
         android:layout_marginTop="80dp"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
+        android:textSize="20sp"
         android:autofillHints=""
         android:hint="@string/username"
         android:inputType="text"
@@ -37,6 +38,7 @@
         android:layout_marginEnd="40dp"
         android:autofillHints=""
         android:hint="@string/email"
+        android:textSize="20sp"
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true" />
 
@@ -49,6 +51,7 @@
         android:layout_marginEnd="40dp"
         android:autofillHints=""
         android:hint="@string/password"
+        android:textSize="20sp"
         android:inputType="textPassword"
         android:selectAllOnFocus="true" />
 
@@ -60,6 +63,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="40dp"
         android:autofillHints=""
+        android:textSize="20sp"
         android:hint="@string/confirm_password"
         android:inputType="textPassword"
         android:selectAllOnFocus="true" />
@@ -75,12 +79,14 @@
             android:id="@+id/radioButtonDriver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="20sp"
             android:text="Signup as Driver" />
 
         <RadioButton
             android:id="@+id/radioButton2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="20sp"
             android:text="Signup as Receiver" />
     </RadioGroup>
 
@@ -90,7 +96,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="64dp"
         android:background="@drawable/button_primary"

@@ -15,12 +15,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.mobileassignment3.parcel_tracking_app.FirebaseController;
 import com.mobileassignment3.parcel_tracking_app.NotificationActivity;
 import com.mobileassignment3.parcel_tracking_app.ProfileActivity;
 import com.mobileassignment3.parcel_tracking_app.R;
 import com.mobileassignment3.parcel_tracking_app.ReceiverMapsActivity;
 import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
 import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
+import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
+
 import java.util.ArrayList;
 
 public class ReceiverMainActivity extends AppCompatActivity {
@@ -62,8 +66,13 @@ public class ReceiverMainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.ic_person_pin_black_24dp);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
-        //TODO get the receiver's username
-        getSupportActionBar().setTitle("Receiver name");
+
+        new FirebaseController().getUser(new OnSuccessListener<User>() {
+            @Override
+            public void onSuccess(User user) {
+                getSupportActionBar().setTitle(user.getUsername());
+            }
+        });
     
         findViewById(R.id.action_bar).setOnClickListener(new View.OnClickListener() {
             @Override
