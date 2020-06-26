@@ -45,8 +45,6 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
 
-        TextView tvLoginSignup = findViewById(R.id.tvLoginSignup);
-        Button btnLogin = findViewById(R.id.btnLogin);
 
         tvLoginSignup.setOnClickListener(new View.OnClickListener() {
             @Override
