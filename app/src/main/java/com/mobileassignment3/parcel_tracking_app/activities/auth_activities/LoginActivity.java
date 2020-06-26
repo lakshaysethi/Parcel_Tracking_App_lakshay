@@ -65,10 +65,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         doOnce();
+        googleSignin();
 
-
-
-       googleSignin();
     }
 
     @Override
