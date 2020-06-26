@@ -558,6 +558,6 @@ User cu = getCurrentParcelTrackerUser(null,"usertype Int as String");
           return  ((Admin)user).getDeliveryJobList();
         }
 
-        return djal;
+//TODO convert above copied code to cunction the if switch
     }
 }
