@@ -96,7 +96,7 @@ public class ReceiverMainActivity extends AppCompatActivity {
 
         // specify an adapter
 
-        ArrayList<DeliveryJob> deliveryJobsAssociatedWithAuthenticatedUser = new ArrayList<DeliveryJob>(); //FirebaseController.getdeliveryJobsAssociatedWithAuthenticatedUser();
+        ArrayList<DeliveryJob> deliveryJobsAssociatedWithAuthenticatedUser =(ArrayList<DeliveryJob>) new FirebaseController().getdeliveryJobsAssociatedCurrentUser();
 
 
         RecyclerView.Adapter adapterParcel = new RecieverDeliveryJobAdapter(this,deliveryJobsAssociatedWithAuthenticatedUser);
