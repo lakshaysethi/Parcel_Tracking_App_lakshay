@@ -2,6 +2,7 @@ package com.mobileassignment3.parcel_tracking_app;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,8 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
-public class assignDialog extends AppCompatDialogFragment {
+public class AssignDialog extends AppCompatDialogFragment {
     private EditText editDriverUsername;
+    private assignDialogListener listener;
+
 
     @NonNull
     @Override
@@ -33,12 +36,27 @@ public class assignDialog extends AppCompatDialogFragment {
                 .setPositiveButton("Assign", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        String username = editDriverUsername.getText().toString();
+                        listener.assignDriver(username);
                     }
                 });
 
         editDriverUsername = view.findViewById(R.id.driverUsername);
 
         return builder.create();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            listener = (assignDialogListener) context;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public interface assignDialogListener{
+        void assignDriver(String driverUsername);
     }
 }

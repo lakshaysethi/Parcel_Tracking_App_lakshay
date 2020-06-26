@@ -38,6 +38,8 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.etLoginPassword);
 
         setContentView(R.layout.activity_login);
+
+        //new FirebaseController().writeMasterDeliveryJobsToFirestore();
         //will hide the title
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //hide the title bar
@@ -80,8 +82,6 @@ public class LoginActivity extends AppCompatActivity {
             handleSignInResult(task);
         }
 
-
-        
     }
     @Override
     protected void onStart() {
