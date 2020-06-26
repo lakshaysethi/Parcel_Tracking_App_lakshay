@@ -27,6 +27,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.mobileassignment3.parcel_tracking_app.activities.auth_activities.LoginActivity;
 import com.mobileassignment3.parcel_tracking_app.activities.main_activities.AdminMainActivity;
 import com.mobileassignment3.parcel_tracking_app.activities.main_activities.DriverMainActivity;
+import com.mobileassignment3.parcel_tracking_app.activities.main_activities.MainActivityForAllUsers;
 import com.mobileassignment3.parcel_tracking_app.activities.main_activities.ReceiverMainActivity;
 import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
 import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
@@ -348,7 +349,23 @@ return deliveryJobArrayList;
 
         db.collection("users").document(getCurrentFirebaseUserObject().getUid()).set(parcelAppUser);
     }
+    private void setupUserInDatabase2(String username, int usertype) {
+        User parcelAppUser;
+        if (usertype == User.DRIVER) {
+//
+            parcelAppUser = new Driver();
+        } else if (usertype == User.RECIEVER) {
+            parcelAppUser = new Customer();
 
+        } else {
+            parcelAppUser = new Admin();
+        }
+        parcelAppUser.setType(usertype);
+        parcelAppUser.setEmail(getCurrentFirebaseUserObject().getEmail());
+        parcelAppUser.setUsername(username);
+
+        db.collection("users").document(getCurrentFirebaseUserObject().getUid()).set(parcelAppUser);
+    }
 
     public void loginUser(final Activity activity , String email, String password) {
         logoutCurrentUser();
@@ -462,7 +479,15 @@ return deliveryJobArrayList;
         getUser(new OnSuccessListener<User>() {
             @Override
             public void onSuccess(User user) {
-                doIntent(user, activity);
+                if (user.getDeliveryJobList().isEmpty()){
+                    setupUserInDatabase2(user.getUsername(),user.getTypeArray().get(0));
+                }
+                try{
+                    doIntent(user, activity);
+
+                }catch(Exception e){
+                    Toast.makeText(activity, "Still setting you up please login again" +e.toString(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -605,7 +630,8 @@ return deliveryJobArrayList;
 
 
 
-    public void setArraylistInAdapterOfActivity(RecyclerView rvParcel, Activity receiverMainActivity) {
+    public void setArraylistInAdapterOfActivity(RecyclerView rvParcel, MainActivityForAllUsers MainActivity) {
+
         String cuuid = getCurrentFirebaseUserObject().getUid();
         DocumentReference userData = db.collection("users").document(cuuid);
         Task<DocumentSnapshot> udataGetTask = userData.get();
@@ -633,7 +659,7 @@ return deliveryJobArrayList;
                 }
             }
         });
-        receiverMainActivity.setArraylistInAdapter(rvParcel,(ArrayList<DeliveryJob>) djal[0]);
+        MainActivity.setArraylistInAdapter(rvParcel,(ArrayList<DeliveryJob>) djal[0]);
 
     }
 }
