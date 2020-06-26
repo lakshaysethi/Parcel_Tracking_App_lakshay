@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import static android.content.ContentValues.TAG;
 
@@ -502,5 +503,53 @@ public class FirebaseController {
             Log.w("Firebase error", "Error getting documents.");
 
         }
+    }
+/*
+Usage of getCurrentParcelTrackerUser function:
+
+User cu = getCurrentParcelTrackerUser(null,"username as set on signup");
+User cu = getCurrentParcelTrackerUser(null,"usertype Int as String");
+
+* */
+    public User getCurrentParcelTrackerUser(User user, final String expectation){
+
+        if (user != null && (user.getUsername().equals(expectation)|| user.getTypeArray().get(0).toString().equals(expectation) ) ){
+                FirebaseUser currentUser = getCurrentFirebaseUserObject();
+                String cuuid = currentUser.getUid();
+
+                DocumentReference userData = db.collection("users").document(cuuid);
+                Task<DocumentSnapshot> udataGetTask = userData.get();
+
+                udataGetTask.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()){
+                            DocumentSnapshot userDataDocumentSnapshot = task.getResult();
+                            User currentUser = userDataDocumentSnapshot.toObject(User.class);
+                            getCurrentParcelTrackerUser(currentUser,expectation);
+                        }
+                    }
+                });
+            return user;
+
+        }
+//        try {
+//            TimeUnit.MILLISECONDS.sleep(400);
+//        } catch (InterruptedException e) {
+//            Log.d("SLeep error","Sleep Error")
+//            e.printStackTrace();
+//        }
+        //TODO test above code later - it cloud work by not hanginig the entire application/ im concerend abot the task above
+        return getCurrentParcelTrackerUser(user,expectation);
+
+    }
+
+
+    public ArrayList<DeliveryJob> getdeliveryJobsAssociatedCurrentUser() {
+        User user = getCurrentParcelTrackerUser(null,"");
+        ArrayList<DeliveryJob> djal = new ArrayList<DeliveryJob>();
+
+
+        return djal;
     }
 }
