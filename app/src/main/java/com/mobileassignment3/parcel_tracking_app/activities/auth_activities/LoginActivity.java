@@ -68,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+       googleSignin();
     }
 
 
@@ -95,6 +96,27 @@ public class LoginActivity extends AppCompatActivity {
          //new FirebaseController().setDeliveryJobsforAllUsersOnce();
     }
 
+    private void googleSignin() {
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.sign_in_button:
+                        startgoogleSignInIntent();
+                        break;
+                    // ...
+                }
+            }
+        });
+    }
     private void handleSignInResult( Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
