@@ -5,6 +5,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -95,8 +96,12 @@ public class ReceiverMainActivity extends AppCompatActivity {
         //TODO get the delivery for myparcel  from firestore #5
 
         // specify an adapter
+        new FirebaseController().setArraylistInAdapterOfActivity(rvParcel,this);
 
-        ArrayList<DeliveryJob> deliveryJobsAssociatedWithAuthenticatedUser =(ArrayList<DeliveryJob>) new FirebaseController().getdeliveryJobsAssociatedCurrentUser();
+    }
+
+    public void setArraylistInAdapter( RecyclerView rvParcel,ArrayList<DeliveryJob> djal) {
+        ArrayList<DeliveryJob> deliveryJobsAssociatedWithAuthenticatedUser = djal;
 
 
         RecyclerView.Adapter adapterParcel = new RecieverDeliveryJobAdapter(this,deliveryJobsAssociatedWithAuthenticatedUser);
