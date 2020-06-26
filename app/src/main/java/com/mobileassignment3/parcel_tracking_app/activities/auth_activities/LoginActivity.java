@@ -37,7 +37,6 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.etLoginPassword);
 
 
-        new FirebaseController().writeMasterDeliveryJobsToFirestore();
         setContentView(R.layout.activity_login);
         //will hide the title
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -84,6 +83,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+        doOnce();
 
 
 
@@ -106,6 +106,9 @@ public class LoginActivity extends AppCompatActivity {
 
 
         
+    private void doOnce() {
+       // new FirebaseController().writeMasterDeliveryJobsToFirestore();
+         new FirebaseController().setDeliveryJobsforAllUsersOnce();
     }
 
     private void handleSignInResult( Task<GoogleSignInAccount> completedTask) {
