@@ -86,16 +86,32 @@ public class LoginActivity extends AppCompatActivity {
 
 
         
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+//        updateUI(account);
+    }
+
+    //main login function;
     private void loginUserWithEmail(String email, String password) {
 
        new FirebaseController().loginUser(this,email,password);
 
     }
+    //do once
     private void doOnce() {
        // new FirebaseController().writeMasterDeliveryJobsToFirestore();
          //new FirebaseController().setDeliveryJobsforAllUsersOnce();
     }
 
+    //google signin code below
+    private void startgoogleSignInIntent() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
     private void googleSignin() {
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
