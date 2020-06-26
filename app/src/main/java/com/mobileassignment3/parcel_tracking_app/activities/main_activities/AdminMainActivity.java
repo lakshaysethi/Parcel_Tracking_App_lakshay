@@ -38,9 +38,7 @@ import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class AdminMainActivity extends AppCompatActivity implements AssignDialog.assignDialogListener{
 
@@ -57,8 +55,7 @@ public class AdminMainActivity extends AppCompatActivity implements AssignDialog
         setActionBarStuff();
         // here I am getting the delivery jobs from the firestore and setting the recyclerview
         getDeliveryJobsListfromFirestore();
-        Map<String, Object> allUsers = new HashMap<>();
-        //allUsers = new FirebaseController().getAllUsers();
+
 
     }
 
@@ -94,12 +91,13 @@ public class AdminMainActivity extends AppCompatActivity implements AssignDialog
 
         //Temp implementation to show dialog for input
         btnAssign = findViewById(R.id.btnAssign);
-         btnAssign.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 assignDialog();
-             }
-         });
+        // btnAssign.setOnClickListener(new View.OnClickListener() {
+        //     @Override
+        //     public void onClick(View v) {
+        //         assignDialog();
+        //     }
+        // });
+
 
     }
 
@@ -107,13 +105,15 @@ public class AdminMainActivity extends AppCompatActivity implements AssignDialog
     public void assignDialog() {
         AssignDialog dialog = new AssignDialog();
         dialog.show(getSupportFragmentManager(), "Assign dialog");
+
     }
 
 
     //TODO Make the assigndriver actually assign to the driver
+    
     public void assignDriver(String driverUsername) {
-         Toast.makeText(AdminMainActivity.this, "Driver is " + driverUsername, Toast.LENGTH_SHORT).show();
-         new FirebaseController().assignParcelToDriver(driverUsername);
+        // Toast.makeText(AdminMainActivity.this, "Driver is " + driverUsername, Toast.LENGTH_SHORT).show();
+        // new FirebaseController().assignParcelToDriver(driverUsername);
     }
 
 
