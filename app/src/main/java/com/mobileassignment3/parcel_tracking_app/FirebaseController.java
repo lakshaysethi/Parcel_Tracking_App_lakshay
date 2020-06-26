@@ -564,21 +564,35 @@ public class FirebaseController {
 
 
 
+    public void setArraylistInAdapterOfActivity(RecyclerView rvParcel, ReceiverMainActivity receiverMainActivity) {
         String cuuid = getCurrentFirebaseUserObject().getUid();
-        User user = getCurrentParcelTrackerUser(null,cuuid);
-        ArrayList<DeliveryJob> djal = new ArrayList<DeliveryJob>();
+        DocumentReference userData = db.collection("users").document(cuuid);
+        Task<DocumentSnapshot> udataGetTask = userData.get();
+        final List<DeliveryJob>[] djal = new List[]{new ArrayList<DeliveryJob>()};
+        udataGetTask.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    DocumentSnapshot userDataDocumentSnapshot = task.getResult();
 
-        int usertype = user.getPrimaryType();
-        if (usertype == User.DRIVER) {
+
+
+                    User user =userDataDocumentSnapshot.toObject(User.class);
+                    int usertype = user.getPrimaryType();
+                    if (usertype == User.DRIVER) {
 //            user = (Driver)user;
-            return  ((Driver) user).getDeliveryJobList();
-        } else if (usertype == User.RECIEVER) {
-           return ( (Customer)user).getDeliveryJobList();
+                        djal[0] =    userDataDocumentSnapshot.toObject(Driver.class).getDeliveryJobList();
+                    } else if (usertype == User.RECIEVER) {
+                       djal[0] =  userDataDocumentSnapshot.toObject(Customer.class).getDeliveryJobList();
 
-        } else {
-          return  ((Admin)user).getDeliveryJobList();
-        }
+                    } else {
+                        djal[0] =  userDataDocumentSnapshot.toObject(Admin.class).getDeliveryJobList();
+                    }
 
-//TODO convert above copied code to cunction the if switch
+                }
+            }
+        });
+        receiverMainActivity.setArraylistInAdapter(rvParcel,(ArrayList<DeliveryJob>) djal[0]);
+
     }
 }
