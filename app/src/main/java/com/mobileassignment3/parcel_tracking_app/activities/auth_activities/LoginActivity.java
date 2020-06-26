@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
     }
     private void doOnce() {
        // new FirebaseController().writeMasterDeliveryJobsToFirestore();
-         new FirebaseController().setDeliveryJobsforAllUsersOnce();
+         //new FirebaseController().setDeliveryJobsforAllUsersOnce();
     }
 
     private void handleSignInResult( Task<GoogleSignInAccount> completedTask) {
