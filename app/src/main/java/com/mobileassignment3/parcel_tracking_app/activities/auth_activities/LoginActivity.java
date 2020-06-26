@@ -38,12 +38,12 @@ public class LoginActivity extends AppCompatActivity {
 
 
         new FirebaseController().writeMasterDeliveryJobsToFirestore();
+        setContentView(R.layout.activity_login);
         //will hide the title
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //hide the title bar
         getSupportActionBar().hide();
 
-        setContentView(R.layout.activity_login);
 
         TextView tvLoginSignup = findViewById(R.id.tvLoginSignup);
         Button btnLogin = findViewById(R.id.btnLogin);
