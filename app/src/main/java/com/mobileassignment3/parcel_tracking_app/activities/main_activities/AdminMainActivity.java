@@ -26,12 +26,13 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import com.mobileassignment3.parcel_tracking_app.AssignDialog;
 import com.mobileassignment3.parcel_tracking_app.MasterListDocument;
 import com.mobileassignment3.parcel_tracking_app.NotificationActivity;
 import com.mobileassignment3.parcel_tracking_app.ProfileActivity;
 import com.mobileassignment3.parcel_tracking_app.R;
 import com.mobileassignment3.parcel_tracking_app.FirebaseController;
-import com.mobileassignment3.parcel_tracking_app.assignDialog;
 import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
 import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
@@ -39,7 +40,7 @@ import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminMainActivity extends AppCompatActivity {
+public class AdminMainActivity extends AppCompatActivity implements AssignDialog.assignDialogListener{
 
     Button btnAssign;
 
@@ -90,21 +91,31 @@ public class AdminMainActivity extends AppCompatActivity {
 
         //Temp implementation to show dialog for input
         btnAssign = findViewById(R.id.btnAssign);
-
-        btnAssign.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                assignDialog();
-            }
-        });
+        // btnAssign.setOnClickListener(new View.OnClickListener() {
+        //     @Override
+        //     public void onClick(View v) {
+        //         assignDialog();
+        //     }
+        // });
 
 
     }
+
 
     public void assignDialog() {
-        assignDialog dialog = new assignDialog();
+        AssignDialog dialog = new AssignDialog();
         dialog.show(getSupportFragmentManager(), "Assign dialog");
+
     }
+
+
+    //TODO Make the assigndriver actually assign to the driver
+    
+    public void assignDriver(String driverUsername) {
+        // Toast.makeText(AdminMainActivity.this, "Driver is " + driverUsername, Toast.LENGTH_SHORT).show();
+        // new FirebaseController().assignParcelToDriver(driverUsername);
+    }
+
 
     // implemented the menu item
     @Override
@@ -148,8 +159,8 @@ public class AdminMainActivity extends AppCompatActivity {
         });
 
     }
-    void setRecyclerViewStuff(List<DeliveryJob> Djal){
 
+    void setRecyclerViewStuff(List<DeliveryJob> Djal){
 
         RecyclerView rvAssignOrder = findViewById(R.id.rvAssignOrder);
         // use this setting to improve performance if you know that changes
@@ -166,37 +177,6 @@ public class AdminMainActivity extends AppCompatActivity {
         RecyclerView.Adapter adapterAssignOrder = new OrderAdapter(Djal);
         rvAssignOrder.setAdapter(adapterAssignOrder);
 
-    }
-
-    // private void updateDeliveryJobArrayList(List<DeliveryJob> deliveryJobArrayListDataset) {
-
-    //     for(int i=0;i<10;i++) {
-    //         DeliveryJob newDj =  new DeliveryJob();
-    //         Parcel newPsl =  new Parcel("Gift from Lakshay"+i);
-    //         newDj.addParcel(newPsl);
-    //         deliveryJobArrayListDataset.add(newDj);
-    //     }
-    // }
-
-    public class assignDialogFragment extends DialogFragment {
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the Builder class for convenient dialog construction
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage("Assign driver")
-                    .setPositiveButton("Assign", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // FIRE ZE MISSILES!
-                        }
-                    })
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // User cancelled the dialog
-                        }
-                    });
-            // Create the AlertDialog object and return it
-            return builder.create();
-        }
     }
 
 }

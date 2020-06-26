@@ -19,6 +19,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -35,6 +36,7 @@ import com.mobileassignment3.parcel_tracking_app.model_classes.user.Driver;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -149,6 +151,75 @@ public class FirebaseController {
 
         writedeliveryJobsToDriver( deliveryJobArrayList);
     }
+
+//    public void assignParcelToDriver(final String driverUserName){
+//        //TODO Get which parcels the admin has selected, and use their tracking numbers
+//
+//        final String trackingNumber = "3f74af75-5fcd-40ec-a583-031b45c7106b";
+//        //drivertwo
+//        //Get the current list of delivery jobs
+//
+//        try{
+//            db.collection("masterDeliveryJobs")
+//                    .get()
+//                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                            if (task.isSuccessful()) {
+//                                for (QueryDocumentSnapshot document : task.getResult()) {
+//                                    Log.d("FIREBASE", document.getId() + " => " + document.getData());
+//                                    if(document.contains("masterList")){
+//                                        document.get("masterList");
+//                                        List<DeliveryJob> Djal = document.toObject(MasterListDocument.class).masterList;
+//                                        //Find the delivery job you want to update and update it
+//                                        for (DeliveryJob deliveryJob : Djal) {
+//                                            if (deliveryJob.getTrackingNumber().equals(trackingNumber)){
+//                                                //TODO INSTEAD OF CREATING A NEW DRIVER, get the list of drivers
+//                                                //and assign this to that driver object
+//                                                Driver temp = new Driver();
+//                                                temp.setUsername(driverUserName);
+//                                                deliveryJob.setAssignedDriver(temp);
+//                                            }
+//                                        }
+//                                        Map<String, Object> masterDeliveryJobs = new HashMap<>();
+//                                        //Putting the delivery job array list into a hashmap
+//                                        masterDeliveryJobs.put("masterList", Djal);
+//                                        setDeliveryJobsDocumentData(masterDeliveryJobs);
+//                                    }
+//                                }
+//                            } else {
+//                                Log.w("Firebase error", "Error getting documents.", task.getException());
+//                            }
+//                        }
+//                    });
+//
+//        }catch (Exception e){
+//            Log.w("Firebase error", "Error getting documents.");
+//
+//        }
+//    }
+//
+//    public void setDeliveryJobsDocumentData(Map data) {
+//        //Get the delivery jobs document which contains all delivery items
+//        DocumentReference deliveryJobsDocumentRef = db.collection("masterDeliveryJobs").document("deliveryJobsDocument");
+//        //Add the newly created delivery jobs to the masterList
+//        deliveryJobsDocumentRef
+//                .set(data)
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//                        Log.d("FIREBASE", "Data successfully added!");
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.w("FIREBASE", "Error updating document", e);
+//                    }
+//                });
+//
+//        writedeliveryJobsToDriver( deliveryJobArrayList);
+//    }
     public void writedeliveryJobsToDriver(   ArrayList<DeliveryJob> deliveryJobArrayList){
 
         final ArrayList<DeliveryJob> djal = deliveryJobArrayList;
@@ -171,7 +242,6 @@ public class FirebaseController {
     public void updateDriver(Driver driver) {
         db.collection("users").document("vVPfYGhf5nex005yGBnkikIoZrI3").set(driver);
     }
-
 
     public FirebaseUser getCurrentUser() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -237,6 +307,50 @@ public class FirebaseController {
 
         db.collection("users").document(getCurrentUser().getUid()).set(parcelAppUser);
     }
+
+    public void loginUser(final Activity activity , String email, String password) {
+        logoutCurrentUser();
+        if (email !=null&&!email.equals("")){
+            if(password!=null&&!password.equals("")){
+
+                mAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    // Sign in success, update UI with the signed-in user's information
+                                    Log.d(TAG, "signInWithEmail:success");
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    if (user != null)
+                                        Toast.makeText(activity.getApplicationContext(),
+                                                "Welcome! "+ user.getEmail(), Toast.LENGTH_LONG).show();
+                                    else Toast.makeText(activity.getApplicationContext(),
+                                            "Failed - user is null", Toast.LENGTH_LONG).show();
+                                    updateUIafterLogin(activity,true);
+
+                                } else {
+                                    // If sign in fails, display a message to the user.
+                                    Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                    if (task.getException().getClass().toString().contains("Credentials"))
+                                        Toast.makeText(activity.getApplicationContext(), "Failed to Login: Invalid Credentials", Toast.LENGTH_LONG).show();
+                                    else if (task.getException().getClass().toString().contains("TooManyRequest"))
+                                        Toast.makeText(activity.getApplicationContext(),"Too many Requests please wait a few seconds before trying again" , Toast.LENGTH_LONG).show();
+                                    else
+                                        Toast.makeText(activity.getApplicationContext(),task.getException().getClass().toString() , Toast.LENGTH_LONG).show();
+
+
+
+                                }
+                            }
+                        });
+            }else{
+                Toast.makeText(activity, "Please enter your PASSWORD", Toast.LENGTH_LONG).show();
+            }
+        }else{
+            Toast.makeText(activity, "Please Enter your EMAIL", Toast.LENGTH_LONG).show();
+        }
+    }
+
 
     public void loginUser(String email, String password, final OnCompleteListener<AuthResult> callback) {
         logoutCurrentUser();
@@ -328,4 +442,65 @@ public class FirebaseController {
         FirebaseAuth.getInstance().signOut();
     }
 
+
+    public void getListOfCustomers() {
+        Task<QuerySnapshot> task = db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        List<Customer> custList = new ArrayList<Customer>();
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot userDocument : task.getResult()) {
+                        int userType = (Integer) userDocument.get("primaryType");
+                        if (userType == User.RECIEVER) {
+                            Customer cust = userDocument.toObject(Customer.class);
+                            custList.add(cust);
+                            setDeliveryJobsforAllUsersOnce(custList);
+                        }
+
+                    }
+
+                }
+            }
+
+        });
+    }
+
+    private void setDeliveryJobsforAllUsersOnce(final List<Customer> custList) {
+        try{
+            new FirebaseController().db.collection("masterDeliveryJobs")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+
+                        private ArrayList<DeliveryJob> DjAl;
+
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d("FIREBASE", document.getId() + " => " + document.getData());
+                                    if(document.contains("masterList")){
+                                        document.get("masterList");
+                                        List<DeliveryJob> Djl = document.toObject(MasterListDocument.class).masterList;
+                                        DjAl = (ArrayList<DeliveryJob>)Djl;
+                                        int i =0;
+                                        for(Customer cust :custList){
+                                           //get random DeliveryJobs from Djal
+                                             //cust.;
+                                            //TODO -- im working here (lakshay) setDeliveryJobsforAllUsersOnce();
+                                        }
+
+                                    }
+                                }
+                            } else {
+                                Log.w("Firebase error", "Error getting documents.", task.getException());
+                            }
+                        }
+                    });
+
+        }catch (Exception e){
+            Log.w("Firebase error", "Error getting documents.");
+
+        }
+    }
 }

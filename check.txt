@@ -1,0 +1,17 @@
+Next need to make the 
+OPTION 1:
+randomlyAttachDeliveryJobs (parcels to be received )
+function 
+ to new and old users
+
+in on create new user and 
+in new function to loop over old users
+will take around 30 mins - 2hrs
+
+OPTION 2:
+alternatively  cloud implement: Sender making new order  - will take around 30 mins to 2 hrs 
+- 
+
+workflow could be :
+
+current receiver has a button called - make new order 

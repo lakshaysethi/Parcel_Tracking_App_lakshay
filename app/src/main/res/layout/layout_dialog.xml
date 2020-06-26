@@ -6,6 +6,9 @@
         android:id="@+id/driverUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:paddingStart="4dp"
         android:hint="Enter username"
         />
 </RelativeLayout>

@@ -92,7 +92,7 @@ public class ReceiverMainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManagerParcel = new LinearLayoutManager(this);
         rvParcel.setLayoutManager(layoutManagerParcel);
 
-        //TODO get the delivery from firestore
+        //TODO get the delivery for myparcel  from firestore #5
 
         // specify an adapter
 
