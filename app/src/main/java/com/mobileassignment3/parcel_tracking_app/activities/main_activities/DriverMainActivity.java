@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -127,7 +128,6 @@ public class DriverMainActivity extends MainActivityForAllUsers {
 
 
 class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
-    private ArrayList<DeliveryJob> mDataset;
     private Context mContext;
     private ArrayList<DeliveryJob> deliveryJobArray;
     // Provide a reference to the views for each data item
@@ -150,7 +150,6 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
     // Provide a suitable constructor (depends on the kind of dataset)
     public TaskAdapter(Context context, ArrayList<DeliveryJob> myDataset) {
         mContext = context;
-        mDataset = myDataset;
         deliveryJobArray = myDataset;
     }
 
@@ -168,38 +167,52 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
         holder.textViewTitle.setText(deliveryJobArray.get(position).getListOfParcels().get(0).getDescription());
         holder.textViewDetail.setText(deliveryJobArray.get(position).getStatusString());
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onCreateDialog();
+                onCreateDialog(deliveryJobArray.get(position));
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        return deliveryJobArray.size();
     }
 
 
     //Alert Dialog
-    public void onCreateDialog() {
-
+    public void onCreateDialog(final DeliveryJob deliveryJob) {
         //TODO get the estimate time
         String estimateTime = "10 mins";
-        String driverSendMessage = "Send Message to Customer:\nYour parcel will be deliveried in "+ estimateTime;
+        final String driverSendMessage = "Send Message to Customer:\nYour parcel will be deliveried in "+ estimateTime;
 
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setMessage(driverSendMessage)
                 .setPositiveButton("send", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // TODO send message
-
+                        String email = "ALL";
+                        if (deliveryJob.getReceiver() != null) {
+                            email = deliveryJob.getReceiver().getEmail();
+                            email = email == null ? "ALL" : email;
+                        }
+                        new FirebaseController().sendMessageToReceiver("Delivery notification", driverSendMessage, email,
+                                new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(mContext, "Message sent successfully!", Toast.LENGTH_SHORT).show();
+                                    }
+                                }, new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(mContext, "Oops, message sent failed!", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
