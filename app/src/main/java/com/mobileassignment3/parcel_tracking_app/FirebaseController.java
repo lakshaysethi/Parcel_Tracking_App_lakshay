@@ -34,6 +34,7 @@ import com.mobileassignment3.parcel_tracking_app.model_classes.user.Driver;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -316,5 +317,67 @@ public class FirebaseController {
     }
     public void logoutCurrentUser() {
         FirebaseAuth.getInstance().signOut();
+    }
+
+
+    public void getListOfCustomers() {
+        Task<QuerySnapshot> task = db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        List<Customer> custList = new ArrayList<Customer>();
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot userDocument : task.getResult()) {
+                        int userType = (Integer) userDocument.get("primaryType");
+                        if (userType == User.RECIEVER) {
+                            Customer cust = userDocument.toObject(Customer.class);
+                            custList.add(cust);
+                            setDeliveryJobsforAllUsersOnce(custList);
+                        }
+
+                    }
+
+                }
+            }
+
+        });
+    }
+
+    private void setDeliveryJobsforAllUsersOnce(final List<Customer> custList) {
+        try{
+            new FirebaseController().db.collection("masterDeliveryJobs")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+
+                        private ArrayList<DeliveryJob> DjAl;
+
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d("FIREBASE", document.getId() + " => " + document.getData());
+                                    if(document.contains("masterList")){
+                                        document.get("masterList");
+                                        List<DeliveryJob> Djl = document.toObject(MasterListDocument.class).masterList;
+                                        DjAl = (ArrayList<DeliveryJob>)Djl;
+                                        int i =0;
+                                        for(Customer cust :custList){
+                                           //get random DeliveryJobs from Djal
+                                             cust.;
+
+                                        }
+
+                                    }
+                                }
+                            } else {
+                                Log.w("Firebase error", "Error getting documents.", task.getException());
+                            }
+                        }
+                    });
+
+        }catch (Exception e){
+            Log.w("Firebase error", "Error getting documents.");
+
+        }
     }
 }
