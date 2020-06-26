@@ -34,7 +34,7 @@ import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DriverMainActivity extends AppCompatActivity {
+public class DriverMainActivity extends MainActivityForAllUsers {
     private RecyclerView rvMyTask;
     private RecyclerView.Adapter adapterMyTask;
     private RecyclerView.LayoutManager layoutManagerMyTask;

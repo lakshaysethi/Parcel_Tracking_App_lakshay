@@ -40,7 +40,7 @@ import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminMainActivity extends AppCompatActivity implements AssignDialog.assignDialogListener{
+public class AdminMainActivity extends MainActivityForAllUsers implements AssignDialog.assignDialogListener{
 
     Button btnAssign;
 
