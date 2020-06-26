@@ -86,12 +86,11 @@ public class DriverMainActivity extends AppCompatActivity {
                     DocumentSnapshot doc = task.getResult();
                     try{
                      Driver driver = doc.toObject(Driver.class);
-                     List<DeliveryJob> parcelDataset = driver.getDeliveryJobList();
+                     List<DeliveryJob> parcelDataset = driver.getDeliveryJobList(); // Can be null if no job is assigned yet
+                     parcelDataset = parcelDataset == null ? new ArrayList<DeliveryJob>() : parcelDataset;
 
                      // specify an adapter
                     setAdapterStuff(parcelDataset);
-
-
                     }catch (Exception e){
                         Toast.makeText(DriverMainActivity.this, "Error"+e.toString(), Toast.LENGTH_SHORT).show();
                     }
@@ -99,13 +98,9 @@ public class DriverMainActivity extends AppCompatActivity {
             }
         });
 
-
-
-
     }
 
     private void setAdapterStuff(List<DeliveryJob> parcelDataset) {
-
         adapterMyTask = new TaskAdapter(this, (ArrayList<DeliveryJob>)parcelDataset);
         rvMyTask.setAdapter(adapterMyTask);
     }
