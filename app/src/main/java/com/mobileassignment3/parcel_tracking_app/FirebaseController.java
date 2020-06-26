@@ -243,7 +243,7 @@ public class FirebaseController {
         db.collection("users").document("vVPfYGhf5nex005yGBnkikIoZrI3").set(driver);
     }
 
-    public FirebaseUser getCurrentUser() {
+    public FirebaseUser getCurrentFirebaseUserObject() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         return currentUser;
     }
@@ -274,7 +274,7 @@ public class FirebaseController {
 
                     }
                 });
-        return getCurrentUser();
+        return getCurrentFirebaseUserObject();
     }
 
     public FirebaseUser createNewUser( String email, String password, final int type, final String username) {
@@ -296,16 +296,16 @@ public class FirebaseController {
 
                     }
                 });
-        return getCurrentUser();
+        return getCurrentFirebaseUserObject();
     }
 
     private void setupUserInDatabase(String username,FirebaseUser user, int type) {
         User parcelAppUser = new User();
         parcelAppUser.setType(type);
-        parcelAppUser.setEmail(getCurrentUser().getEmail());
+        parcelAppUser.setEmail(getCurrentFirebaseUserObject().getEmail());
         parcelAppUser.setUsername(username);
 
-        db.collection("users").document(getCurrentUser().getUid()).set(parcelAppUser);
+        db.collection("users").document(getCurrentFirebaseUserObject().getUid()).set(parcelAppUser);
     }
 
     public void loginUser(final Activity activity , String email, String password) {
@@ -402,7 +402,7 @@ public class FirebaseController {
     }
 
     public void getUser(final OnSuccessListener<User> callback) {
-        FirebaseUser cu = getCurrentUser();
+        FirebaseUser cu = getCurrentFirebaseUserObject();
 
         DocumentReference docRef = db.collection("users").document(cu.getUid());
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
