@@ -49,7 +49,7 @@ public class LoginInstrumentedTest {
                 assertEquals(true, task.isSuccessful());
 
                 // Should have user after logged in
-                FirebaseUser user = firebaseController.getCurrentUser();
+                FirebaseUser user = firebaseController.getCurrentFirebaseUserObject();
                 assertNotNull(user);
                 assertEquals(EMAIL, user.getEmail());
 
@@ -57,7 +57,7 @@ public class LoginInstrumentedTest {
                     @Override
                     public void onSuccess(User user) {
                         // Check user role type
-                        assertEquals(User.DRIVER, user.getPrimaryType());
+                        assertEquals(User.DRIVER, (Object)user.typeArray.get(0));
                     }
                 });
 

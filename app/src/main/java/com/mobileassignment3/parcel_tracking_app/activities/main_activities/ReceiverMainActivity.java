@@ -5,6 +5,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,7 +28,7 @@ import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 
 import java.util.ArrayList;
 
-public class ReceiverMainActivity extends AppCompatActivity {
+public class ReceiverMainActivity extends MainActivityForAllUsers {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,14 +96,10 @@ public class ReceiverMainActivity extends AppCompatActivity {
         //TODO get the delivery for myparcel  from firestore #5
 
         // specify an adapter
+        new FirebaseController().setArraylistInAdapterOfActivity(rvParcel,this);
 
-        ArrayList<DeliveryJob> deliveryJobsAssociatedWithAuthenticatedUser = new ArrayList<DeliveryJob>(); //FirebaseController.getdeliveryJobsAssociatedWithAuthenticatedUser();
-
-
-        RecyclerView.Adapter adapterParcel = new RecieverDeliveryJobAdapter(this,deliveryJobsAssociatedWithAuthenticatedUser);
-        rvParcel.setAdapter(adapterParcel);
-        
     }
+
 
 
 

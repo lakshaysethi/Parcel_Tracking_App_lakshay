@@ -22,22 +22,19 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobileassignment3.parcel_tracking_app.FirebaseController;
 import com.mobileassignment3.parcel_tracking_app.NotificationActivity;
 import com.mobileassignment3.parcel_tracking_app.ProfileActivity;
 import com.mobileassignment3.parcel_tracking_app.R;
 import com.mobileassignment3.parcel_tracking_app.model_classes.DeliveryJob;
-import com.mobileassignment3.parcel_tracking_app.model_classes.Parcel;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.Driver;
 import com.mobileassignment3.parcel_tracking_app.model_classes.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DriverMainActivity extends AppCompatActivity {
+public class DriverMainActivity extends MainActivityForAllUsers {
     private RecyclerView rvMyTask;
     private RecyclerView.Adapter adapterMyTask;
     private RecyclerView.LayoutManager layoutManagerMyTask;
@@ -79,7 +76,7 @@ public class DriverMainActivity extends AppCompatActivity {
 
         //TODO get the assigned delivery job from firestore
 
-        new FirebaseController().db.collection("users").document(new FirebaseController().getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        new FirebaseController().db.collection("users").document(new FirebaseController().getCurrentFirebaseUserObject().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()){
