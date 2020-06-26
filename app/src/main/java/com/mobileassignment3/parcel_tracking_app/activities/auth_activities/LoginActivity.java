@@ -58,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
                 String username = usernameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
 
+                loginUserWithEmail(username,password);
 
             }
         });
@@ -84,6 +85,11 @@ public class LoginActivity extends AppCompatActivity {
 
 
         
+    private void loginUserWithEmail(String email, String password) {
+
+       new FirebaseController().loginUser(this,email,password);
+
+    }
     private void doOnce() {
        // new FirebaseController().writeMasterDeliveryJobsToFirestore();
          new FirebaseController().setDeliveryJobsforAllUsersOnce();
