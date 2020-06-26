@@ -511,25 +511,22 @@ User cu = getCurrentParcelTrackerUser(null,"username as set on signup");
 User cu = getCurrentParcelTrackerUser(null,"usertype Int as String");
 
 * */
-    public User getCurrentParcelTrackerUser(User user, final String expectation){
+    public User getCurrentParcelTrackerUser(User user, final  String cuuid){
 
-        if (user != null && (user.getUsername().equals(expectation)|| user.getTypeArray().get(0).toString().equals(expectation) ) ){
-                FirebaseUser currentUser = getCurrentFirebaseUserObject();
-                String cuuid = currentUser.getUid();
+        if (user != null   ){
+            DocumentReference userData = db.collection("users").document(cuuid);
+            Task<DocumentSnapshot> udataGetTask = userData.get();
 
-                DocumentReference userData = db.collection("users").document(cuuid);
-                Task<DocumentSnapshot> udataGetTask = userData.get();
-
-                udataGetTask.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()){
-                            DocumentSnapshot userDataDocumentSnapshot = task.getResult();
-                            User currentUser = userDataDocumentSnapshot.toObject(User.class);
-                            getCurrentParcelTrackerUser(currentUser,expectation);
-                        }
+            udataGetTask.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()){
+                        DocumentSnapshot userDataDocumentSnapshot = task.getResult();
+                        User currentUser = userDataDocumentSnapshot.toObject(User.class);
+                        getCurrentParcelTrackerUser(currentUser,cuuid);
                     }
-                });
+                }
+            });
             return user;
 
         }
